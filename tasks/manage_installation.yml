@@ -71,7 +71,6 @@
     dest: "/etc/profile.d/airflow.sh"
   when: airflow_provide_user_env
 
-
 # Install airflow packages
 - name: 'INSTALL | Manage airflow installation'
   become_user: "{{ airflow_user_name }}"
@@ -83,6 +82,8 @@
     virtualenv_python: "{{ airflow_python_version }}"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ airflow_packages }}"
+  environment:
+    SLUGIFY_USES_TEXT_UNIDECODE: "yes"
   when: (not airflow_pip_custom_version_install) or
       (item.version is not defined) or
       ( (not item.version | search('<') ) and (not item.version | search('>') ) )
