@@ -161,6 +161,7 @@ airflow_defaults_config:
     hostname: "{{ ansible_default_ipv4.address }}"
     log_file: "{{ airflow_log_path }}/airflow-webserver.log"
     pid: "{{ airflow_pid_path }}/airflow-webserver.pid"
+    rbac: False
     secret_key: 'temporary_key'
     web_server_host: '0.0.0.0'
     web_server_port: '8080'
@@ -168,6 +169,7 @@ airflow_defaults_config:
     workers: 1
     worker_class: 'sync'
     worker_timeout: 30
+
   email:
     email_backend: 'airflow.utils.email.send_email_smtp'
 
@@ -224,8 +226,27 @@ airflow_defaults_config:
     cacert: ''
     search_scope: 'LEVEL'
 
+  google:
+    client_id: "your generated client id"
+    client_secret: "your generated client secret"
+    oauth_callback_route: "/oauth2callback"
+    domain: "your.airflow.domain.edu"
+
 airflow_user_config: {}
 airflow_config: "{{ airflow_defaults_config | combine(airflow_user_config, recursive=True) }}"
+
+# Airflow Webserver Users management
+airflow_webserver_admins:
+  - google_username: "google_112545704984098245976"
+    email: "tul08567@temple.edu"
+    firstname: "Christina"
+    lastname: "Harlow"
+    airflow_dummy_password: "dummy-password"
+  - google_username: "google_103307733614088003920"
+    email: "tug76662@temple.edu"
+    firstname: "Timothy"
+    lastname: "Bieniosek"
+    airflow_dummy_password: "dummy-password"
 
 # Connections management
 airflow_drop_existing_connections_before_add: True
