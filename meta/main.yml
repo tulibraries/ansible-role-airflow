@@ -1,9 +1,9 @@
 ---
 
 galaxy_info:
-  author: 'Alexandre Chaussier'
-  description: 'Ansible role to install and configure airflow'
-  company: 'Infopen (http://www.infopen.pro)'
+  author: 'Christina Harlow'
+  description: 'Ansible role to install and configure airflow. Forked from infopen.airflow.'
+  company: 'Temple University Libraries'
   license: 'MIT'
   min_ansible_version: '2.4'
   github_branch: 'master'
@@ -15,6 +15,10 @@ galaxy_info:
       versions:
         - 'xenial'
         - 'bionic'
+    - name: 'Centos'
+      versions:
+        - '7'
   galaxy_tags:
     - 'system'
-dependencies: []
+dependencies:
+    - 'geerlingguy.git'
