@@ -242,11 +242,6 @@ airflow_webserver_admins:
     firstname: "Christina"
     lastname: "Harlow"
     airflow_dummy_password: "dummy-password"
-  - google_username: "google_103307733614088003920"
-    email: "tug76662@temple.edu"
-    firstname: "Timothy"
-    lastname: "Bieniosek"
-    airflow_dummy_password: "dummy-password"
 
 # Connections management
 airflow_drop_existing_connections_before_add: True
