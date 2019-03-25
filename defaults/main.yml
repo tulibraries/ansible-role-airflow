@@ -264,3 +264,10 @@ airflow_logrotate_config:
       - "create 640 {{ airflow_log_owner }} {{ airflow_log_group }}"
       - 'postrotate'
       - 'endscript'
+
+# Git setup for cloning DAGs into Airflow DAG folder
+workspace: "{{ airflow_config.core.dags_folder }}"
+dags_git_repositories:
+  - repo: "https://github.com/tulibraries/cob_datapipeline.git"
+    dest_folder: "cob_datapipeline"
+    branch_or_release: "master"

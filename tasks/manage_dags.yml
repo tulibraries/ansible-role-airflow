@@ -1,0 +1,15 @@
+---
+
+# For Listed DAG Git Repos, clone designated branch or release to DAGS folder
+
+- name: 'CONFIG | DAGS | Clone listed DAG git repositories'
+  become_user: "{{ airflow_user_name }}"
+  become: true
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ airflow_config.core.dags_folder }}/{{ item.dest_folder }}"
+    clone: true
+    force: true
+    version: "{{ item.branch_or_release }}"
+  with_items:
+    - "{{ dags_git_repositories }}"
