@@ -1,36 +1,27 @@
-# airflow
+# TU Libraries Ansible Role for Building Airflow
 
-[![Build Status](https://img.shields.io/travis/infOpen/ansible-role-airflow/master.svg?label=travis_master)](https://travis-ci.org/infOpen/ansible-role-airflow)
-[![Build Status](https://img.shields.io/travis/infOpen/ansible-role-airflow/develop.svg?label=travis_develop)](https://travis-ci.org/infOpen/ansible-role-airflow)
-[![Updates](https://pyup.io/repos/github/infOpen/ansible-role-airflow/shield.svg)](https://pyup.io/repos/github/infOpen/ansible-role-airflow/)
-[![Python 3](https://pyup.io/repos/github/infOpen/ansible-role-airflow/python-3-shield.svg)](https://pyup.io/repos/github/infOpen/ansible-role-airflow/)
-[![Ansible Role](https://img.shields.io/ansible/role/10445.svg)](https://galaxy.ansible.com/infOpen/airflow/)
+[![Build Status](https://img.shields.io/travis/tulibraries/ansible-role-airflow/master.svg?label=travis_master)](https://travis-ci.org/tulibraries/ansible-role-airflow)
+[![Build Status](https://img.shields.io/travis/tulibraries/ansible-role-airflow/develop.svg?label=travis_develop)](https://travis-ci.org/tulibraries/ansible-role-airflow)
+[![Ansible Role](https://img.shields.io/ansible/role/38640.svg)](https://galaxy.ansible.com/tulibraries/airflow)
 
-Ansible role to manage Airflow installation and configuration
-
-First role usage is to manage a single master instance, so I've not manage worker side. If you want, free to do PR to add these features.
+Ansible role to manage Airflow installation and configuration with limited support for DAG retrieval and Operators (worker) environment setup.
 
 ## Breaking changes
 
-### 0.4.0
-
-* Remove Ubuntu Trusty management
-* Remove Ansible 2.2 and 2.3 management
-* Default Airflow version is now 1.9.0
+To be filled in. This is originally a fork from https://github.com/infOpen/ansible-role-airflow, but separated into own repository given breaking changes setting up Airflow 1.10.x features and DAGs support.
 
 ## Requirements
 
-This role requires Ansible 2.4 or higher,
-and platform requirements are listed in the metadata file.
+This role requires Ansible 2.4 or higher, and platform requirements are listed in the metadata file.
 
 ## Testing
 
 This role use [Molecule](https://github.com/metacloud/molecule/) to run tests.
 
-Local and Travis tests run tests on Docker by default.
-See molecule documentation to use other backend.
+Local and Travis tests run tests on Docker by default. See molecule documentation to use other backend.
 
 Currently, tests are done on:
+- Centos 7
 - Debian Stretch
 - Ubuntu Xenial
 - Ubuntu Bionic
@@ -44,8 +35,12 @@ and use:
 #### Using Docker driver
 
 ```
-$ tox
+$ pip install pipenv
+$ pipenv install
+$ pipenv run molecule test
 ```
+
+Note: currently testing skips the idempotency checks, given work required to have Airflow database upgrades pass the Ansible requirements for idempotency.
 
 ## Role Variables
 
@@ -308,9 +303,3 @@ None
 ## License
 
 MIT
-
-## Author Information
-
-Alexandre Chaussier (for Infopen company)
-- http://www.infopen.pro
-- a.chaussier [at] infopen.pro

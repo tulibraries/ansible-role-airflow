@@ -190,16 +190,3 @@ def test_logging_paths(host, path, path_type, user, group, mode):
     assert current_path.user == user
     assert current_path.group == group
     assert current_path.mode == mode
-
-
-@pytest.mark.parametrize('username,email,firstname,lastname,password', [
-    ('google_112545704984098245976', 'tul08567@temple.edu', 'Christina',
-     'Harlow', 'dummy-password')
-    ])
-def test_airflow_users(username, email, firstname, lastname, password):
-    """
-    Tests Airflow is creating Users
-    """
-
-    users = os.system('/var/lib/airflow/venv/bin/airfow list_users')
-    print(users)
