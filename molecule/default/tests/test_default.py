@@ -29,7 +29,7 @@ def test_airflow_user(host):
     assert airflow_user.exists is True
     assert airflow_user.group == 'airflow'
     assert airflow_user.home == '/var/lib/airflow'
-    assert airflow_user.shell == '/bin/false'
+    assert airflow_user.shell == '/bin/bash'
 
 
 def test_airflow_group(host):

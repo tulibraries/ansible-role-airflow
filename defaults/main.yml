@@ -18,7 +18,7 @@ airflow_pip_custom_version_install: False
 # Installation vars
 airflow_user_name: 'airflow'
 airflow_user_group: "{{ airflow_user_name }}"
-airflow_user_shell: '/bin/false'
+airflow_user_shell: '/bin/bash'
 airflow_user_home_path: '/var/lib/airflow'
 airflow_user_home_mode: '0700'
 
