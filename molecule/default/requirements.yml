@@ -1,0 +1,9 @@
+---
+
+- src: geerlingguy.git
+  name: geerlingguy.git
+  version: 2.0.4
+
+- src: https://github.com/tulibraries/ansible-role-server-bootstrap.git
+  name: tulibraries.server-bootstrap
+  version: master

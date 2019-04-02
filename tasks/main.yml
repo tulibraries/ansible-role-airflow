@@ -62,3 +62,14 @@
   tags:
     - 'role::airflow'
     - 'role::airflow::config'
+
+# Airflow DAGs tasks management
+- name: 'CONFIG | Include DAG codebases'
+  import_tasks: "{{ role_path }}/tasks/manage_dags.yml"
+  environment:
+    AIRFLOW_HOME: '{{ airflow_config.core.airflow_home }}'
+  become: True
+  tags:
+    - 'role::airflow'
+    - 'role::airflow::config'
+    - 'role::airflow::dags'

@@ -1,70 +1,42 @@
 ---
 
-dependency:
-  name: 'galaxy'
-driver:
-  name: 'docker'
-lint:
-  name: 'yamllint'
-platforms:
-  - name: "airflow-docker-stretch"
-    image: 'minimum2scp/systemd-stretch:latest'
-    command: '/sbin/init'
-    cap_add:
-      - 'SYS_PTRACE'
-    privileged: True
-  - name: "airflow-docker-xenial"
-    image: 'solita/ubuntu-systemd:16.04'
-    command: '/sbin/init'
-    cap_add:
-      - 'SYS_PTRACE'
-    privileged: True
-  - name: "airflow-docker-bionic"
-    image: 'solita/ubuntu-systemd:18.04'
-    command: '/sbin/init'
-    cap_add:
-      - 'SYS_PTRACE'
-    privileged: True
-provisioner:
-  name: 'ansible'
-  lint:
-    name: 'ansible-lint'
-  inventory:
-    host_vars:
-      airflow-docker-stretch:
-        __airflow_system_dependencies:
-          - name: 'default-libmysqlclient-dev'
-    group_vars:
-      all:
-        airflow_database_engine: 'sqlite'
-        airflow_extra_packages:
-          - name: 'apache-airflow[crypto]'
-          - name: 'apache-airflow[mysql]'
-          - name: 'apache-airflow[password]'
-        __airflow_system_dependencies:
-          - name: 'libmysqlclient-dev'
-        airflow_system_dependencies: "{{
-          _airflow_system_dependencies + __airflow_system_dependencies }}"
-        airflow_webserver_hostname: '127.0.0.1'
-        airflow_do_upgrade_db: False
-        airflow_connections:
-          - conn_id: 'foo'
-            conn_uri: 'foobar://foo_user:foo_password@bar.foobar'
-        airflow_variables:
-          - key: 'my_key'
-            value: 'my_key_value'
-          - key: 'my_key_2'
-            value: 'my_key_2_value'
-        airflow_user_config:
-          core:
-            fernet_key: '3hw5_gCG2QGFn1zmLJdj0zfDTxoJS-1llvxzmxS3DHg='
 scenario:
-  name: 'default'
-verifier:
-  name: 'testinfra'
-  additional_files_or_dirs:
-    - '../../tests'
+  name: default
+  test_sequence:
+    - lint
+    - cleanup
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence
+    - side_effect
+    - verify
+    - cleanup
+    - destroy
+dependency:
+  name: galaxy
+  role-file: requirements.yml
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: instance
+    image: centos:7
+    command: /sbin/init
+    privileged: true
+    capabilities:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+provisioner:
+  name: ansible
   lint:
-    name: 'flake8'
-  options:
-    sudo: True
+    name: ansible-lint
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

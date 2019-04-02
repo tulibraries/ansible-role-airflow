@@ -1,25 +1,13 @@
 ---
 
-# Travis configuration
+language: python
 
-dist: 'trusty'
-sudo: 'required'
-
-services:
-  - 'docker'
-
-language: 'python'
-
-env:
-  matrix:
-    - TOXENV='py27-ansible24'
-    - TOXENV='py27-ansible25'
+python:
+  - 3.6
 
 install:
-  - 'pip install tox-travis'
+  - pip install pipenv
+  - pipenv install --dev
 
 script:
-  - 'travis_wait 50 tox -e "${TOXENV}"'
-
-notifications:
-  webhooks: 'https://galaxy.ansible.com/api/v1/notifications/'
+  - pipenv run molecule test

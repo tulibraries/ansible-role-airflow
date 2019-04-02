@@ -4,15 +4,19 @@
 
 - name: 'CONFIG | VARIABLES | Get existing variables'
   become_user: "{{ airflow_user_name }}"
+  become: true
   shell: >
-    {{ airflow_virtualenv }}/bin/airflow variables | grep -vE '^\['
+    set -o pipefail && \
+      {{ airflow_virtualenv }}/bin/airflow variables | grep -vE '^\['
   changed_when: false
   register: 'airflow_existing_variables'
+  args:
+    executable: /bin/bash
 
 
 # Only add and delete actions are managed, not update
 - name: 'CONFIG | VARIABLES | Remove existing variables'
-  shell: >
+  command: >
     {{ airflow_virtualenv }}/bin/airflow variables --delete {{ item }}
   changed_when: false
   with_items: "{{ airflow_existing_variables.stdout_lines }}"
@@ -20,9 +24,8 @@
 
 
 - name: 'CONFIG | VARIABLES | Add variables'
-  shell: >
-    {{ airflow_virtualenv }}/bin/airflow variables --set {{ item.key }} \
-    {{ item.value }}
+  command: >
+    {{ airflow_virtualenv }}/bin/airflow variables --set {{ item.key }} {{ item.value }}
   changed_when: false
   no_log: True
   with_items: "{{ airflow_variables }}"

@@ -5,6 +5,7 @@
 # Manage configuration templating
 - name: 'CONFIG | Manage configuration templating'
   become_user: "{{ airflow_user_name }}"
+  become: true
   template:
     src: "{{ role_path }}/templates/airflow.cfg.j2"
     dest: "{{ airflow_config.core.airflow_home }}/airflow.cfg"
@@ -62,6 +63,7 @@
 # Manage database initialize if first deployment
 - name: 'CONFIG | Manage database initialize'
   become_user: "{{ airflow_user_name }}"
+  become: true
   command: "{{ airflow_virtualenv }}/bin/airflow initdb"
   when:
     - "not airflow_config_stat.stat.exists"
@@ -82,6 +84,7 @@
 # Manage database upgrade if not first deployment
 - name: 'CONFIG | Manage database upgrade'
   become_user: "{{ airflow_user_name }}"
+  become: true
   command: "{{ airflow_virtualenv }}/bin/airflow upgradedb"
   when:
     - "airflow_config_stat.stat.exists"
@@ -93,6 +96,7 @@
 # add airflow_admin users to airflow
 - name: 'CONFIG | Generate Airflow Webserver Admin Users if RBAC is enabled'
   become_user: "{{ airflow_user_name }}"
+  become: true
   command: "{{ airflow_virtualenv }}/bin/airflow create_user --role Admin \
             --username {{ item.google_username }} \
             --email {{ item.email }} \
