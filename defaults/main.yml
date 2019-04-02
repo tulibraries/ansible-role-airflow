@@ -37,7 +37,7 @@ airflow_virtualenv_mode: "0755"
 airflow_python_version: "{{ _airflow_python_version }}"
 airflow_packages:
   - name: 'pip'
-    version: '10.0.1'
+    version: '19.0.3'
   - name: 'setuptools'
     version: '39.1.0'
   - name: 'GitPython'
@@ -46,6 +46,7 @@ airflow_packages:
     version: '0.28.2'
   - name: 'apache-airflow'
     version: '1.9.0'
+  - name: 'pipenv'
 airflow_extra_packages:
   - name: 'apache-airflow[crypto]'
 
@@ -271,3 +272,5 @@ dags_git_repositories:
   - repo: "https://github.com/tulibraries/cob_datapipeline.git"
     dest_folder: "cob_datapipeline"
     branch_or_release: "master"
+    pipfile: true
+    pip_requirements: false

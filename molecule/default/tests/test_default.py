@@ -190,3 +190,33 @@ def test_logging_paths(host, path, path_type, user, group, mode):
     assert current_path.user == user
     assert current_path.group == group
     assert current_path.mode == mode
+
+
+@pytest.mark.parametrize('path,user,group', [
+    ('/var/lib/airflow/airflow/dags/cob_datapipeline/requirements.txt',
+     'airflow', 'airflow')
+    ])
+def test_pipfile_create(host, path, user, group):
+    """
+    Tests DAG in defaults converts Pipfile to requirements.txt
+    """
+    current_path = host.file(path)
+
+    assert current_path.exists
+    assert current_path.is_file
+    assert current_path.user == user
+    assert current_path.group == group
+
+
+@pytest.mark.parametrize('library', [
+    ('xmltodict'),
+    ('pexpect')
+])
+def test_dags_pip_libraries(host, library):
+    """
+    Test DAGs' required pip libraries installed
+    """
+
+    pip_path = "/var/lib/airflow/venv/bin/pip3.6"
+    libraries = host.pip_package.get_packages(pip_path=pip_path)
+    assert libraries.get(library)
