@@ -25,21 +25,21 @@
 
 
 - name: 'CONFIG | CONNECTIONS | Add connections without extra settings'
-  shell: >
+  command: >
     {{ airflow_virtualenv }}/bin/airflow connections --add \
     --conn_id {{ item.conn_id }} --conn_uri {{ item.conn_uri }}
   changed_when: false
   no_log: True
   with_items: "{{ airflow_connections }}"
-  when: "(item.conn_extra | default('')) == ''"
+  when: "(item.conn_extra | default('')) | length > 0"
 
 
 - name: 'CONFIG | CONNECTIONS | Add connections with extra settings'
-  shell: >
+  command: >
     {{ airflow_virtualenv }}/bin/airflow connections --add \
     --conn_id {{ item.conn_id }} --conn_uri {{ item.conn_uri }} \
     --conn_extra {{ item.conn_extra | quote }}
   changed_when: false
   no_log: True
   with_items: "{{ airflow_connections }}"
-  when: "(item.conn_extra | default('')) != ''"
+  when: "(item.conn_extra | default('')) | length > 0"
