@@ -274,3 +274,9 @@ dags_git_repositories:
     branch_or_release: "master"
     pipfile: true
     pip_requirements: false
+
+airflow_dag_system_dependencies:
+  - name: "@Development tools"
+    state: "present"
+  - name: "sqlite-devel"
+    state: "present"

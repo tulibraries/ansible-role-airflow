@@ -220,3 +220,15 @@ def test_dags_pip_libraries(host, library):
     pip_path = "/var/lib/airflow/venv/bin/pip3.6"
     libraries = host.pip_package.get_packages(pip_path=pip_path)
     assert libraries.get(library)
+
+
+@pytest.mark.parametrize('name', [
+    ('gettext'),
+    ('automake'),
+    ('sqlite-devel')
+])
+def test_dag_system_packages(host, name):
+    """
+    Tests about airflow DAGs system packages
+    """
+    assert host.package(name).is_installed
