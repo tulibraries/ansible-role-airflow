@@ -23,6 +23,8 @@ jobs:
       install:
         - pip install pipenv
         - pipenv install --dev
+      script:
+        - echo "pipenv installed"
     - stage: test
       script:
         - pipenv run molecule test
