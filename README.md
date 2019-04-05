@@ -1,6 +1,6 @@
 # TU Libraries Ansible Role for Building Airflow
 
-[![Build Status](https://img.shields.io/travis/tulibraries/ansible-role-airflow/master.svg?label=travis_master)](https://travis-ci.org/tulibraries/ansible-role-airflow)
+[![Build Status](https://travis-ci.com/tulibraries/ansible-role-airflow.svg?branch=master)](https://travis-ci.com/tulibraries/ansible-role-airflow)
 [![Ansible Role](https://img.shields.io/ansible/role/39140.svg)](https://galaxy.ansible.com/tulibraries/ansible_role_airflow)
 
 Ansible role to manage Airflow installation and configuration with limited support for DAG retrieval and Operators (worker) environment setup.
