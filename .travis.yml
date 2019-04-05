@@ -1,5 +1,4 @@
 ---
-sudo: required
 language: python
 python:
   - "3.6"
@@ -7,36 +6,27 @@ services:
   - docker
 
 env:
-  - MOLECULE_DISTRO: centos7
-  - MOLECULE_DISTRO: ubuntu1804
-  - MOLECULE_DISTRO: ubuntu1604
-  - MOLECULE_DISTRO: debian9
+  matrix:
+    - MOLECULE_DISTRO: ubuntu1604
+    - MOLECULE_DISTRO: ubuntu1804
+    - MOLECULE_DISTRO: debian9
+    - MOLECULE_DISTRO: centos7
 
-stages:
-  - install
-  - test
-  - deploy
+install:
+  - pip install pipenv
+  - pipenv install --dev
 
-jobs:
-  include:
-    - stage: install
-      install:
-        - pip install pipenv
-        - pipenv install --dev
-      script:
-        - echo "pipenv installed"
-    - stage: test
-      script:
-        - pipenv run molecule test
-    - stage: release
-      deploy:
-        provider: releases
-        skip_cleanup: true
-        api_key:
-          secure: OYjEWU8XXIjqeaW/FgWKH+kEwXt5y0y1Ta3W/eWxKCK2f1G2W2rNKCuRUtzSXQbLbmIHImUgEMlm1VvB84JB2PqVE/EAOtojxFN21exNSdGlP4hihovjoWMAvnfo5SVNdBTZ6I3VoKlaeC6WpO71bZrMLyKUSPjU2Ni3JtMOCtJlGhaz89j6izMQAe2gFzPG5OoyyQrR7f/cVAQsbu9I2jEaOomsvf6yP6UvUXbVXcTUiCZkcngH1RHMVHuOSYttnYbZsawhVk2BAvQT1eZO/LQVo+j5ulcrlz4xDMyjvphjOw/0yqf7Rjk/rZn5avOcBpMyecDEkykRQHoJSnI7VES0cm0leWEFzcuGNU5KfR2m7HjjCDOTHYrlf8UKqrOISHqQoT4AFmUGEPut/GtW2RsTtrKxsj1VgTYiD/+eZXkSIU0eyR7Mhew5BEehvSWjVbrN0ZFOYxgAAZujixohOy7BG3vFSNn+A7/+QtCxiCqUyle/GrNbVw5fxpjtXRJaef4rubbuoMbYt1+BOrbnB+f1dzU8daZPvcGp/264kuEMtD69QkxtVdsypkXdRp1yTVZgY4l+psRnv4tEeG3T+pjIngbuWQMDP7tthguvsdtOrCvlLLwPt2pgcwexU58PINSEA9SLCEKk614wmsG9Y29zg8IZ+2piRxf58dZ5HnQ=
-        on:
-          repo: tulibraries/ansible-role-airflow
-          branch: master
+script:
+  - pipenv run molecule test
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: OYjEWU8XXIjqeaW/FgWKH+kEwXt5y0y1Ta3W/eWxKCK2f1G2W2rNKCuRUtzSXQbLbmIHImUgEMlm1VvB84JB2PqVE/EAOtojxFN21exNSdGlP4hihovjoWMAvnfo5SVNdBTZ6I3VoKlaeC6WpO71bZrMLyKUSPjU2Ni3JtMOCtJlGhaz89j6izMQAe2gFzPG5OoyyQrR7f/cVAQsbu9I2jEaOomsvf6yP6UvUXbVXcTUiCZkcngH1RHMVHuOSYttnYbZsawhVk2BAvQT1eZO/LQVo+j5ulcrlz4xDMyjvphjOw/0yqf7Rjk/rZn5avOcBpMyecDEkykRQHoJSnI7VES0cm0leWEFzcuGNU5KfR2m7HjjCDOTHYrlf8UKqrOISHqQoT4AFmUGEPut/GtW2RsTtrKxsj1VgTYiD/+eZXkSIU0eyR7Mhew5BEehvSWjVbrN0ZFOYxgAAZujixohOy7BG3vFSNn+A7/+QtCxiCqUyle/GrNbVw5fxpjtXRJaef4rubbuoMbYt1+BOrbnB+f1dzU8daZPvcGp/264kuEMtD69QkxtVdsypkXdRp1yTVZgY4l+psRnv4tEeG3T+pjIngbuWQMDP7tthguvsdtOrCvlLLwPt2pgcwexU58PINSEA9SLCEKk614wmsG9Y29zg8IZ+2piRxf58dZ5HnQ=
+  on:
+    repo: tulibraries/ansible-role-airflow
+  if: branch = master
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
