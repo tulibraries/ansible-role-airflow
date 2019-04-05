@@ -40,3 +40,11 @@
     virtualenv_python: "{{ airflow_python_version }}"
   with_items: "{{ dags_git_repositories }}"
   when: (item.pip_requirements | bool) or (item.pipfile | bool)
+
+
+# Manage DAGs system dependencies
+- name: 'INSTALL | Manage DAG system dependencies'
+  package:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+  with_items: "{{ airflow_dag_system_dependencies }}"
