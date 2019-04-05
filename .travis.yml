@@ -5,10 +5,6 @@ python:
 services:
   - docker
 
-env:
-  matrix:
-    - MOLECULE_DISTRO: centos:7
-
 install:
   - pip install pipenv
   - pipenv install --dev

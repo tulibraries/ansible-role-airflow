@@ -25,14 +25,13 @@ lint:
   name: yamllint
 platforms:
   - name: instance
-    image: "${MOLECULE_DISTRO:-centos:7}"
+    image: centos:7
     command: /sbin/init
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
     privileged: true
-    pre_build_image: true
     capabilities:
       - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
   name: ansible
   lint:
