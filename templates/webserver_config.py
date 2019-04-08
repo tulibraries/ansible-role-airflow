@@ -57,7 +57,7 @@ AUTH_TYPE = AUTH_OAUTH
 AUTH_USER_REGISTRATION = True
 
 # The default user self registration role
-AUTH_USER_REGISTRATION_ROLE = "Public"
+AUTH_USER_REGISTRATION_ROLE = "Viewer"
 
 # When using OAuth Auth, uncomment to setup provider(s) info
 # https://flask-appbuilder.readthedocs.io/en/latest/security.html
