@@ -31,7 +31,7 @@
   changed_when: false
   no_log: True
   with_items: "{{ airflow_connections }}"
-  when: "(item.conn_extra | default('')) | length > 0"
+  when: "(item.conn_extra | default('')) | length = 0"
 
 
 - name: 'CONFIG | CONNECTIONS | Add connections with extra settings'
