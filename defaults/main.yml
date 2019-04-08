@@ -69,7 +69,7 @@ airflow_services_systemd:
       Service:
         Environment: "PATH={{ airflow_virtualenv ~ '/bin' }}"
         EnvironmentFile: "{{ airflow_paths.files.environment.path }}"
-        ExecStart: "{{ airflow_virtualenv ~ '/bin' }}/airflow webserver"
+        ExecStart: "{{ airflow_virtualenv ~ '/bin' }}/airflow webserver -l {{ airflow_log_path }}/webserver-l.log -A {{ airflow_log_path }}/webserver-access.log -E {{ airflow_log_path }}/webserver-errors.log"
         Group: "{{ airflow_user_group }}"
         PrivateTmp: 'true'
         Restart: 'on-failure'
