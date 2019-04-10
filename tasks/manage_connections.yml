@@ -10,6 +10,7 @@
       {{ airflow_virtualenv }}/bin/airflow connections --list | grep -E "\s+'" | cut -d "'" -f2
   changed_when: false
   failed_when: False
+  no_log: True
   register: 'airflow_existing_connections'
   args:
     executable: /bin/bash
@@ -20,6 +21,7 @@
   command: >
     {{ airflow_virtualenv }}/bin/airflow connections --delete --conn_id {{ item.conn_id }}
   changed_when: false
+  no_log: True
   with_items: "{{ airflow_connections }}"
   when: 'item.conn_id in airflow_existing_connections.stdout_lines'
 
