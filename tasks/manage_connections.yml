@@ -16,12 +16,12 @@
 
 
 # Only add and delete actions are managed, not update
-- name: 'CONFIG | CONNECTIONS | Remove existing connections'
+- name: 'CONFIG | CONNECTIONS | Remove listed connections'
   command: >
-    {{ airflow_virtualenv }}/bin/airflow connections --delete --conn_id {{ item }}
+    {{ airflow_virtualenv }}/bin/airflow connections --delete --conn_id {{ item.conn_id }}
   changed_when: false
-  with_items: "{{ airflow_existing_connections.stdout_lines }}"
-  when: 'airflow_drop_existing_connections_before_add | bool'
+  with_items: "{{ airflow_connections }}"
+  when: 'item.conn_id in airflow_existing_connections.stdout_lines'
 
 
 - name: 'CONFIG | CONNECTIONS | Add connections without extra settings'
@@ -31,7 +31,7 @@
   changed_when: false
   no_log: True
   with_items: "{{ airflow_connections }}"
-  when: "(item.conn_extra | default('')) | length = 0"
+  when: "(item.conn_extra | default('')) | length == 0"
 
 
 - name: 'CONFIG | CONNECTIONS | Add connections with extra settings'
