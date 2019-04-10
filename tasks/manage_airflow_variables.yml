@@ -15,12 +15,12 @@
 
 
 # Only add and delete actions are managed, not update
-- name: 'CONFIG | VARIABLES | Remove existing variables'
+- name: 'CONFIG | VARIABLES | Remove listed variables'
   command: >
-    {{ airflow_virtualenv }}/bin/airflow variables --delete {{ item }}
+    {{ airflow_virtualenv }}/bin/airflow variables --delete {{ item.key }}
   changed_when: false
-  with_items: "{{ airflow_existing_variables.stdout_lines }}"
-  when: 'airflow_drop_existing_variables_before_add | bool'
+  with_items: "{{ airflow_variables }}"
+  when: 'item.key in airflow_existing_variables.stdout_lines'
 
 
 - name: 'CONFIG | VARIABLES | Add variables'
