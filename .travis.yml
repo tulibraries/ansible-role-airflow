@@ -23,6 +23,7 @@ deploy:
   provider: releases
   skip_cleanup: true
   prerelease: true
+  name: $TRAVIS_TAG release
   file:
     - $TRAVIS_TAG.tar.gz
     - $TRAVIS_TAG.zip
