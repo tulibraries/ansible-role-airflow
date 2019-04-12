@@ -7,7 +7,7 @@
   become_user: "{{ airflow_user_name }}"
   become: true
   template:
-    src: "{{ role_path }}/templates/airflow.cfg.j2"
+    src: "templates/airflow.cfg.j2"
     dest: "{{ airflow_config.core.airflow_home }}/airflow.cfg"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_group }}"
@@ -38,7 +38,7 @@
 # Manage logrotate configuration
 - name: 'CONFIG | Manage logrotate configuration'
   template:
-    src: "{{ role_path }}/templates/logrotate.j2"
+    src: "templates/logrotate.j2"
     dest: "{{ item.filename }}"
     owner: 'root'
     group: 'root'
@@ -51,7 +51,7 @@
 # copy over updated webserver config (overlays existing)
 - name: 'CONFIG | Generate Webserver Config if RBAC is enabled'
   template:
-    src: "{{ role_path }}/templates/webserver_config.py"
+    src: "templates/webserver_config.py"
     dest: "{{ airflow_config.core.airflow_home }}/webserver_config.py"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_group }}"

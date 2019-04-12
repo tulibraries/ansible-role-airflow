@@ -4,7 +4,7 @@
 
 - name: 'SERVICE | Manage environment file'
   template:
-    src: "{{ role_path }}/templates/airflow.env.j2"
+    src: "templates/airflow.env.j2"
     dest: "{{ airflow_paths.files.environment.path }}"
     owner: "{{ airflow_paths.files.environment.owner | default('root') }}"
     group: "{{ airflow_paths.files.environment.group | default('root') }}"
@@ -16,7 +16,7 @@
 
 - name: 'SERVICE | Manage systemd services'
   template:
-    src: "{{ role_path }}/templates/systemd.service.j2"
+    src: "templates/systemd.service.j2"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner | default('root') }}"
     group: "{{ item.group | default('root') }}"
