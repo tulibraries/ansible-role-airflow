@@ -29,7 +29,14 @@
 - name: 'CONFIG | CONNECTIONS | Add connections without extra settings'
   command: >
     {{ airflow_virtualenv }}/bin/airflow connections --add \
-    --conn_id {{ item.conn_id }} --conn_uri {{ item.conn_uri }}
+    --conn_id {{ item.conn_id }} \
+    --conn_uri {{ item.conn_uri | default('') | quote }} \
+    --conn_type {{ item.conn_type | default('') | quote }} \
+    --conn_host {{ item.conn_host | default('') | quote }} \
+    --conn_login {{ item.conn_login | default('') | quote }} \
+    --conn_password {{ item.conn_password | default('') | quote }} \
+    --conn_schema {{ item.conn_schema | default('') | quote }} \
+    --conn_port {{ item.conn_port | default('') | quote }} \
   changed_when: false
   no_log: True
   with_items: "{{ airflow_connections }}"
@@ -39,7 +46,14 @@
 - name: 'CONFIG | CONNECTIONS | Add connections with extra settings'
   command: >
     {{ airflow_virtualenv }}/bin/airflow connections --add \
-    --conn_id {{ item.conn_id }} --conn_uri {{ item.conn_uri }} \
+    --conn_id {{ item.conn_id }} \
+    --conn_uri {{ item.conn_uri | default('') | quote }} \
+    --conn_type {{ item.conn_type | default('') | quote }} \
+    --conn_host {{ item.conn_host | default('') | quote }} \
+    --conn_login {{ item.conn_login | default('') | quote }} \
+    --conn_password {{ item.conn_password | default('') | quote }} \
+    --conn_schema {{ item.conn_schema | default('') | quote }} \
+    --conn_port {{ item.conn_port | default('') | quote }} \
     --conn_extra {{ item.conn_extra | quote }}
   changed_when: false
   no_log: True
