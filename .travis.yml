@@ -32,7 +32,9 @@ deploy:
   on:
     repo: tulibraries/ansible-role-airflow
     tags: true
-    branch: master
+    branch:
+      - master
+      - /v\d+\.\d+[a-z]/
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
