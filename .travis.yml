@@ -16,8 +16,8 @@ after_success:
   - true
 
 before_deploy:
-  - if [ -n "$TRAVIS_TAG" -a "$TRAVIS_BRANCH" = "master" ]; git archive HEAD -o $TRAVIS_TAG.tar.gz; fi
-  - if [ -n "$TRAVIS_TAG" -a "$TRAVIS_BRANCH" = "master" ]; git archive HEAD -o $TRAVIS_TAG.zip; fi
+  - if [ -n "$TRAVIS_TAG" ]; then git archive HEAD -o $TRAVIS_TAG.tar.gz; fi
+  - if [ -n "$TRAVIS_TAG" ]; then git archive HEAD -o $TRAVIS_TAG.zip; fi
 
 deploy:
   provider: releases
@@ -32,7 +32,9 @@ deploy:
   on:
     repo: tulibraries/ansible-role-airflow
     tags: true
-    branch: master
+    branch:
+      - master
+      - /^v.*$/
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
