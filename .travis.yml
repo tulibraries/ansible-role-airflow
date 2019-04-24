@@ -16,8 +16,8 @@ after_success:
   - true
 
 before_deploy:
-  - if [ -n "$TRAVIS_TAG" ]; git archive HEAD -o $TRAVIS_TAG.tar.gz; fi
-  - if [ -n "$TRAVIS_TAG" ]; git archive HEAD -o $TRAVIS_TAG.zip; fi
+  - if [ -n "$TRAVIS_TAG" ]; then git archive HEAD -o $TRAVIS_TAG.tar.gz; fi
+  - if [ -n "$TRAVIS_TAG" ]; then git archive HEAD -o $TRAVIS_TAG.zip; fi
 
 deploy:
   provider: releases
