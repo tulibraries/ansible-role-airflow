@@ -58,3 +58,31 @@
     - 'role::airflow'
     - 'role::airflow::config'
     - 'role::airflow::install'
+
+- name: 'Restart airflow-worker'
+  become: True
+  service:
+    name: "{{ item.name }}"
+    state: 'restarted'
+  with_items: "{{ airflow_services_states }}"
+  when:
+    - "item.name == 'airflow-worker'"
+    - "item.state == 'started'"
+  tags:
+    - 'role::airflow'
+    - 'role::airflow::config'
+    - 'role::airflow::install'
+
+- name: 'Restart airflow-flower'
+  become: True
+  service:
+    name: "{{ item.name }}"
+    state: 'restarted'
+  with_items: "{{ airflow_services_states }}"
+  when:
+    - "item.name == 'airflow-flower'"
+    - "item.state == 'started'"
+  tags:
+    - 'role::airflow'
+    - 'role::airflow::config'
+    - 'role::airflow::install'
