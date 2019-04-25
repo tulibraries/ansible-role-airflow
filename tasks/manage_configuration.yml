@@ -65,6 +65,7 @@
   become_user: "{{ airflow_user_name }}"
   become: true
   command: "{{ airflow_virtualenv }}/bin/airflow initdb"
+  run_once: true
   when:
     - "not airflow_config_stat.stat.exists"
     - "airflow_do_init_db | bool"
@@ -86,6 +87,7 @@
   become_user: "{{ airflow_user_name }}"
   become: true
   command: "{{ airflow_virtualenv }}/bin/airflow upgradedb"
+  run_once: true
   when:
     - "airflow_config_stat.stat.exists"
     - "airflow_do_upgrade_db | bool"
