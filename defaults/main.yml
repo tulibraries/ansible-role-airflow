@@ -276,6 +276,10 @@ dags_git_repositories:
     branch_or_release: "master"
     pipfile: true
     pip_requirements: false
+dags_git_repositories:
+  - repo: "https://github.com/tulibraries/tul_cob.git"
+    dest_folder: "$HOME/tul_cob"
+    branch_or_release: "master"
 
 airflow_dag_system_dependencies:
   - name: "@Development tools"
