@@ -13,6 +13,19 @@
   with_items:
     - "{{ dags_git_repositories }}"
 
+# For DAG-Related Git Repos, clone designated branch or release to $HOME
+- name: 'CONFIG | DAGS | Clone listed DAG-related git repositories'
+  become_user: "{{ airflow_user_name }}"
+  become: true
+  git:
+    repo: "{{ item.repo }}"
+    dest: "{{ item.dest_folder }}"
+    clone: true
+    force: true
+    version: "{{ item.branch_or_release }}"
+  with_items:
+    - "{{ dags_related_git_repositories }}"
+
 
 # Convert Pipfile to Requirements File
 - name: 'CONFIG | DAGS | Convert Pipfile to requirements.txt'

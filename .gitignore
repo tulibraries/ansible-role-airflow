@@ -22,3 +22,6 @@ tests/roles/
 
 # Molecule
 .molecule
+
+# Travis / CI related
+.ruby-version
