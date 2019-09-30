@@ -8,7 +8,7 @@
   become: true
   template:
     src: "templates/airflow.cfg.j2"
-    dest: "{{ airflow_config.core.airflow_home }}/airflow.cfg"
+    dest: "{{ airflow_user_home_path }}/airflow.cfg"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_group }}"
     mode: '0400'
@@ -52,7 +52,7 @@
 - name: 'CONFIG | Generate Webserver Config if RBAC is enabled'
   template:
     src: "templates/webserver_config.py"
-    dest: "{{ airflow_config.core.airflow_home }}/webserver_config.py"
+    dest: "{{ airflow_user_home_path ~ '/airflow' }}/webserver_config.py"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_group }}"
     mode: '0400'
