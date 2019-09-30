@@ -8,7 +8,7 @@
   become: true
   template:
     src: "templates/airflow.cfg.j2"
-    dest: "{{ airflow_user_home_path }}/airflow.cfg"
+    dest: "{{ airflow_user_home_path ~ '/airflow' }}/airflow.cfg"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_group }}"
     mode: '0400'
