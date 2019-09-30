@@ -4,14 +4,15 @@
 
 - name: 'SERVICE | Manage environment file'
   template:
-    src: "templates/airflow.env.j2"
-    dest: "{{ airflow_paths.files.environment.path }}"
+    src: "{{ airflow_service_envfile_template }}"
+    dest: "{{ airflow_service_envfile_path }}"
     owner: "{{ airflow_paths.files.environment.owner | default('root') }}"
     group: "{{ airflow_paths.files.environment.group | default('root') }}"
     mode: "{{ airflow_paths.files.environment.mode | default('0644') }}"
   notify:
     - 'Restart airflow-webserver'
     - 'Restart airflow-scheduler'
+    - 'Restart airflow-worker'
 
 
 - name: 'SERVICE | Manage systemd services'

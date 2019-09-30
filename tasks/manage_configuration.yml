@@ -7,8 +7,8 @@
   become_user: "{{ airflow_user_name }}"
   become: true
   template:
-    src: "templates/airflow.cfg.j2"
-    dest: "{{ airflow_user_home_path ~ '/airflow' }}/airflow.cfg"
+    src: "{{ airflow_config_template }}"
+    dest: "{{ airflow_application_home }}/airflow.cfg"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_group }}"
     mode: '0400'
@@ -38,7 +38,7 @@
 # Manage logrotate configuration
 - name: 'CONFIG | Manage logrotate configuration'
   template:
-    src: "templates/logrotate.j2"
+    src: "{{ airflow_logrotate_template }}"
     dest: "{{ item.filename }}"
     owner: 'root'
     group: 'root'
@@ -52,7 +52,7 @@
 - name: 'CONFIG | Generate Webserver Config if RBAC is enabled'
   template:
     src: "templates/webserver_config.py"
-    dest: "{{ airflow_user_home_path ~ '/airflow' }}/webserver_config.py"
+    dest: "airflow_application_home/webserver_config.py"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_group }}"
     mode: '0400'

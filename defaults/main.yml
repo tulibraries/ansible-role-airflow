@@ -20,6 +20,7 @@ airflow_user_name: 'airflow'
 airflow_user_group: "{{ airflow_user_name }}"
 airflow_user_shell: '/bin/bash'
 airflow_user_home_path: '/var/lib/airflow'
+airflow_application_home: "airflow_application_home"
 airflow_user_home_mode: '0700'
 
 airflow_log_path: '/var/log/airflow'
@@ -34,7 +35,9 @@ airflow_pid_mode: '0700'
 
 airflow_virtualenv: "{{ airflow_user_home_path }}/venv"
 airflow_virtualenv_mode: "0755"
+
 airflow_python_version: "{{ _airflow_python_version }}"
+
 airflow_packages:
   - name: 'pip'
     version: '19.0.3'
@@ -52,8 +55,10 @@ airflow_extra_packages:
 
 # option to set environment for all users,
 # by providing a file in /etc/profile.d/
-airflow_provide_user_env: False
-
+airflow_provide_user_env: True
+airflow_profiled_template: "templates/airflow.profile.j2"
+airflow_provide_user_bashrc: True
+airflow_bashrc_template: "templates/airflow.bashrc.j2"
 
 # SERVICES MANAGEMENT
 # -----------------------------------------------------------------------------
@@ -68,7 +73,7 @@ airflow_services_systemd:
         WantedBy: 'multi-user.target'
       Service:
         Environment: "PATH={{ airflow_virtualenv ~ '/bin' }}"
-        EnvironmentFile: "{{ airflow_paths.files.environment.path }}"
+        EnvironmentFile: "{{ airflow_service_envfile_path }}"
         ExecStart: "{{ airflow_virtualenv ~ '/bin' }}/airflow webserver -l {{ airflow_log_path }}/webserver-l.log -A {{ airflow_log_path }}/webserver-access.log -E {{ airflow_log_path }}/webserver-errors.log"
         Group: "{{ airflow_user_group }}"
         PrivateTmp: 'true'
@@ -87,7 +92,7 @@ airflow_services_systemd:
         WantedBy: 'multi-user.target'
       Service:
         Environment: "PATH={{ airflow_virtualenv ~ '/bin' }}"
-        EnvironmentFile: "{{ airflow_paths.files.environment.path }}"
+        EnvironmentFile: "{{ airflow_service_envfile_path }}"
         ExecStart: "{{ airflow_virtualenv ~ '/bin' }}/airflow scheduler"
         Group: "{{ airflow_user_group }}"
         PrivateTmp: 'true'
@@ -109,10 +114,8 @@ airflow_services_states:
     state: 'started'
 
 # Environment variables file
-airflow_paths:
-  files:
-    environment:
-      path: '/etc/default/airflow'
+airflow_service_envfile_template: 'templates/airflow.env.j2'
+airflow_service_envfile_path: '/etc/default/airflow'
 
 # Databases variables
 airflow_manage_database: True
@@ -124,6 +127,7 @@ airflow_do_init_db: True
 airflow_do_upgrade_db: True
 
 # Default configuration
+airflow_config_template: "templates/airflow.cfg.j2"
 airflow_defaults_config:
   core:
     airflow_home_mode: "0700"
@@ -254,6 +258,7 @@ airflow_variables:
     value: "test_value"
 
 # Logrotate configuration
+airflow_logrotate_template: "templates/logrotate.j2"
 airflow_logrotate_config:
   - filename: '/etc/logrotate.d/airflow'
     log_pattern:
