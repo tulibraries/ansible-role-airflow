@@ -3,7 +3,7 @@
 # Centos 7 specific vars
 
 # Python
-_airflow_python_version: 'python36'
+_airflow_python_version: 'python3'
 
 # Services management
 _is_systemd_managed_system: True

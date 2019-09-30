@@ -1,5 +1,5 @@
 # {{ ansible_managed }}
 
 # General
-export AIRFLOW_HOME="{{ airflow_config.core.airflow_home }}"
+export AIRFLOW_HOME="{{ airflow_user_home_path ~ '/airflow' }}"
 export PATH="$PATH:{{ airflow_virtualenv ~ '/bin' }}"

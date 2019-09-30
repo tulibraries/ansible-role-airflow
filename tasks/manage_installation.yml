@@ -24,7 +24,7 @@
 # This has to happen before the install, because the install creates a default file in $AIRFLOW_HOME
 - name: 'INSTALL | Check if configuration file exists'
   stat:
-    path: "{{ airflow_config.core.airflow_home }}/airflow.cfg"
+    path: "{{ airflow_user_home_path ~ '/airflow' }}/airflow.cfg"
   register: 'airflow_config_stat'
   changed_when: False
 
@@ -48,7 +48,7 @@
 
 - name: 'INSTALL | Manage permissions on airflow home directory'
   file:
-    path: "{{ airflow_config.core.airflow_home }}"
+    path: "{{ airflow_user_home_path ~ '/airflow' }}"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_name }}"
     mode: "{{ airflow_config.core.airflow_home_mode }}"
