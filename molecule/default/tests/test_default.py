@@ -65,7 +65,7 @@ def test_debian_ubuntu_prerequisites_packages(host, name, codenames):
 
 
 @pytest.mark.parametrize('name,codenames', [
-    ('python36-devel', None),
+    ('python3-devel', None),
     ('openssl-devel', None),
     ('libffi-devel', None),
     ('libxml2', None),
