@@ -14,7 +14,7 @@
 - name: 'INSTALL | Include installation tasks'
   import_tasks: "manage_installation.yml"
   environment:
-    AIRFLOW_HOME: "{{ airflow_user_home_path ~ '/airflow' }}"
+    AIRFLOW_HOME: "airflow_application_home"
   become: True
   tags:
     - 'role::airflow'
@@ -25,7 +25,7 @@
 - name: 'CONFIG | Include configuration tasks'
   import_tasks: "manage_configuration.yml"
   environment:
-    AIRFLOW_HOME: "{{ airflow_user_home_path ~ '/airflow' }}"
+    AIRFLOW_HOME: "airflow_application_home"
   become: True
   tags:
     - 'role::airflow'
@@ -46,7 +46,7 @@
 - name: 'CONFIG | Include connections tasks'
   import_tasks: "manage_connections.yml"
   environment:
-    AIRFLOW_HOME: "{{ airflow_user_home_path ~ '/airflow' }}"
+    AIRFLOW_HOME: "airflow_application_home"
   become: True
   tags:
     - 'role::airflow'
@@ -57,7 +57,7 @@
 - name: 'CONFIG | Include connections tasks'
   import_tasks: "manage_airflow_variables.yml"
   environment:
-    AIRFLOW_HOME: "{{ airflow_user_home_path ~ '/airflow' }}"
+    AIRFLOW_HOME: "airflow_application_home"
   become: True
   tags:
     - 'role::airflow'
@@ -67,7 +67,7 @@
 - name: 'CONFIG | Include DAG codebases'
   import_tasks: "manage_dags.yml"
   environment:
-    AIRFLOW_HOME: "{{ airflow_user_home_path ~ '/airflow' }}"
+    AIRFLOW_HOME: "airflow_application_home"
   become: True
   tags:
     - 'role::airflow'

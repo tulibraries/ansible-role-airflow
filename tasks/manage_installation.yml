@@ -9,7 +9,6 @@
     state: "{{ item.state | default('present') }}"
   with_items: "{{ airflow_system_dependencies }}"
 
-
 # Create user
 - name: 'INSTALL | Manage airflow user creation'
   user:
@@ -19,15 +18,13 @@
     state: 'present'
     shell: "{{ airflow_user_shell }}"
 
-
 # Check if configuration file exists
 # This has to happen before the install, because the install creates a default file in $AIRFLOW_HOME
 - name: 'INSTALL | Check if configuration file exists'
   stat:
-    path: "{{ airflow_user_home_path ~ '/airflow' }}/airflow.cfg"
+    path: "{{ airflow_application_home }}/airflow.cfg"
   register: 'airflow_config_stat'
   changed_when: False
-
 
 - name: 'INSTALL | Manage permissions on user home directory'
   file:
@@ -36,7 +33,6 @@
     group: "{{ airflow_user_name }}"
     mode: "{{ airflow_user_home_mode }}"
     state: directory
-
 
 - name: 'INSTALL | Manage permissions on airflow venv directory'
   file:
@@ -48,12 +44,11 @@
 
 - name: 'INSTALL | Manage permissions on airflow home directory'
   file:
-    path: "{{ airflow_user_home_path ~ '/airflow' }}"
+    path: "airflow_application_home"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_name }}"
     mode: "{{ airflow_config.core.airflow_home_mode }}"
     state: directory
-
 
 - name: 'INSTALL | Manage permissions on airflow dags directory'
   file:
@@ -63,13 +58,18 @@
     mode: "{{ airflow_config.core.dags_folder_mode }}"
     state: directory
 
-
 # setup environment for all users, AIRFLOW_HOME, etc
-- name: 'INSTALL | Manage /etc/profile.d/ file'
+- name: 'INSTALL | Manage environment variables file'
   template:
-    src: "templates/airflow.profile.j2"
+    src: "{{ airflow_profiled_template }}"
     dest: "/etc/profile.d/airflow.sh"
   when: airflow_provide_user_env
+
+- name: 'INSTALL | Manage bashrc for airflow user'
+  template:
+    src: "{{ airflow_bashrc_template }}"
+    dest: "{{ airflow_user_home_path }}/.bashrc"
+  when: airflow_provide_user_bashrc
 
 # Install airflow packages
 - name: 'INSTALL | Manage airflow installation'
@@ -89,7 +89,6 @@
       (item.version is not defined) or
       ( (not item.version | search('<') ) and (not item.version | search('>') ) )
 
-
 # Install airflow packages
 # Ansible's pip module doesn't currently support complex version strings
 # https://github.com/ansible/ansible/issues/19321
@@ -102,7 +101,6 @@
   when: (airflow_pip_custom_version_install) and
         (item.version is defined) and
       ( (item.version | search('<') ) or (item.version | search('>') ) )
-
 
 # Install airflow extra packages
 - name: 'INSTALL | Manage airflow extra packages installation'
