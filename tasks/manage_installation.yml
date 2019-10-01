@@ -44,7 +44,7 @@
 
 - name: 'INSTALL | Manage permissions on airflow home directory'
   file:
-    path: "airflow_application_home"
+    path: "{{ airflow_application_home }}"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_name }}"
     mode: "{{ airflow_config.core.airflow_home_mode }}"
@@ -64,12 +64,6 @@
     src: "{{ airflow_profiled_template }}"
     dest: "/etc/profile.d/airflow.sh"
   when: airflow_provide_user_env
-
-- name: 'INSTALL | Manage bashrc for airflow user'
-  template:
-    src: "{{ airflow_bashrc_template }}"
-    dest: "{{ airflow_user_home_path }}/.bashrc"
-  when: airflow_provide_user_bashrc
 
 # Install airflow packages
 - name: 'INSTALL | Manage airflow installation'

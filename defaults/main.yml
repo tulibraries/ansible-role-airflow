@@ -20,7 +20,7 @@ airflow_user_name: 'airflow'
 airflow_user_group: "{{ airflow_user_name }}"
 airflow_user_shell: '/bin/bash'
 airflow_user_home_path: '/var/lib/airflow'
-airflow_application_home: "airflow_application_home"
+airflow_application_home: "/var/lib/airflow/airflow"
 airflow_user_home_mode: '0700'
 
 airflow_log_path: '/var/log/airflow'
@@ -57,8 +57,6 @@ airflow_extra_packages:
 # by providing a file in /etc/profile.d/
 airflow_provide_user_env: True
 airflow_profiled_template: "templates/airflow.profile.j2"
-airflow_provide_user_bashrc: True
-airflow_bashrc_template: "templates/airflow.bashrc.j2"
 
 # SERVICES MANAGEMENT
 # -----------------------------------------------------------------------------

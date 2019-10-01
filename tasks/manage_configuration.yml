@@ -52,7 +52,7 @@
 - name: 'CONFIG | Generate Webserver Config if RBAC is enabled'
   template:
     src: "templates/webserver_config.py"
-    dest: "airflow_application_home/webserver_config.py"
+    dest: "{{ airflow_application_home ~ '/webserver_config.py' }}"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_group }}"
     mode: '0400'
