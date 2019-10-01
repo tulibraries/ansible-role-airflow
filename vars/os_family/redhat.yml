@@ -10,7 +10,4 @@ _airflow_system_dependencies:
  - name: 'libxml2'
  - name: 'libxml2-devel'
  - name: 'libxslt-devel'
- - name: 'python2-pip'
- - name: 'python2-virtualenv'
- - name: 'python2-setuptools'
  - name: 'gcc'

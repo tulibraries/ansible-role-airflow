@@ -1,5 +1,24 @@
 # {{ ansible_managed }}
 
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:{{ airflow_virtualenv ~ '/bin' }}:{{ airflow_user_home_path }}.local/bin:$PATH"
+
 # General
-export AIRFLOW_HOME="airflow_application_home"
-export PATH="$PATH:{{ airflow_virtualenv ~ '/bin' }}"
+export AIRFLOW_HOME="{{ airflow_application_home }}"
+export AIRFLOW_CONFIG="{{ airflow_application_home ~ '/airflow.cfg' }}"
+export AIRFLOW_BINARY_PATH="{{ airflow_virtualenv ~ '/bin' }}"
+
+# Webserver specific
+{% if airflow_config.webserver.debug %}
+export AIRFLOW_WEBSERVER_DEBUG="--debug"
+{% endif %}
+export AIRFLOW_WEBSERVER_HOSTNAME="{{ airflow_config.webserver.hostname }}"
+export AIRFLOW_WEBSERVER_PID_FILE="{{ airflow_config.webserver.pid }}"
+export AIRFLOW_WEBSERVER_PORT="{{ airflow_config.webserver.web_server_port }}"
+export AIRFLOW_WEBSERVER_WORKER_CLASS="{{ airflow_config.webserver.worker_class }}"
+export AIRFLOW_WEBSERVER_WORKER_TIMEOUT="{{ airflow_config.webserver.worker_timeout }}"
+export AIRFLOW_WEBSERVER_WORKERS="{{ airflow_config.webserver.workers }}"
+
+# Scheduler specific
+export AIRFLOW_SCHEDULER_LOG_FILE="{{ airflow_config.scheduler.log_file }}"
+export AIRFLOW_SCHEDULER_PID_FILE="{{ airflow_config.scheduler.pid }}"
+export AIRFLOW_SCHEDULER_RUNS="{{ airflow_config.scheduler.num_runs }}"
