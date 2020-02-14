@@ -81,7 +81,7 @@
     SLUGIFY_USES_TEXT_UNIDECODE: "yes"
   when: (not airflow_pip_custom_version_install) or
       (item.version is not defined) or
-      ( (not item.version | search('<') ) and (not item.version | search('>') ) )
+      ( (not item.version is search('<') ) and (not item.version is search('>') ) )
 
 # Install airflow packages
 # Ansible's pip module doesn't currently support complex version strings
@@ -94,7 +94,7 @@
   with_items: "{{ airflow_packages }}"
   when: (airflow_pip_custom_version_install) and
         (item.version is defined) and
-      ( (item.version | search('<') ) or (item.version | search('>') ) )
+      ( (item.version is search('<') ) or (item.version is search('>') ) )
 
 # Install airflow extra packages
 - name: 'INSTALL | Manage airflow extra packages installation'
