@@ -6,10 +6,21 @@
   become: true
   git:
     repo: "{{ item.repo }}"
-    dest: "{{ airflow_config.core.dags_folder }}/{{ item.dest_folder }}"
+    dest: "{{ airflow_config.core.dags_repos_folder }}/{{ item.dest_folder }}"
     clone: true
     force: true
     version: "{{ item.branch_or_release }}"
+  with_items:
+    - "{{ dags_git_repositories }}"
+
+# FOR Listed DAG Git Repos, link them from download destination to configured DAGS folder
+- name: 'CONFIG | DAGS | Link dag repository to dags folder'
+  become_user: "{{ airflow_user_name }}"
+  become: true
+  file:
+    state: link
+    path: "{{ airflow_config.core.dags_folder }}/{{ item.dest_folder }}"
+    src: "{{ airflow_config.core.dags_repos_folder }}/{{ item.dest_folder }}{% if item.dags_folder_name is defined %}/{{ item.dags_folder_name }}{% endif %}"
   with_items:
     - "{{ dags_git_repositories }}"
 
