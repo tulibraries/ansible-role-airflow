@@ -219,6 +219,7 @@ def test_dags_pip_libraries(host, library):
 
     pip_path = "/var/lib/airflow/venv/bin/pip3.6"
     libraries = host.pip_package.get_packages(pip_path=pip_path)
+    print(libraries)
     assert libraries.get(library)
 
 

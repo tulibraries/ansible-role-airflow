@@ -20,7 +20,7 @@
   file:
     state: link
     path: "{{ airflow_config.core.dags_folder }}/{{ item.dest_folder }}"
-    src: "{{ airflow_config.core.dags_repos_folder }}/{{ item.dest_folder }}{% if item.dags_folder_name is defined %}/{{ item.dags_folder_name}}{% endif %}"
+    src: "{{ airflow_config.core.dags_repos_folder }}/{{ item.dest_folder }}{% if item.dags_folder_name is defined %}/{{ item.dags_folder_name }}{% endif %}"
   with_items:
     - "{{ dags_git_repositories }}"
 

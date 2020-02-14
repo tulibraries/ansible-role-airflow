@@ -4,3 +4,12 @@
   hosts: all
   roles:
     - role: ansible-role-airflow
+      dags_git_repositories:
+        - repo: "https://github.com/tulibraries/cob_datapipeline.git"
+          dest_folder: "cob_datapipeline"
+          branch_or_release: "qa"
+          pipfile: true
+          pip_requirements: false
+      airflow_extra_packages:
+        - name: 'apache-airflow[crypto]'
+        - name: 'werkzeug>=0.15.0,<1.0.0'
