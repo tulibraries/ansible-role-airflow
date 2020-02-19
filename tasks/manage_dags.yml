@@ -10,6 +10,7 @@
     clone: true
     force: true
     version: "{{ item.branch_or_release }}"
+    recursive: false
   with_items:
     - "{{ dags_git_repositories }}"
 
