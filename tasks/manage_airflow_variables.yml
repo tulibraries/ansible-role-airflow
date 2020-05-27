@@ -25,7 +25,7 @@
 
 - name: 'CONFIG | VARIABLES | Merge variables'
   set_fact:
-     merged_variables: "{{ airflow_existing_variables | combine(airflow_variables | items2dict) }}"
+    merged_variables: "{{ airflow_existing_variables | combine(airflow_variables | items2dict) }}"
 
 - name: 'CONFIG | VARIABLES | Add variables'
   command: >
