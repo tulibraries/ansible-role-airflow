@@ -15,7 +15,7 @@
     executable: /bin/bash
 
 - name: 'CONFIG | VARIABLES | Display the JSON file content'
-  shell:
+  command:
     cat /tmp/variables.json
   register: airflow_existing_variables
   changed_when: false
