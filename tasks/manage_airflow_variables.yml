@@ -34,7 +34,7 @@
 
 - name: 'CONFIG | VARIABLES | Add variables'
   command: >
-    {{ airflow_virtualenv }}/bin/airflow variables --set {{ item.key }} "{{ item.value }}"
+    {{ airflow_virtualenv }}/bin/airflow variables --set {{ item.key }} {{ item.value | to_json }}
   no_log: True
   changed_when: merged_variables
   run_once: true
