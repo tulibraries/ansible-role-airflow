@@ -13,6 +13,7 @@
     recursive: false
   with_items:
     - "{{ dags_git_repositories }}"
+  when: (item.branch_or_release | length) > 0
 
 # FOR Listed DAG Git Repos, link them from download destination to configured DAGS folder
 - name: 'CONFIG | DAGS | Link dag repository to dags folder'
@@ -24,6 +25,7 @@
     src: "{{ airflow_config.core.dags_repos_folder }}/{{ item.dest_folder }}{% if item.dags_folder_name is defined %}/{{ item.dags_folder_name }}{% endif %}"
   with_items:
     - "{{ dags_git_repositories }}"
+  when: (item.branch_or_release | length) > 0
 
 # For DAG-Related Git Repos, clone designated branch or release to $HOME
 - name: 'CONFIG | DAGS | Clone listed DAG-related git repositories'
@@ -52,7 +54,7 @@
   environment:
     LC_ALL: "en_US.utf-8"
     LANG: "en_US.utf-8"
-  when: (item.pipfile | bool)
+  when: (((item.branch_or_release | length) > 0) and (item.pipfile | bool))
 
 
 # Install DAG Pip packages from requirements.txt
@@ -64,7 +66,7 @@
     virtualenv: "{{ airflow_virtualenv }}"
     virtualenv_python: "{{ airflow_python_version }}"
   with_items: "{{ dags_git_repositories }}"
-  when: (item.pip_requirements | bool) or (item.pipfile | bool)
+  when: (((item.branch_or_release | length) > 0) and ((item.pip_requirements | bool) or (item.pipfile | bool)))
 
 
 # Manage DAGs system dependencies
