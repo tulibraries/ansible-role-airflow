@@ -170,6 +170,18 @@ def test_airflow_dags_paths(host, path):
     assert current_path.is_directory
 
 
+@pytest.mark.parametrize('path', [
+    ('/var/lib/airflow/airflow/dags/funcake_dags/'),
+    ])
+def test_undefined_branch_airflow_dags_paths(host, path):
+    """
+    Tests that a dag without a defined branch is not deployed
+    """
+    current_path = host.file(path)
+
+    assert not current_path.exists
+
+
 @pytest.mark.parametrize('path,path_type,user,group,mode', [
     ('/var/log/airflow', 'directory', 'airflow', 'airflow', 0o700),
     ('/var/run/airflow', 'directory', 'airflow', 'airflow', 0o700),
