@@ -276,13 +276,13 @@ workspace: "{{ airflow_config.core.dags_folder }}"
 dags_git_repositories:
   - repo: "https://github.com/tulibraries/cob_datapipeline.git"
     dest_folder: "cob_datapipeline"
-    branch_or_release: "master"
+    branch_or_release: "main"
     pipfile: true
     pip_requirements: false
 dags_related_git_repositories:
   - repo: "https://github.com/tulibraries/tul_cob.git"
     dest_folder: "$HOME/tul_cob"
-    branch_or_release: "master"
+    branch_or_release: "main"
 
 airflow_dag_system_dependencies:
   - name: "@Development tools"

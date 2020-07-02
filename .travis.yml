@@ -33,7 +33,7 @@ deploy:
     repo: tulibraries/ansible-role-airflow
     tags: true
     branch:
-      - master
+      - main
       - /^v.*$/
 
 notifications:
