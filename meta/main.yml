@@ -6,7 +6,7 @@ galaxy_info:
   company: 'Temple University Libraries'
   license: 'MIT'
   min_ansible_version: '2.4'
-  github_branch: 'master'
+  github_branch: 'main'
   platforms:
     - name: 'Debian'
       versions:

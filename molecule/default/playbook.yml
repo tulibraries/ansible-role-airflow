@@ -7,7 +7,7 @@
       dags_git_repositories:
         - repo: "https://github.com/tulibraries/cob_datapipeline.git"
           dest_folder: "cob_datapipeline"
-          branch_or_release: "master"
+          branch_or_release: "main"
           pipfile: true
           pip_requirements: false
         - repo: "https://github.com/tulibraries/funcake_dags.git"
