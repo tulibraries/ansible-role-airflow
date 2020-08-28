@@ -133,8 +133,9 @@ airflow_defaults_config:
     dags_folder: "{{ airflow_user_home_path ~ '/airflow/dags' }}"
     dags_folder_mode: "0755"
     base_log_folder: "{{ airflow_log_path }}"
-    remote_base_log_folder: ''
-    remote_log_conn_id: ''
+    remote_logging: True
+    remote_base_log_folder: 's3://tulib-airflow-prod/airflow-logs'
+    remote_log_conn_id: 'AIRFLOW_S3'
     encrypt_s3_logs: False
     executor: 'SequentialExecutor'
     sql_alchemy_conn: "sqlite:///{{ airflow_database_sqlite_file_path }}"
