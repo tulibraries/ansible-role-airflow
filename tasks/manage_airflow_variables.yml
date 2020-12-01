@@ -40,6 +40,7 @@
   copy:
     content: "{{ merged_variables | to_json }}"
     dest: /tmp/merged_variables.json
+    mode: 0644
 
 
 - name: 'CONFIG | VARIABLES | Import variables from file'
