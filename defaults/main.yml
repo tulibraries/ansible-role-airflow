@@ -48,7 +48,7 @@ airflow_packages:
   - name: 'Cython'
     version: '0.28.2'
   - name: 'apache-airflow'
-    version: '1.9.0'
+    version: '1.10.14'
   - name: 'pipenv'
 airflow_extra_packages:
   - name: 'apache-airflow[crypto]'
@@ -197,14 +197,13 @@ airflow_defaults_config:
   scheduler:
     job_heartbeat_sec: 5
     log_file: "{{ airflow_log_path }}/airflow-scheduler.log"
-    num_runs: 0
     pid: "{{ airflow_pid_path }}/airflow-scheduler.pid"
     scheduler_heartbeat_sec: 5
     statsd_on: False
     statsd_host: 'localhost'
     statsd_port: 8125
     statsd_prefix: 'airflow'
-    max_threads: 2
+    parsing_processes: 2
 
   mesos:
     master: 'localhost:5050'
