@@ -41,34 +41,6 @@
     - "{{ dags_related_git_repositories }}"
 
 
-# Convert Pipfile to Requirements File
-- name: 'CONFIG | DAGS | Convert Pipfile to requirements.txt'
-  become_user: "{{ airflow_user_name }}"
-  become: true
-  args:
-    chdir: "{{ airflow_config.core.dags_folder }}/{{ item.dest_folder }}"
-  shell: >
-    {{ airflow_virtualenv }}/bin/pipenv lock -r > requirements.txt
-  with_items: "{{ dags_git_repositories }}"
-  ignore_errors: true
-  environment:
-    LC_ALL: "en_US.utf-8"
-    LANG: "en_US.utf-8"
-  when: (((item.branch_or_release | length) > 0) and (item.pipfile | bool))
-
-
-# Install DAG Pip packages from requirements.txt
-- name: 'CONFIG | DAGS | Install Pip Packages from requirements.txt'
-  become_user: "{{ airflow_user_name }}"
-  become: true
-  pip:
-    requirements: "{{ airflow_config.core.dags_folder }}/{{ item.dest_folder }}/requirements.txt"
-    virtualenv: "{{ airflow_virtualenv }}"
-    virtualenv_python: "{{ airflow_python_version }}"
-  with_items: "{{ dags_git_repositories }}"
-  when: (((item.branch_or_release | length) > 0) and ((item.pip_requirements | bool) or (item.pipfile | bool)))
-
-
 # Manage DAGs system dependencies
 - name: 'INSTALL | Manage DAG system dependencies'
   package:
