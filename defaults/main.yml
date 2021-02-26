@@ -37,6 +37,8 @@ airflow_virtualenv: "{{ airflow_user_home_path }}/venv"
 airflow_virtualenv_mode: "0755"
 
 airflow_python_version: "{{ _airflow_python_version }}"
+# Update if python version or apache airflow version changes.
+airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-1-10/constraints-3.6.txt"
 
 airflow_packages:
   - name: 'pip'
@@ -276,8 +278,6 @@ dags_git_repositories:
   - repo: "https://github.com/tulibraries/cob_datapipeline.git"
     dest_folder: "cob_datapipeline"
     branch_or_release: "main"
-    pipfile: true
-    pip_requirements: false
 dags_related_git_repositories:
   - repo: "https://github.com/tulibraries/tul_cob.git"
     dest_folder: "$HOME/tul_cob"

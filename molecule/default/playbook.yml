@@ -8,13 +8,9 @@
         - repo: "https://github.com/tulibraries/cob_datapipeline.git"
           dest_folder: "cob_datapipeline"
           branch_or_release: "main"
-          pipfile: true
-          pip_requirements: false
         - repo: "https://github.com/tulibraries/funcake_dags.git"
           dest_folder: "funcake_dags"
           branch_or_release: ""
-          pipfile: true
-          pip_requirements: false
       airflow_extra_packages:
         - name: 'apache-airflow[crypto]'
         - name: 'werkzeug>=0.15.0,<1.0.0'

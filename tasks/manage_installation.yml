@@ -76,6 +76,7 @@
     state: "{{ item.state | default('present') }}"
     virtualenv: "{{ airflow_virtualenv }}"
     virtualenv_python: "{{ airflow_python_version }}"
+    extra_args: "{{ airflow_python_constraint }}"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ airflow_packages }}"
   environment:
@@ -90,7 +91,7 @@
 - name: 'INSTALL | Manage airflow installation - complex pip versions'
   become_user: "{{ airflow_user_name }}"
   become: true
-  command: "{{ airflow_virtualenv }}/bin/pip install '{{ item.name }}{{ item.version }}'"
+  command: "{{ airflow_virtualenv }}/bin/pip install '{{ item.name }}{{ item.version }}' {{ airflow_python_constraint }}"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ airflow_packages }}"
   when: (airflow_pip_custom_version_install) and
@@ -106,5 +107,6 @@
     state: "{{ item.state | default('present') }}"
     virtualenv: "{{ airflow_virtualenv }}"
     virtualenv_python: "{{ airflow_python_version }}"
+    extra_args: "{{ airflow_python_constraint }}"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ airflow_extra_packages }}"
