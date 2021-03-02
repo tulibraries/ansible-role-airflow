@@ -38,7 +38,7 @@ airflow_virtualenv_mode: "0755"
 
 airflow_python_version: "{{ _airflow_python_version }}"
 # Update if python version or apache airflow version changes.
-airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-1-10/constraints-3.6.txt"
+airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/a5cebdc94b7c1bb48bfd54898819db4905880b52/constraints-3.6.txt"
 
 airflow_packages:
   - name: 'pip'
@@ -241,10 +241,10 @@ airflow_config: "{{ airflow_defaults_config | combine(airflow_user_config, recur
 
 # Airflow Webserver Users management
 airflow_webserver_admins:
-  - google_username: "google_112545704984098245976"
-    email: "tul08567@temple.edu"
-    firstname: "Christina"
-    lastname: "Harlow"
+  - google_username: "google_113716629440137414774"
+    email: "tuj27080@temple.edu"
+    firstname: "David"
+    lastname: "Kinzer"
     airflow_dummy_password: "dummy-password"
 
 # Connections management
