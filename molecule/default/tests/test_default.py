@@ -138,7 +138,7 @@ def test_pip_libraries(host, library):
     ('/var/lib/airflow/venv', 'directory', 'airflow', 'airflow', 0o755),
     ('/var/lib/airflow/airflow/airflow.cfg', 'file', 'airflow', 'airflow',
      0o400)
-    ])
+])
 def test_airflow_paths(host, path, path_type, user, group, mode):
     """
     Tests Airflow paths
@@ -159,7 +159,7 @@ def test_airflow_paths(host, path, path_type, user, group, mode):
 @pytest.mark.parametrize('path', [
     ('/var/lib/airflow/airflow/dags/'),
     ('/var/lib/airflow/airflow/dags/cob_datapipeline/')
-    ])
+])
 def test_airflow_dags_paths(host, path):
     """
     Tests Airflow DAGs paths
@@ -172,7 +172,7 @@ def test_airflow_dags_paths(host, path):
 
 @pytest.mark.parametrize('path', [
     ('/var/lib/airflow/airflow/dags/funcake_dags/'),
-    ])
+])
 def test_undefined_branch_airflow_dags_paths(host, path):
     """
     Tests that a dag without a defined branch is not deployed
@@ -186,7 +186,7 @@ def test_undefined_branch_airflow_dags_paths(host, path):
     ('/var/log/airflow', 'directory', 'airflow', 'airflow', 0o700),
     ('/var/run/airflow', 'directory', 'airflow', 'airflow', 0o700),
     ('/etc/logrotate.d/airflow', 'file', 'root', 'root', 0o644)
-    ])
+])
 def test_logging_paths(host, path, path_type, user, group, mode):
     """
     Tests Airflow logging & pid paths
@@ -207,7 +207,7 @@ def test_logging_paths(host, path, path_type, user, group, mode):
 @pytest.mark.parametrize('path,user,group', [
     ('/var/lib/airflow/airflow/dags/cob_datapipeline/requirements.txt',
      'airflow', 'airflow')
-    ])
+])
 def test_pipfile_create(host, path, user, group):
     """
     Tests DAG in defaults converts Pipfile to requirements.txt

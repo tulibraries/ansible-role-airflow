@@ -36,7 +36,8 @@ CSRF_ENABLED = True
 # AUTHENTICATION CONFIG
 # ----------------------------------------------------
 # For details on how to set up each of the following authentication, see
-# http://flask-appbuilder.readthedocs.io/en/latest/security.html# authentication-methods
+# http://flask-appbuilder.readthedocs.io/en/latest/security.html
+# authentication-methods
 # for details.
 
 # The authentication type
@@ -63,16 +64,14 @@ AUTH_USER_REGISTRATION_ROLE = "Viewer"
 # https://flask-appbuilder.readthedocs.io/en/latest/security.html
 # Google OAuth example:
 OAUTH_PROVIDERS = [{
-	'name':'google',
+    'name': 'google',
     'icon': 'fa-google',
-    'token_key':'access_token',
+    'token_key': 'access_token',
     'remote_app': {
-        'base_url':'https://www.googleapis.com/oauth2/v2/',
-        'request_token_params':{
-            'scope': 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
-        },
-        'access_token_url':'https://accounts.google.com/o/oauth2/token',
-        'authorize_url':'https://accounts.google.com/o/oauth2/auth',
+        'base_url': 'https://www.googleapis.com/oauth2/v2/',
+        'request_token_params': {'scope': 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'},
+        'access_token_url': 'https://accounts.google.com/o/oauth2/token',
+        'authorize_url': 'https://accounts.google.com/o/oauth2/auth',
         'request_token_url': None,
         'consumer_key': conf.get('google', 'client_id'),
         'consumer_secret': conf.get('google', 'client_secret'),
@@ -97,5 +96,6 @@ OAUTH_PROVIDERS = [{
 # that you can use for Apache Airflow.
 # http://flask-appbuilder.readthedocs.io/en/latest/customizing.html#changing-themes
 # Please make sure to remove "navbar_color" configuration from airflow.cfg
-# in order to fully utilize the theme. (or use that property in conjunction with theme)
+# in order to fully utilize the theme.
+# (or use that property in conjunction with theme)
 # APP_THEME = "bootstrap-theme.css"  # default bootstrap

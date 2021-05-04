@@ -1,4 +1,8 @@
+---
 extends: default
+
+ignore: |
+  ./.cache/roles/
 
 rules:
   braces:
@@ -7,5 +11,8 @@ rules:
   brackets:
     max-spaces-inside: 1
     level: error
-  line-length: disable
+  # 80 chars should be enough, but don't fail if a line is longer
+  line-length:
+    max: 140
+    level: warning
   truthy: disable

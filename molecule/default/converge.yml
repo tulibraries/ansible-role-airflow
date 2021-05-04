@@ -14,3 +14,8 @@
       airflow_extra_packages:
         - name: 'apache-airflow[crypto]'
         - name: 'werkzeug>=0.15.0,<1.0.0'
+  vars:
+    airflow_user_config:
+      core:
+        # Fake key for local use only
+        fernet_key: "xnAoS8YD_4eoBETCD1ir5BGaqprea4TxKJEQgqp5pyE="
