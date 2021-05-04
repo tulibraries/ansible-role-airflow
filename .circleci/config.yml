@@ -1,0 +1,20 @@
+---
+version: 2.1
+jobs:
+  build:
+    working_directory: ~/ansible-role-airflow
+    docker:
+      - image: cimg/python:3.6.9
+        environment:
+          PIPENV_VENV_IN_PROJECT: true
+    steps:
+      - checkout
+      - run:
+          name: Pip install
+          command: |
+            sudo pip install pipenv
+            pipenv install --dev
+      - setup_remote_docker
+      - run:
+          name: Molecule
+          command: pipenv run molecule test
