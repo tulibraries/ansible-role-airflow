@@ -31,7 +31,7 @@
     {{ airflow_virtualenv }}/bin/airflow connections --add \
     --conn_id {{ item.conn_id }} \
     --conn_uri {{ item.conn_uri | default('') | quote }} \
-    --conn_extra {{ item.conn_extra | default('') | quote }}
+    --conn_extra {{ item.conn_extra | to_json}}
   changed_when: false
   no_log: True
   with_items: "{{ airflow_connections }}"
@@ -47,7 +47,7 @@
     --conn_login {{ item.conn_login | default('') | quote }} \
     --conn_password {{ item.conn_password | default('') | quote }} \
     --conn_schema {{ item.conn_schema | default('') | quote }} \
-    --conn_extra {{ item.conn_extra | default('') | quote }}
+    --conn_extra {{ item.conn_extra | to_json}}
   changed_when: false
   no_log: True
   with_items: "{{ airflow_connections }}"
@@ -66,7 +66,7 @@
     --conn_password {{ item.conn_password | default('') | quote }} \
     --conn_schema {{ item.conn_schema | default('') | quote }} \
     --conn_port {{ item.conn_port }} \
-    --conn_extra {{ item.conn_extra | default('') | quote }}
+    --conn_extra {{ item.conn_extra | to_json }}
   changed_when: false
   no_log: True
   with_items: "{{ airflow_connections }}"
