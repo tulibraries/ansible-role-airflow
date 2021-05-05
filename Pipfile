@@ -16,6 +16,7 @@ yamllint = "*"
 ansible = "==2.10.0"
 cryptography = "==3.3.2"
 molecule = "*"
+molecule-docker = "*"
 
 [requires]
 python_version = "3.7"
