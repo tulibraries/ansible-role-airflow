@@ -3,6 +3,7 @@ extends: default
 
 ignore: |
   ./.cache/roles/
+  .venv/
 
 rules:
   braces:
