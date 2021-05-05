@@ -38,9 +38,7 @@ airflow_virtualenv_mode: "0755"
 
 airflow_python_version: "{{ _airflow_python_version }}"
 # Update if python version or apache airflow version changes.
-airflow_python_constraint: |
-  "--constraint=https://raw.githubusercontent.com/apache/airflow/
-  a5cebdc94b7c1bb48bfd54898819db4905880b52/constraints-3.6.txt"
+airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/cc382b75783d76888fcd5b0e38228f08ee83dbd5/constraints-3.6.txt"
 
 airflow_packages:
   - name: 'pip'
