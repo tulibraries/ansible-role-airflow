@@ -10,9 +10,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Pip install
+          name: Install
           command: |
-            sudo pip install pipenv
             pipenv install --dev
       - setup_remote_docker
       - run:
