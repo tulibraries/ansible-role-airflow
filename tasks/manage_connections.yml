@@ -35,7 +35,7 @@
   changed_when: false
   no_log: True
   with_items: "{{ airflow_connections }}"
-  when: "(item.conn_uri | default("")) | length > 0"
+  when: "(item.conn_uri | default('')) | length > 0"
 
 
 - name: 'CONFIG | CONNECTIONS | Add connections not using conn_uri with port'
@@ -52,7 +52,7 @@
   no_log: True
   with_items: "{{ airflow_connections }}"
   when:
-    - "(item.conn_uri | default("")) | length == 0"
+    - "(item.conn_uri | default('')) | length == 0"
     - "(item.conn_port | default(0)) | int == 0"
 
 
