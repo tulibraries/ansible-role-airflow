@@ -71,5 +71,5 @@
   no_log: True
   with_items: "{{ airflow_connections }}"
   when:
-    - "(item.conn_uri | default("")) | length == 0"
+    - "(item.conn_uri | default('')) | length == 0"
     - "(item.conn_port | default(0)) | int > 0"
