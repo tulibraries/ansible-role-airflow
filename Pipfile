@@ -9,7 +9,7 @@ flake8 = "*"
 pytest = "*"
 pylint = "*"
 docker = "*"
-testinfra = "*"
+pytest-testinfra = "*"
 yamllint = "*"
 
 [packages]

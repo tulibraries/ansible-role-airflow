@@ -37,6 +37,6 @@
 - name: 'SERVICE | Manage airflow services states'
   service:
     name: "{{ item.name }}"
-    enabled: "{{ item.enabled | default('False') | bool }}"
+    enabled: "{{ item.enabled | default(False) }}"
     state: "{{ item.state }}"
   with_items: "{{ airflow_services_states }}"
