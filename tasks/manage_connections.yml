@@ -10,7 +10,7 @@
       {{ airflow_virtualenv }}/bin/airflow connections --list | grep -E "\s+'" | cut -d "'" -f2
   changed_when: false
   failed_when: False
-  no_log: True
+  no_log: true
   register: 'airflow_existing_connections'
   args:
     executable: /bin/bash
@@ -21,7 +21,7 @@
   command: >
     {{ airflow_virtualenv }}/bin/airflow connections --delete --conn_id {{ item.conn_id }}
   changed_when: false
-  no_log: True
+  no_log: true
   with_items: "{{ airflow_connections }}"
   when: 'item.conn_id in airflow_existing_connections.stdout_lines'
 
@@ -33,7 +33,7 @@
     --conn_uri {{ item.conn_uri | default("") | quote }} \
     --conn_extra '{{ item.conn_extra | default("") | to_json }}'
   changed_when: false
-  no_log: false
+  no_log: true
   with_items: "{{ airflow_connections }}"
   when: "(item.conn_uri | default('')) | length > 0"
 
@@ -49,7 +49,7 @@
     --conn_schema {{ item.conn_schema | default("") | quote }} \
     --conn_extra '{{ item.conn_extra | default("") | to_json }}'
   changed_when: false
-  no_log: false
+  no_log: true
   with_items: "{{ airflow_connections }}"
   when:
     - "(item.conn_uri | default('')) | length == 0"
@@ -68,7 +68,7 @@
     --conn_port {{ item.conn_port }} \
     --conn_extra '{{ item.conn_extra | default("") | to_json }}'
   changed_when: false
-  no_log: false
+  no_log: true
   with_items: "{{ airflow_connections }}"
   when:
     - "(item.conn_uri | default('')) | length == 0"
