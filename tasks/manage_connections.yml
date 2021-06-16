@@ -33,7 +33,7 @@
     --conn_uri {{ item.conn_uri | default("") | quote }} \
     --conn_extra {{ item.conn_extra | default("") | to_json }}
   changed_when: false
-  no_log: True
+  no_log: false
   with_items: "{{ airflow_connections }}"
   when: "(item.conn_uri | default('')) | length > 0"
 
@@ -49,7 +49,7 @@
     --conn_schema {{ item.conn_schema | default("") | quote }} \
     --conn_extra {{ item.conn_extra | default("") | to_json }}
   changed_when: false
-  no_log: True
+  no_log: false
   with_items: "{{ airflow_connections }}"
   when:
     - "(item.conn_uri | default('')) | length == 0"
@@ -68,7 +68,7 @@
     --conn_port {{ item.conn_port }} \
     --conn_extra {{ item.conn_extra | default("") | to_json }}
   changed_when: false
-  no_log: True
+  no_log: false
   with_items: "{{ airflow_connections }}"
   when:
     - "(item.conn_uri | default('')) | length == 0"
