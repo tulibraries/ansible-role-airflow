@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/ansible-role-airflow
     docker:
-      - image: cimg/python:3.6.9
+      - image: cimg/python:3.6.6
         environment:
           PIPENV_VENV_IN_PROJECT: true
     steps:
