@@ -7,9 +7,13 @@ verify_ssl = true
 pytest = "*"
 pylint = "*"
 docker = "*"
+yamllint = "*"
+flake8 = "*"
+testinfra = "*"
 
 [packages]
 molecule = "*"
+molecule-docker = "*"
 cryptography = "==3.3.2"
 ansible = "==2.10.0"
 
