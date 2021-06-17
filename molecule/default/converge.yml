@@ -14,3 +14,5 @@
       airflow_extra_packages:
         - name: 'apache-airflow[crypto]'
         - name: 'werkzeug>=0.15.0,<1.0.0'
+  vars:
+    airflow_fernet_key: '46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho='

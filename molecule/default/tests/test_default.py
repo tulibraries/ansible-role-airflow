@@ -4,9 +4,9 @@ Role tests default variables installation.
 
 import os
 import pytest
-from testinfra.utils.ansible_runner import AnsibleRunner
+import testinfra.utils.ansible_runner
 
-TESTINFRA_HOSTS = AnsibleRunner(
+TESTINFRA_HOSTS = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
 
@@ -204,25 +204,8 @@ def test_logging_paths(host, path, path_type, user, group, mode):
     assert current_path.mode == mode
 
 
-@pytest.mark.parametrize('path,user,group', [
-    ('/var/lib/airflow/airflow/dags/cob_datapipeline/requirements.txt',
-     'airflow', 'airflow')
-    ])
-def test_pipfile_create(host, path, user, group):
-    """
-    Tests DAG in defaults converts Pipfile to requirements.txt
-    """
-    current_path = host.file(path)
-
-    assert current_path.exists
-    assert current_path.is_file
-    assert current_path.user == user
-    assert current_path.group == group
-
-
 @pytest.mark.parametrize('library', [
-    ('xmltodict'),
-    ('pexpect')
+    ('apache-airflow'),
 ])
 def test_dags_pip_libraries(host, library):
     """
