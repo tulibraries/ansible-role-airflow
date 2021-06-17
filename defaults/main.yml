@@ -149,7 +149,7 @@ airflow_defaults_config:
     max_active_runs_per_dag: 16
     load_examples: false
     plugins_folder: "{{ airflow_user_home_path ~ '/airflow/plugins' }}"
-    fernet_key: 'cryptography_not_found_storing_passwords_in_plain_text'
+    airflow_fernet_key: 'cryptography_not_found_storing_passwords_in_plain_text'
     donot_pickle: false
     dagbag_import_timeout: 30
 
