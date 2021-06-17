@@ -7,7 +7,7 @@ driver:
 lint: |
   set -e
   yamllint .
-  ansible-pylint
+  ansible-lint --exclude molecule
   flake8 .
 platforms:
   - name: instance
