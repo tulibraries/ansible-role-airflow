@@ -9,7 +9,7 @@
     set -o pipefail && \
       {{ airflow_virtualenv }}/bin/airflow connections --list | grep -E "\s+'" | cut -d "'" -f2
   changed_when: false
-  failed_when: False
+  failed_when: false
   no_log: true
   register: 'airflow_existing_connections'
   args:
