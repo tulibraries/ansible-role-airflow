@@ -2,6 +2,8 @@
 
 galaxy_info:
   author: 'Christina Harlow'
+  role_name: 'ansible_role_airflow'
+  namespace: 'tulibraries'
   description: 'Ansible role to install and configure airflow. Forked from infopen.airflow.'
   company: 'Temple University Libraries'
   license: 'MIT'

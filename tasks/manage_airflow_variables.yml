@@ -11,7 +11,7 @@
   changed_when: false
   register: airflow_existing_variables
   run_once: true
-  no_log: True
+  no_log: true
   args:
     executable: /bin/bash
 
@@ -47,6 +47,6 @@
   shell: >
     set -o pipefail && \
     {{ airflow_virtualenv }}/bin/airflow variables -i /tmp/merged_variables.json
-  no_log: True
+  no_log: true
   changed_when: merged_variables
   run_once: true

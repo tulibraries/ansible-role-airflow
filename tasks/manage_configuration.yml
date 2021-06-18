@@ -99,7 +99,7 @@
 - name: 'CONFIG | Generate Airflow Webserver Admin Users if RBAC is enabled'
   become_user: "{{ airflow_user_name }}"
   become: true
-  no_log: True
+  no_log: true
   command: "{{ airflow_virtualenv }}/bin/airflow create_user --role Admin \
             --username {{ item.google_username }} \
             --email {{ item.email }} \

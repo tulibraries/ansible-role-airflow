@@ -3,7 +3,7 @@
 # Handlers main file for airflow role
 
 - name: 'Restart airflow'
-  become: True
+  become: true
   service:
     name: "{{ item.name }}"
     state: 'restarted'
@@ -16,7 +16,7 @@
 
 
 - name: 'Restart airflow-webserver'
-  become: True
+  become: true
   service:
     name: "{{ item.name }}"
     state: 'restarted'
@@ -31,7 +31,7 @@
 
 
 - name: 'Restart airflow-scheduler'
-  become: True
+  become: true
   service:
     name: "{{ item.name }}"
     state: 'restarted'
@@ -46,7 +46,7 @@
 
 
 - name: 'Restart airflow-kerberos'
-  become: True
+  become: true
   service:
     name: "{{ item.name }}"
     state: 'restarted'
@@ -60,7 +60,7 @@
     - 'role::airflow::install'
 
 - name: 'Restart airflow-worker'
-  become: True
+  become: true
   service:
     name: "{{ item.name }}"
     state: 'restarted'
@@ -74,7 +74,7 @@
     - 'role::airflow::install'
 
 - name: 'Restart airflow-flower'
-  become: True
+  become: true
   service:
     name: "{{ item.name }}"
     state: 'restarted'

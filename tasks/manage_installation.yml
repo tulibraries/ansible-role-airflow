@@ -13,7 +13,7 @@
 - name: 'INSTALL | Manage airflow user creation'
   user:
     name: "{{ airflow_user_name }}"
-    createhome: True
+    createhome: true
     home: "{{ airflow_user_home_path }}"
     state: 'present'
     shell: "{{ airflow_user_shell }}"
@@ -24,7 +24,7 @@
   stat:
     path: "{{ airflow_application_home }}/airflow.cfg"
   register: 'airflow_config_stat'
-  changed_when: False
+  changed_when: false
 
 - name: 'INSTALL | Manage permissions on user home directory'
   file:

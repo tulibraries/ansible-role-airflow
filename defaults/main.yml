@@ -7,13 +7,13 @@ airflow_system_dependencies: "{{ _airflow_system_dependencies }}"
 
 # Set changed when due to idempotency problem with pip module
 # Always changed with airflow and airflow[crypto]
-airflow_pip_changed_when: False
+airflow_pip_changed_when: false
 
 # Ansible's pip module doesn't currently support complex version strings
 # https://github.com/ansible/ansible/issues/19321
 # And Airflow may currently require custom version strings
 # https://stackoverflow.com/a/48075827
-airflow_pip_custom_version_install: False
+airflow_pip_custom_version_install: false
 
 # Installation vars
 airflow_user_name: 'airflow'
@@ -57,14 +57,14 @@ airflow_extra_packages:
 
 # option to set environment for all users,
 # by providing a file in /etc/profile.d/
-airflow_provide_user_env: True
+airflow_provide_user_env: true
 airflow_profiled_template: "templates/airflow.profile.j2"
 
 # SERVICES MANAGEMENT
 # -----------------------------------------------------------------------------
 
 # Airflow systemd services specific settings
-is_systemd_managed_system: "{{ _is_systemd_managed_system | default(False) }}"
+is_systemd_managed_system: "{{ _is_systemd_managed_system | default(false) }}"
 airflow_services_systemd:
   - dest: '/etc/systemd/system/airflow-webserver.service'
     handler: 'Restart airflow-webserver'
@@ -107,10 +107,10 @@ airflow_services_systemd:
 
 airflow_services_states:
   - name: 'airflow-webserver'
-    enabled: True
+    enabled: true
     state: 'started'
   - name: 'airflow-scheduler'
-    enabled: True
+    enabled: true
     state: 'started'
 
 # Environment variables file
@@ -118,13 +118,13 @@ airflow_service_envfile_template: 'templates/airflow.env.j2'
 airflow_service_envfile_path: '/etc/default/airflow'
 
 # Databases variables
-airflow_manage_database: True
+airflow_manage_database: true
 airflow_database_engine: 'mysql'
 airflow_database_sqlite_file_path: "{{ airflow_user_home_path ~ '/airflow/airflow.db' }}"
 
 # Set do_init to false if database already initialized
-airflow_do_init_db: True
-airflow_do_upgrade_db: True
+airflow_do_init_db: true
+airflow_do_upgrade_db: true
 
 # Default configuration
 airflow_config_template: "templates/airflow.cfg.j2"
@@ -137,20 +137,20 @@ airflow_defaults_config:
     base_log_folder: "{{ airflow_log_path }}"
     remote_base_log_folder: ''
     remote_log_conn_id: ''
-    encrypt_s3_logs: False
+    encrypt_s3_logs: false
     executor: 'SequentialExecutor'
     sql_alchemy_conn: "sqlite:///{{ airflow_database_sqlite_file_path }}"
     sql_alchemy_pool_size: 5
     sql_alchemy_pool_recycle: 3600
     parallelism: 32
     dag_concurrency: 16
-    dags_are_paused_at_creation: True
+    dags_are_paused_at_creation: true
     non_pooled_task_slot_count: 128
     max_active_runs_per_dag: 16
-    load_examples: False
+    load_examples: false
     plugins_folder: "{{ airflow_user_home_path ~ '/airflow/plugins' }}"
-    fernet_key: 'cryptography_not_found_storing_passwords_in_plain_text'
-    donot_pickle: False
+    airflow_fernet_key: 'cryptography_not_found_storing_passwords_in_plain_text'
+    donot_pickle: false
     dagbag_import_timeout: 30
 
   operators:
@@ -158,16 +158,17 @@ airflow_defaults_config:
 
   webserver:
     auth_backend: ''
-    authenticate: False
+    authenticate: false
     base_url: 'http://localhost:8080'
-    debug: False
-    expose_config: True
-    filter_by_owner: False
+    debug: false
+    expose_config: true
+    filter_by_owner: false
     hostname: "{{ ansible_default_ipv4.address }}"
     log_file: "{{ airflow_log_path }}/airflow-webserver.log"
     pid: "{{ airflow_pid_path }}/airflow-webserver.pid"
-    rbac: False
-    secret_key: 'temporary_key'
+    rbac: false
+    # This is not real, temporary secret for testing purposes
+    secret_key: '96868ea5c214b0df1f26e8114e7abcee01ad76b299fa0fc51f6b4116e249'
     web_server_host: '0.0.0.0'
     web_server_port: '8080'
     web_server_worker_timeout: 120
@@ -180,8 +181,8 @@ airflow_defaults_config:
 
   smtp:
     smtp_host: 'localhost'
-    smtp_starttls: True
-    smtp_ssl: False
+    smtp_starttls: true
+    smtp_ssl: false
     smtp_user: 'airflow'
     smtp_port: 25
     smtp_password: 'airflow'
@@ -201,7 +202,7 @@ airflow_defaults_config:
     log_file: "{{ airflow_log_path }}/airflow-scheduler.log"
     pid: "{{ airflow_pid_path }}/airflow-scheduler.pid"
     scheduler_heartbeat_sec: 5
-    statsd_on: False
+    statsd_on: false
     statsd_host: 'localhost'
     statsd_port: 8125
     statsd_prefix: 'airflow'
@@ -212,9 +213,9 @@ airflow_defaults_config:
     framework_name: 'Airflow'
     task_cpu: 1
     task_memory: 256
-    checkpoint: False
+    checkpoint: false
     failover_timeout: 604800
-    authenticate: False
+    authenticate: false
     default_principal: 'admin'
     default_secret: 'admin'
 
@@ -237,7 +238,7 @@ airflow_defaults_config:
     domain: "your.airflow.domain.edu"
 
 airflow_user_config: {}
-airflow_config: "{{ airflow_defaults_config | combine(airflow_user_config, recursive=True) }}"
+airflow_config: "{{ airflow_defaults_config | combine(airflow_user_config, recursive=true) }}"
 
 # Airflow Webserver Users management
 airflow_webserver_admins:
