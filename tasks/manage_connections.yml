@@ -14,6 +14,8 @@
   register: 'airflow_existing_connections'
   args:
     executable: /bin/bash
+  tags:
+    - connections
 
 
 # Only add and delete actions are managed, not update
@@ -24,19 +26,21 @@
   no_log: true
   with_items: "{{ airflow_connections }}"
   when: 'item.conn_id in airflow_existing_connections.stdout_lines'
-
+  tags:
+    - connections
 
 - name: 'CONFIG | CONNECTIONS | Add connections using conn_uri'
   command: >
     {{ airflow_virtualenv }}/bin/airflow connections --add \
     --conn_id {{ item.conn_id }} \
     --conn_uri {{ item.conn_uri | default("") | quote }} \
-    --conn_extra '{{ item.conn_extra | default("") | length > 0 | to_json }}'
+    --conn_extra '{{ item.conn_extra | default({}) | to_json }}'
   changed_when: false
   no_log: true
   with_items: "{{ airflow_connections }}"
   when: "(item.conn_uri | default('')) | length > 0"
-
+  tags:
+    - connections
 
 - name: 'CONFIG | CONNECTIONS | Add connections not using conn_uri without port'
   command: >
@@ -47,14 +51,15 @@
     --conn_login {{ item.conn_login | default("") | quote }} \
     --conn_password {{ item.conn_password | default("") | quote }} \
     --conn_schema {{ item.conn_schema | default("") | quote }} \
-    --conn_extra '{{ item.conn_extra | default("") | length > 0 | to_json }}'
+    --conn_extra '{{ item.conn_extra | default({}) | to_json }}'
   changed_when: false
   no_log: true
   with_items: "{{ airflow_connections }}"
   when:
     - "(item.conn_uri | default('')) | length == 0"
     - "(item.conn_port | default(0)) | int == 0"
-
+  tags:
+    - connections
 
 - name: 'CONFIG | CONNECTIONS | Add connections not using conn_uri with port'
   command: >
@@ -66,10 +71,12 @@
     --conn_password {{ item.conn_password | default("") | quote }} \
     --conn_schema {{ item.conn_schema | default("") | quote }} \
     --conn_port {{ item.conn_port }} \
-    --conn_extra '{{ item.conn_extra | default("") | length > 0 | to_json }}'
+    --conn_extra '{{ item.conn_extra | default({}) | to_json }}'
   changed_when: false
   no_log: true
   with_items: "{{ airflow_connections }}"
   when:
     - "(item.conn_uri | default('')) | length == 0"
     - "(item.conn_port | default(0)) | int > 0"
+  tags:
+    - connections
