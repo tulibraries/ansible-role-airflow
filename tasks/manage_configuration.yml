@@ -64,7 +64,7 @@
 - name: 'CONFIG | Manage database initialize'
   become_user: "{{ airflow_user_name }}"
   become: true
-  command: "{{ airflow_virtualenv }}/bin/airflow initdb"
+  command: "{{ airflow_virtualenv }}/bin/airflow db init"
   run_once: true
   when:
     - "not airflow_config_stat.stat.exists"
