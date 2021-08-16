@@ -135,8 +135,6 @@ airflow_defaults_config:
     dags_folder: "{{ airflow_user_home_path ~ '/airflow/dags' }}"
     dags_folder_mode: "0755"
     base_log_folder: "{{ airflow_log_path }}"
-    remote_base_log_folder: ''
-    remote_log_conn_id: ''
     encrypt_s3_logs: false
     executor: 'SequentialExecutor'
     sql_alchemy_conn: "sqlite:///{{ airflow_database_sqlite_file_path }}"
@@ -152,6 +150,10 @@ airflow_defaults_config:
     airflow_fernet_key: 'cryptography_not_found_storing_passwords_in_plain_text'
     donot_pickle: false
     dagbag_import_timeout: 30
+
+  logging:
+    remote_base_log_folder: ''
+    remote_log_conn_id: ''
 
   operators:
     default_owner: 'Airflow'
