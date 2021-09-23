@@ -11,7 +11,7 @@ flake8 = "*"
 testinfra = "*"
 
 [packages]
-ansible = "==2.10.0"
+ansible = "==4.2.0"
 ansible-lint = "*"
 pylint = "*"
 molecule = "*"
