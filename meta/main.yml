@@ -23,7 +23,7 @@ galaxy_info:
   galaxy_tags:
     - 'system'
 dependencies:
-  - role: 'diodonfrost.python'
+  - src: 'diodonfrost.python'
     version: '1.0.0'
-  - role: 'geerlingguy.git'
+  - src: 'geerlingguy.git'
     version: '2.0.4'
