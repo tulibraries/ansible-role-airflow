@@ -9,6 +9,21 @@
     state: "{{ item.state | default('present') }}"
   with_items: "{{ airflow_system_dependencies }}"
 
+# Install Python
+- name: 'INSTALL | Base python'
+  include_role:
+    name: diodonfrost.python
+  tags:
+    - python
+
+# Symlink python for Airflow
+- name: 'INSTALL | Add python symlink'
+  ansible.builtin.file:
+    force: yes
+    dest: "/usr/bin/python3"
+    src: "/usr/local/python3.9/bin/python3.9"
+    state: link
+
 # Create user
 - name: 'INSTALL | Manage airflow user creation'
   user:
