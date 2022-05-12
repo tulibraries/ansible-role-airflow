@@ -19,7 +19,7 @@
 # Symlink python for Airflow
 - name: 'INSTALL | Add python symlink'
   ansible.builtin.file:
-    force: yes
+    force: true
     dest: "/usr/bin/python3"
     src: "/usr/local/python3.9/bin/python3.9"
     state: link
