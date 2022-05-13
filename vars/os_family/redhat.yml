@@ -3,7 +3,6 @@
 # RedHat CentOS 7 family specific vars
 
 _airflow_system_dependencies:
- - name: 'python3-devel'
  - name: 'postgresql-devel'
  - name: 'openssl-devel'
  - name: 'libffi-devel'
@@ -11,6 +10,5 @@ _airflow_system_dependencies:
  - name: 'libxml2-devel'
  - name: 'libxslt-devel'
  - name: 'gcc'
- - name: 'python3-pip.noarch'
- - name: 'python-virtualenv'
- - name: 'python-setuptools'
+ - name: 'python-virtualenv.noarch'
+ - name: 'python3-setuptools.noarch'
