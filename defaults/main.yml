@@ -33,24 +33,23 @@ airflow_pid_owner: "{{ airflow_user_name }}"
 airflow_pid_group: "{{ airflow_user_group }}"
 airflow_pid_mode: '0700'
 
-airflow_virtualenv: "{{ airflow_user_home_path }}/venv"
+airflow_virtualenv: "{{ airflow_user_home_path }}/venv3.9"
 airflow_virtualenv_mode: "0755"
 
 airflow_python_version: "{{ _airflow_python_version }}"
+python_version: "3.9.10"
 # Update if python version or apache airflow version changes.
-airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/a5cebdc94b7c1bb48bfd54898819db4905880b52/constraints-3.6.txt"
+airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-2-1-fixed/constraints-3.9.txt"
 
 airflow_packages:
   - name: 'pip'
-    version: '19.0.3'
+    version: '22.0.4'
   - name: 'setuptools'
-    version: '39.1.0'
+    version: '62.2.0'
   - name: 'GitPython'
-    version: '2.1.9'
   - name: 'Cython'
-    version: '0.28.2'
   - name: 'apache-airflow'
-    version: '1.10.14'
+    version: '2.1.4'
   - name: 'pipenv'
 airflow_extra_packages:
   - name: 'apache-airflow[crypto]'
