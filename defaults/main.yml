@@ -42,15 +42,12 @@ python_version: "3.9.10"
 airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-2-1-fixed/constraints-3.9.txt"
 
 airflow_packages:
-  - name: 'pip'
-    version: '22.0.4'
-  - name: 'setuptools'
-    version: '62.2.0'
   - name: 'GitPython'
   - name: 'Cython'
   - name: 'apache-airflow'
     version: '2.1.4'
   - name: 'pipenv'
+  - name: 'numpy'
 airflow_extra_packages:
   - name: 'apache-airflow[crypto]'
 
