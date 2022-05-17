@@ -39,7 +39,7 @@ airflow_virtualenv_mode: "0755"
 airflow_python_version: "{{ _airflow_python_version }}"
 python_version: "3.9.10"
 # Update if python version or apache airflow version changes.
-airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-2-1-fixed/constraints-3.9.txt"
+airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-2-1/constraints-3.9.txt"
 
 airflow_packages:
   - name: 'GitPython'
