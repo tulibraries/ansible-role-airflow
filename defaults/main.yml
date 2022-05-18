@@ -47,7 +47,6 @@ airflow_packages:
   - name: 'apache-airflow'
     version: '2.1.4'
   - name: 'pipenv'
-  - name: 'setuptools'
   - name: 'numpy'
 airflow_extra_packages:
   - name: 'apache-airflow[crypto]'
