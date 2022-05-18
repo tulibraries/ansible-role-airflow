@@ -99,11 +99,10 @@
   become_user: "{{ airflow_user_name }}"
   become: true
   pip:
-    executable: /usr/local/bin/pip
     name: "{{ item.name }}"
     version: "{{ item.version | default(omit) }}"
     state: "{{ item.state | default('present') }}"
-    virtualenv_python: "{{ airflow_python_version }}"
+    virtualenv_command: "python3 -m venv {{ airflow_virtualenv }}"
     extra_args: "{{ airflow_python_constraint }}"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ airflow_packages }}"
@@ -133,8 +132,7 @@
   pip:
     name: "{{ item.name }}"
     state: "{{ item.state | default('present') }}"
-    executable: /usr/local/bin/pip
-    virtualenv_python: "{{ airflow_python_version }}"
+    virtualenv_command: "python3 -m venv {{ airflow_virtualenv }}"
     extra_args: "{{ airflow_python_constraint }}"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ airflow_extra_packages }}"
