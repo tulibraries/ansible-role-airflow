@@ -86,6 +86,13 @@
     mode: 0644
   when: airflow_provide_user_env
 
+# Testing
+- name: 'INSTALL | Exploration'
+  become_user: "{{ airflow_user_name }}"
+  become: true
+  shell: echo $PATH > path.txt; env > env.txt; python3 --version > python.txt;
+
+
 # Install airflow packages
 - name: 'INSTALL | Manage airflow installation'
   become_user: "{{ airflow_user_name }}"
@@ -94,7 +101,8 @@
     name: "{{ item.name }}"
     version: "{{ item.version | default(omit) }}"
     state: "{{ item.state | default('present') }}"
-    virtualenv_command: "python3 -m venv {{ airflow_virtualenv }}"
+    virtualenv: "{{ airflow_virtualenv }}"
+    virtualenv_command: "/usr/local/bin/python3 -m venv"
     extra_args: "{{ airflow_python_constraint }}"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ airflow_packages }}"
@@ -124,7 +132,8 @@
   pip:
     name: "{{ item.name }}"
     state: "{{ item.state | default('present') }}"
-    virtualenv_command: "python3 -m venv {{ airflow_virtualenv }}"
+    virtualenv: "{{ airflow_virtualenv }}"
+    virtualenv_command: "/usr/local/bin/python3 -m venv"
     extra_args: "{{ airflow_python_constraint }}"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ airflow_extra_packages }}"
