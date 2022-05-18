@@ -62,14 +62,6 @@
     mode: "{{ airflow_user_home_mode }}"
     state: directory
 
-- name: 'INSTALL | Manage permissions on airflow venv directory'
-  file:
-    path: "{{ airflow_virtualenv }}"
-    owner: "{{ airflow_user_name }}"
-    group: "{{ airflow_user_name }}"
-    mode: "{{ airflow_virtualenv_mode }}"
-    state: directory
-
 - name: 'INSTALL | Manage permissions on airflow home directory'
   file:
     path: "{{ airflow_application_home }}"
@@ -136,3 +128,12 @@
     extra_args: "{{ airflow_python_constraint }}"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ airflow_extra_packages }}"
+
+# Set permissions after the venv is created
+- name: 'INSTALL | Manage permissions on airflow venv directory'
+  file:
+    path: "{{ airflow_virtualenv }}"
+    owner: "{{ airflow_user_name }}"
+    group: "{{ airflow_user_name }}"
+    mode: "{{ airflow_virtualenv_mode }}"
+    state: directory
