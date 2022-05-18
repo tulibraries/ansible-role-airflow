@@ -86,13 +86,6 @@
     mode: 0644
   when: airflow_provide_user_env
 
-# Testing
-- name: 'INSTALL | Exploration'
-  become_user: "{{ airflow_user_name }}"
-  become: true
-  shell: echo $PATH > path.txt; env > env.txt; python3 --version > python.txt;
-
-
 # Install airflow packages
 - name: 'INSTALL | Manage airflow installation'
   become_user: "{{ airflow_user_name }}"
