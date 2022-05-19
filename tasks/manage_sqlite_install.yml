@@ -10,6 +10,7 @@
 
 - name: 'SQLITE INSTALL | Run configure script'
   command: ./configure --disable-tcl --enable-shared --enable-tempstore=always --prefix="$PREFIX"
+  changed_when: false
   args:
     chdir: /usr/local/src/sqlite
 
