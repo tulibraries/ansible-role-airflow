@@ -1,8 +1,9 @@
 ---
-
 - name: Converge
   hosts: all
   roles:
+    - role: anxs.postgresql
+      become: true
     - role: ansible-role-airflow
       dags_git_repositories:
         - repo: "https://github.com/tulibraries/cob_datapipeline.git"
@@ -15,4 +16,5 @@
         - name: 'apache-airflow[crypto]'
         - name: 'werkzeug>=0.15.0,<1.0.0'
   vars:
+
     airflow_fernet_key: '46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho='

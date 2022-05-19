@@ -7,3 +7,7 @@
 - src: https://github.com/tulibraries/ansible-role-server-bootstrap.git
   name: tulibraries.server-bootstrap
   version: main
+
+- src: ANXS.postgresql
+  name: anxs.postgresql
+  version: v1.11.1

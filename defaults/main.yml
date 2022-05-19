@@ -52,6 +52,7 @@ airflow_packages:
   - name: 'apache-airflow'
     version: '1.10.14'
   - name: 'pipenv'
+  - name: 'psycopg2-binary'
 airflow_extra_packages:
   - name: 'apache-airflow[crypto]'
 
@@ -126,6 +127,10 @@ airflow_database_sqlite_file_path: "{{ airflow_user_home_path ~ '/airflow/airflo
 airflow_do_init_db: true
 airflow_do_upgrade_db: true
 
+# Postgres
+postgres_airflow_user: "airflow"
+postgres_airflow_password: "testonly"
+
 # Default configuration
 airflow_config_template: "templates/airflow.cfg.j2"
 airflow_defaults_config:
@@ -139,7 +144,7 @@ airflow_defaults_config:
     remote_log_conn_id: ''
     encrypt_s3_logs: false
     executor: 'SequentialExecutor'
-    sql_alchemy_conn: "sqlite:///{{ airflow_database_sqlite_file_path }}"
+    sql_alchemy_conn: "postgresql+psycopg2://{{ postgres_airflow_user }}:{{ postgres_airflow_password }}@{{ postgres_hostname | default('localhost') }}/airflow"
     sql_alchemy_pool_size: 5
     sql_alchemy_pool_recycle: 3600
     parallelism: 32
@@ -286,6 +291,4 @@ dags_related_git_repositories:
 
 airflow_dag_system_dependencies:
   - name: "@Development tools"
-    state: "present"
-  - name: "sqlite-devel"
     state: "present"
