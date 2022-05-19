@@ -5,7 +5,7 @@
 - name: 'SQLITE INSTALL | Get and Unpack the source code'
   ansible.builtin.unarchive:
     src: https://www.sqlite.org/src/tarball/sqlite.tar.gz
-    dest: /usr/local/src/sqlite
+    dest: /usr/local/src
     remote_src: true
 
 - name: 'SQLITE INSTALL | Run configure script'
