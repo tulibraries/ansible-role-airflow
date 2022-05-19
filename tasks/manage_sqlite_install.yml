@@ -3,10 +3,11 @@
 # Tasks for installing sqlite
 
 - name: 'SQLITE INSTALL | Get and Unpack the source code'
-  ansible.builtin.unarchive:
+  unarchive:
     src: https://www.sqlite.org/src/tarball/sqlite.tar.gz
     dest: /usr/local/src
     remote_src: true
+    validate_certs: false
 
 - name: 'SQLITE INSTALL | Run configure script'
   command: ./configure --disable-tcl --enable-shared --enable-tempstore=always --prefix="$PREFIX"
