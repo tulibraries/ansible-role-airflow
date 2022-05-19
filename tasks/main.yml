@@ -37,6 +37,7 @@
   import_tasks: "manage_configuration.yml"
   environment:
     AIRFLOW_HOME: "{{ airflow_application_home }}"
+    LD_LIBRARY_PATH: "/usr/local/lib:$LD_LIBRARY_PATH"
   become: true
   tags:
     - 'role::airflow'
@@ -58,6 +59,7 @@
   import_tasks: "manage_connections.yml"
   environment:
     AIRFLOW_HOME: "{{ airflow_application_home }}"
+    LD_LIBRARY_PATH: "/usr/local/lib:$LD_LIBRARY_PATH"
   become: true
   tags:
     - 'role::airflow'
@@ -69,6 +71,7 @@
   import_tasks: "manage_airflow_variables.yml"
   environment:
     AIRFLOW_HOME: "{{ airflow_application_home }}"
+    LD_LIBRARY_PATH: "/usr/local/lib:$LD_LIBRARY_PATH"
   become: true
   tags:
     - 'role::airflow'
@@ -79,6 +82,7 @@
   import_tasks: "manage_dags.yml"
   environment:
     AIRFLOW_HOME: "{{ airflow_application_home }}"
+    LD_LIBRARY_PATH: "/usr/local/lib:$LD_LIBRARY_PATH"
   become: true
   tags:
     - 'role::airflow'
