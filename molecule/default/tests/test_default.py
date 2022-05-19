@@ -220,8 +220,7 @@ def test_dags_pip_libraries(host, library):
 
 @pytest.mark.parametrize('name', [
     ('gettext'),
-    ('automake'),
-    ('sqlite-devel')
+    ('automake')
 ])
 def test_dag_system_packages(host, name):
     """

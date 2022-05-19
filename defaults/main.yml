@@ -285,5 +285,3 @@ dags_related_git_repositories:
 airflow_dag_system_dependencies:
   - name: "@Development tools"
     state: "present"
-  - name: "sqlite-devel"
-    state: "present"
