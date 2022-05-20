@@ -45,7 +45,7 @@ airflow_packages:
   - name: 'GitPython'
   - name: 'Cython'
   - name: 'apache-airflow'
-    version: '2.1.4'
+    version: '2.3.0'
   - name: 'pipenv'
   - name: 'numpy'
 airflow_extra_packages:
