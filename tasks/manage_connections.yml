@@ -31,10 +31,10 @@
 
 - name: 'CONFIG | CONNECTIONS | Add connections using conn_uri'
   command: >
-    {{ airflow_virtualenv }}/bin/airflow connections --add \
-    --conn_id {{ item.conn_id }} \
-    --conn_uri {{ item.conn_uri | default("") | quote }} \
-    --conn_extra '{{ item.conn_extra | default({}) | to_json }}'
+    {{ airflow_virtualenv }}/bin/airflow connections add \
+    {{ item.conn_id }} \
+    --conn-uri {{ item.conn_uri | default("") | quote }} \
+    --conn-extra '{{ item.conn_extra | default({}) | to_json }}'
   changed_when: false
   no_log: true
   with_items: "{{ airflow_connections }}"
@@ -44,14 +44,14 @@
 
 - name: 'CONFIG | CONNECTIONS | Add connections not using conn_uri without port'
   command: >
-    {{ airflow_virtualenv }}/bin/airflow connections --add \
-    --conn_id {{ item.conn_id }} \
-    --conn_type {{ item.conn_type | default("") | quote }} \
-    --conn_host {{ item.conn_host | default("") | quote }} \
-    --conn_login {{ item.conn_login | default("") | quote }} \
-    --conn_password {{ item.conn_password | default("") | quote }} \
-    --conn_schema {{ item.conn_schema | default("") | quote }} \
-    --conn_extra '{{ item.conn_extra | default({}) | to_json }}'
+    {{ airflow_virtualenv }}/bin/airflow connections add \
+    {{ item.conn_id }} \
+    --conn-type {{ item.conn_type | default("") | quote }} \
+    --conn-host {{ item.conn_host | default("") | quote }} \
+    --conn-login {{ item.conn_login | default("") | quote }} \
+    --conn-password {{ item.conn_password | default("") | quote }} \
+    --conn-schema {{ item.conn_schema | default("") | quote }} \
+    --conn-extra '{{ item.conn_extra | default({}) | to_json }}'
   changed_when: false
   no_log: true
   with_items: "{{ airflow_connections }}"
@@ -63,15 +63,15 @@
 
 - name: 'CONFIG | CONNECTIONS | Add connections not using conn_uri with port'
   command: >
-    {{ airflow_virtualenv }}/bin/airflow connections --add \
-    --conn_id {{ item.conn_id }} \
-    --conn_type {{ item.conn_type | default("") | quote }} \
-    --conn_host {{ item.conn_host | default("") | quote }} \
-    --conn_login {{ item.conn_login | default("") | quote }} \
-    --conn_password {{ item.conn_password | default("") | quote }} \
-    --conn_schema {{ item.conn_schema | default("") | quote }} \
-    --conn_port {{ item.conn_port }} \
-    --conn_extra '{{ item.conn_extra | default({}) | to_json }}'
+    {{ airflow_virtualenv }}/bin/airflow connections add \
+    {{ item.conn_id }} \
+    --conn-type {{ item.conn_type | default("") | quote }} \
+    --conn-host {{ item.conn_host | default("") | quote }} \
+    --conn-login {{ item.conn_login | default("") | quote }} \
+    --conn-password {{ item.conn_password | default("") | quote }} \
+    --conn-schema {{ item.conn_schema | default("") | quote }} \
+    --conn-port {{ item.conn_port }} \
+    --conn-extra '{{ item.conn_extra | default({}) | to_json }}'
   changed_when: false
   no_log: true
   with_items: "{{ airflow_connections }}"
