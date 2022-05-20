@@ -86,7 +86,7 @@
 - name: 'CONFIG | Manage database upgrade'
   become_user: "{{ airflow_user_name }}"
   become: true
-  command: "{{ airflow_virtualenv }}/bin/airflow upgradedb"
+  command: "{{ airflow_virtualenv }}/bin/airflow db upgrade"
   run_once: true
   when:
     - "airflow_config_stat.stat.exists"
@@ -100,7 +100,8 @@
   become_user: "{{ airflow_user_name }}"
   become: true
   no_log: true
-  command: "{{ airflow_virtualenv }}/bin/airflow create_user --role Admin \
+  command: "{{ airflow_virtualenv }}/bin/airflow users create \
+            --role Admin \
             --username {{ item.google_username }} \
             --email {{ item.email }} \
             --firstname {{ item.firstname }} \
