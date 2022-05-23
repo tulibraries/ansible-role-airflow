@@ -40,13 +40,11 @@ def test_airflow_group(host):
 
 
 @pytest.mark.parametrize('name,codenames', [
-    ('python3-dev', None),
     ('libpq-dev', None),
     ('libssl-dev', None),
     ('libffi-dev', None),
     ('build-essential', None),
-    ('python-virtualenv', None),
-    ('python-pip', None),
+    ('python-virtualenv.noarch', None)
 ])
 def test_debian_ubuntu_prerequisites_packages(host, name, codenames):
     """
@@ -65,17 +63,15 @@ def test_debian_ubuntu_prerequisites_packages(host, name, codenames):
 
 
 @pytest.mark.parametrize('name,codenames', [
-    ('openssl-devel', None),
+    ('gcc', None),
     ('libffi-devel', None),
     ('libxml2', None),
     ('libxml2-devel', None),
     ('libxslt-devel', None),
+    ('openssl-devel', None),
     ('python-virtualenv.noarch', None),
-    ('python3-setuptools.noarch', None),
-    ('gcc', None)
+    ('python3-setuptools.noarch', None)
 ])
-
-
 def test_centos_prerequisites_packages(host, name, codenames):
     """
     Tests about airflow prerequisites packages
