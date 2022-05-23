@@ -7,7 +7,7 @@
   become: true
   shell: >
     set -o pipefail && \
-      {{ airflow_virtualenv }}/bin/airflow connections --list | grep -E "\s+'" | cut -d "'" -f2
+      {{ airflow_virtualenv }}/bin/airflow connections list -o yaml | grep conn_id | cut -d ':' -f2 | sed 's/^\s*//' | sed 's/\s*$//'
   changed_when: false
   failed_when: false
   no_log: true
@@ -17,12 +17,12 @@
   tags:
     - connections
 
-
 # Only add and delete actions are managed, not update
 - name: 'CONFIG | CONNECTIONS | Remove listed connections'
   command: >
-    {{ airflow_virtualenv }}/bin/airflow connections --delete --conn_id {{ item.conn_id }}
+    {{ airflow_virtualenv }}/bin/airflow connections delete {{ item.conn_id }}
   changed_when: false
+  failed_when: false
   no_log: true
   with_items: "{{ airflow_connections }}"
   when: 'item.conn_id in airflow_existing_connections.stdout_lines'
@@ -53,6 +53,7 @@
     --conn-schema {{ item.conn_schema | default("") | quote }} \
     --conn-extra '{{ item.conn_extra | default({}) | to_json }}'
   changed_when: false
+  failed_when: false
   no_log: true
   with_items: "{{ airflow_connections }}"
   when:
@@ -73,7 +74,8 @@
     --conn-port {{ item.conn_port }} \
     --conn-extra '{{ item.conn_extra | default({}) | to_json }}'
   changed_when: false
-  no_log: true
+  failed_when: false
+  # no_log: true
   with_items: "{{ airflow_connections }}"
   when:
     - "(item.conn_uri | default('')) | length == 0"
