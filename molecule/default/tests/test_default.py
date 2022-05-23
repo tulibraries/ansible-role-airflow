@@ -65,17 +65,17 @@ def test_debian_ubuntu_prerequisites_packages(host, name, codenames):
 
 
 @pytest.mark.parametrize('name,codenames', [
-    ('python3-devel', None),
     ('openssl-devel', None),
     ('libffi-devel', None),
     ('libxml2', None),
     ('libxml2-devel', None),
     ('libxslt-devel', None),
-    ('python2-pip', None),
-    ('python-virtualenv', None),
-    ('python-setuptools', None),
+    ('python-virtualenv.noarch', None),
+    ('python3-setuptools.noarch', None),
     ('gcc', None)
 ])
+
+
 def test_centos_prerequisites_packages(host, name, codenames):
     """
     Tests about airflow prerequisites packages
@@ -127,7 +127,7 @@ def test_pip_libraries(host, library):
     Test pip libraries installed
     """
 
-    pip_path = "/var/lib/airflow/venv/bin/pip3.9"
+    pip_path = "/var/lib/airflow/venv3.9/bin/pip3.9"
     libraries = host.pip_package.get_packages(pip_path=pip_path)
     assert libraries.get(library)
 
@@ -135,7 +135,7 @@ def test_pip_libraries(host, library):
 @pytest.mark.parametrize('path,path_type,user,group,mode', [
     ('/var/run/airflow', 'directory', 'airflow', 'airflow', 0o700),
     ('/var/lib/airflow/airflow', 'directory', 'airflow', 'airflow', 0o700),
-    ('/var/lib/airflow/venv', 'directory', 'airflow', 'airflow', 0o755),
+    ('/var/lib/airflow/venv3.9', 'directory', 'airflow', 'airflow', 0o755),
     ('/var/lib/airflow/airflow/airflow.cfg', 'file', 'airflow', 'airflow',
      0o400)
     ])
@@ -212,7 +212,7 @@ def test_dags_pip_libraries(host, library):
     Test DAGs' required pip libraries installed
     """
 
-    pip_path = "/var/lib/airflow/venv/bin/pip3.9"
+    pip_path = "/var/lib/airflow/venv3.9/bin/pip3.9"
     libraries = host.pip_package.get_packages(pip_path=pip_path)
     print(libraries)
     assert libraries.get(library)
