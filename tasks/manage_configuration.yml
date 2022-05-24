@@ -48,7 +48,7 @@
 
 # If airflow_*_config.webserver.authentication: True
 # copy over updated webserver config (overlays existing)
-- name: 'CONFIG | Generate Webserver Config if RBAC is enabled'
+- name: 'CONFIG | Generate Webserver Config'
   template:
     src: "templates/webserver_config.py"
     dest: "{{ airflow_application_home ~ '/webserver_config.py' }}"
