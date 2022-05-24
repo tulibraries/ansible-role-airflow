@@ -166,7 +166,6 @@ airflow_defaults_config:
     hostname: "{{ ansible_default_ipv4.address }}"
     log_file: "{{ airflow_log_path }}/airflow-webserver.log"
     pid: "{{ airflow_pid_path }}/airflow-webserver.pid"
-    rbac: false
     # This is not real, temporary secret for testing purposes
     secret_key: '96868ea5c214b0df1f26e8114e7abcee01ad76b299fa0fc51f6b4116e249'
     web_server_host: '0.0.0.0'

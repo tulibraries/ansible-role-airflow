@@ -47,7 +47,6 @@
 
 
 # If airflow_*_config.webserver.authentication: True
-# && airflow_*_config.webserver.rbac: True,
 # copy over updated webserver config (overlays existing)
 - name: 'CONFIG | Generate Webserver Config if RBAC is enabled'
   template:
@@ -57,7 +56,6 @@
     group: "{{ airflow_user_group }}"
     mode: '0400'
   notify: 'Restart airflow'
-  when: "airflow_config.webserver.rbac"
 
 
 # Manage database initialize if first deployment
@@ -94,9 +92,8 @@
 
 
 # If airflow_*_config.webserver.authentication: True
-# && airflow_*_config.webserver.rbac: True,
 # add airflow_admin users to airflow
-- name: 'CONFIG | Generate Airflow Webserver Admin Users if RBAC is enabled'
+- name: 'CONFIG | Generate Airflow Webserver Admin Users'
   become_user: "{{ airflow_user_name }}"
   become: true
   no_log: true
@@ -108,6 +105,7 @@
             --lastname {{ item.lastname }} \
             --password {{ item.airflow_dummy_password }} "
   when:
-    - "airflow_config.webserver.rbac | bool"
     - "airflow_do_init_db | bool"
   with_items: "{{ airflow_webserver_admins }}"
+  tags:
+    - "add_users"
