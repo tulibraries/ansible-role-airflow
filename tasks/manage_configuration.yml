@@ -56,6 +56,8 @@
     group: "{{ airflow_user_group }}"
     mode: '0400'
   notify: 'Restart airflow'
+  when:
+    - "airflow_webserver_authenticate | bool"
 
 
 # Manage database initialize if first deployment
@@ -97,6 +99,8 @@
   become_user: "{{ airflow_user_name }}"
   become: true
   no_log: true
+  changed_when: false
+  failed_when: false
   command: "{{ airflow_virtualenv }}/bin/airflow users create \
             --role Admin \
             --username {{ item.google_username }} \
@@ -105,6 +109,7 @@
             --lastname {{ item.lastname }} \
             --password {{ item.airflow_dummy_password }} "
   when:
+    - "airflow_webserver_authenticate | bool"
     - "airflow_do_init_db | bool"
   with_items: "{{ airflow_webserver_admins }}"
   tags:

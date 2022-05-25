@@ -124,6 +124,8 @@ airflow_database_sqlite_file_path: "{{ airflow_user_home_path ~ '/airflow/airflo
 airflow_do_init_db: true
 airflow_do_upgrade_db: true
 
+airflow_webserver_authenticate: False
+
 # Default configuration
 airflow_config_template: "templates/airflow.cfg.j2"
 airflow_defaults_config:
