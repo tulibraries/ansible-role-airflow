@@ -18,7 +18,7 @@
 # under the License.
 
 import os
-from airflow.configuration import conf
+from airflow import configuration as conf
 # from flask_appbuilder.security.manager import AUTH_DB
 # from flask_appbuilder.security.manager import AUTH_LDAP
 from flask_appbuilder.security.manager import AUTH_OAUTH
@@ -31,7 +31,6 @@ SQLALCHEMY_DATABASE_URI = conf.get('core', 'SQL_ALCHEMY_CONN')
 
 # Flask-WTF flag for CSRF
 CSRF_ENABLED = True
-WTF_CSRF_ENABLED = True
 
 # ----------------------------------------------------
 # AUTHENTICATION CONFIG
@@ -63,7 +62,7 @@ AUTH_USER_REGISTRATION_ROLE = "Viewer"
 # When using OAuth Auth, uncomment to setup provider(s) info
 # https://flask-appbuilder.readthedocs.io/en/latest/security.html
 # Google OAuth example:
-OAUTH_PROVIDERS = [{'name': 'google', 'icon': 'fa-google', 'token_key': 'access_token', 'remote_app': {'api_base_url': 'https://www.googleapis.com/oauth2/v2/', 'client_kwargs': {'scope': 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'}, 'access_token_url': 'https://accounts.google.com/o/oauth2/token', 'authorize_url': 'https://accounts.google.com/o/oauth2/auth', 'request_token_url': None, 'client_id': conf.get('google', '_id'), 'client_secret': conf.get('google', 'client_secret'), }}]
+OAUTH_PROVIDERS = [{'name': 'google', 'icon': 'fa-google', 'token_key': 'access_token', 'remote_app': {'api_base_url': 'https://www.googleapis.com/oauth2/v2/', 'client_kwargs': {'scope': 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'}, 'access_token_url': 'https://accounts.google.com/o/oauth2/token', 'authorize_url': 'https://accounts.google.com/o/oauth2/auth', 'request_token_url': None, 'client_id': conf.get('google', 'client_id'), 'client_secret': conf.get('google', 'client_secret'), }}]
 
 # When using LDAP Auth, setup the ldap server
 # AUTH_LDAP_SERVER = "ldap://ldapserver.new"
