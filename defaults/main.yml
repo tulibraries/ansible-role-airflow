@@ -137,9 +137,6 @@ airflow_defaults_config:
     base_log_folder: "{{ airflow_log_path }}"
     encrypt_s3_logs: false
     executor: 'SequentialExecutor'
-    sql_alchemy_conn: "sqlite:///{{ airflow_database_sqlite_file_path }}"
-    sql_alchemy_pool_size: 5
-    sql_alchemy_pool_recycle: 3600
     parallelism: 32
     dag_concurrency: 16
     dags_are_paused_at_creation: true
@@ -155,11 +152,16 @@ airflow_defaults_config:
     remote_base_log_folder: ''
     remote_log_conn_id: ''
 
+  database:
+    sql_alchemy_conn: "sqlite:///{{ airflow_database_sqlite_file_path }}"
+    sql_alchemy_pool_size: 5
+    sql_alchemy_pool_recycle: 3600
+
   operators:
     default_owner: 'Airflow'
 
   webserver:
-    auth_backend: ''
+    auth_backends: ''
     authenticate: false
     base_url: 'http://localhost:8080'
     debug: false
