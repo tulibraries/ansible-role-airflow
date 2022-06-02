@@ -16,3 +16,4 @@ jobs:
       - run:
           name: Molecule
           command: pipenv run molecule test
+          no_output_timeout: 30m

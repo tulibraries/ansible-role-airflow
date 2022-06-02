@@ -1,0 +1,25 @@
+---
+
+# Tasks for installing sqlite
+
+- name: 'SQLITE INSTALL | Get and Unpack the source code'
+  unarchive:
+    src: https://www.sqlite.org/src/tarball/sqlite.tar.gz
+    dest: /usr/local/src
+    remote_src: true
+    validate_certs: false
+
+- name: 'SQLITE INSTALL | Run configure script'
+  command: ./configure --disable-tcl --enable-shared --enable-tempstore=always --prefix="$PREFIX"
+  changed_when: false
+  args:
+    chdir: /usr/local/src/sqlite
+
+- name: 'SQLITE INSTALL | Compile the source code'
+  make:
+    chdir: /usr/local/src/sqlite
+
+- name: 'SQLITE INSTALL | Install the source code'
+  make:
+    chdir: /usr/local/src/sqlite
+    target: install
