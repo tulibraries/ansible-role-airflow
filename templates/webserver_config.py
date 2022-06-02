@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#
+# Role Template
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -27,7 +27,7 @@ from flask_appbuilder.security.manager import AUTH_OAUTH
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # The SQLAlchemy connection string.
-SQLALCHEMY_DATABASE_URI = conf.get('core', 'SQL_ALCHEMY_CONN')
+SQLALCHEMY_DATABASE_URI = conf.get('database', 'SQL_ALCHEMY_CONN')
 
 # Flask-WTF flag for CSRF
 CSRF_ENABLED = True
