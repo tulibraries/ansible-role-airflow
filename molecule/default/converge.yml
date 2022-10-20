@@ -12,8 +12,8 @@
           dest_folder: "funcake_dags"
           branch_or_release: ""
       airflow_extra_packages:
-        - name: 'apache-airflow[crypto]'
-        - name: 'werkzeug==1.0.1'
+        - name: 'apache-airflow[amazon]'
+        - name: 'werkzeug==2.2.2'
   vars:
     airflow_fernet_key: '46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho='
     python_version: '3.9.10'
