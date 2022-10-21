@@ -82,11 +82,11 @@
     - "airflow_database_engine == 'sqlite'"
 
 
-# Manage database upgrade if not first deployment
+# Manage database upgrade if there are migrations to run
 - name: 'CONFIG | Manage database upgrade'
   become_user: "{{ airflow_user_name }}"
   become: true
-  command: "{{ airflow_virtualenv }}/bin/airflow db upgrade"
+  command: "{{ airflow_virtualenv }}/bin/airflow db check-migrations || {{ airflow_virtualenv }}/bin/airflow db upgrade || true"
   run_once: true
   when:
     - "airflow_config_stat.stat.exists"
