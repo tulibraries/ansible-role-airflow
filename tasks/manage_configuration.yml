@@ -86,7 +86,7 @@
 - name: 'CONFIG | Manage database upgrade'
   become_user: "{{ airflow_user_name }}"
   become: true
-  command: "{{ airflow_virtualenv }}/bin/airflow db check-migrations || {{ airflow_virtualenv }}/bin/airflow db upgrade || true"
+  shell: "{{ airflow_virtualenv }}/bin/airflow db check-migrations || {{ airflow_virtualenv }}/bin/airflow db upgrade || true"
   run_once: true
   when:
     - "airflow_config_stat.stat.exists"
