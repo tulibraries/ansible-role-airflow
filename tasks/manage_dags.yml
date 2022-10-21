@@ -21,7 +21,7 @@
   become: true
   file:
     state: link
-    path: "{{ airflow_config.core.dags_folder }}/{{ item.dest_folder }}"
+    path: "{{ dags_folder }}/{{ item.dest_folder }}"
     src: "{{ dags_repos_folder }}/{{ item.dest_folder }}{% if item.dags_folder_name is defined %}/{{ item.dags_folder_name }}{% endif %}"
   with_items:
     - "{{ dags_git_repositories }}"

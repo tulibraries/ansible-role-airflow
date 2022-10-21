@@ -41,6 +41,7 @@ python_version: "3.9.10"
 # Update if python version or apache airflow version changes.
 airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-2-3/constraints-3.9.txt"
 dags_repos_folder: "{{ airflow_user_home_path ~ '/airflow/dags_repos' }}"
+dags_folder: "{{ airflow_user_home_path ~ '/airflow/dags' }}"
 
 airflow_packages:
   - name: 'GitPython'
