@@ -16,7 +16,7 @@ ansible-lint = "*"
 pylint = "*"
 molecule = "*"
 molecule-docker = "*"
-cryptography = "==3.3.2"
+cryptography = "==39.0.1"
 
 [requires]
 python_version = "3.7"
