@@ -5,18 +5,17 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
-docker = "*"
 yamllint = "*"
 flake8 = "*"
 testinfra = "*"
 
 [packages]
-ansible = "==2.10.0"
-ansible-lint = "*"
+ansible = "==2.9.27"
+ansible-lint = "==4.2.0"
+docker = "==4.4.4"
+molecule = "==3.0.8"
 pylint = "*"
-molecule = "*"
-molecule-docker = "*"
-cryptography = "==3.3.2"
+requests = "==2.28.1"
 
 [requires]
-python_version = "3.7"
+python_version = "3.9"
