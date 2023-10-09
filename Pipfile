@@ -4,19 +4,19 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest = "*"
+ansible = "==2.9.27"
+ansible-lint = "==4.2.0"
 docker = "*"
-yamllint = "*"
 flake8 = "*"
+molecule = "*"
+molecule-plugins = "*"
+pylint = "*"
+pytest = "*"
 testinfra = "*"
+yamllint = "*"
 
 [packages]
-ansible = "==2.10.0"
-ansible-lint = "*"
-pylint = "*"
-molecule = "*"
-molecule-docker = "*"
-cryptography = "==3.3.2"
+cryptography = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.11"
