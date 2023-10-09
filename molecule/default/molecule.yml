@@ -19,7 +19,7 @@ driver:
 platforms:
   - name: instance
     image: centos:7
-    command: /lib/systemd/systemd
+    command: /sbin/init
     privileged: true
     capabilities:
       - SYS_ADMIN
