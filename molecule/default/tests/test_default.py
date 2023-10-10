@@ -124,7 +124,7 @@ def test_pip_libraries(host, library):
     """
 
     pip_path = "/var/lib/airflow/venv3.9/bin/pip3.9"
-    libraries = host.pip_package.get_packages(pip_path=pip_path)
+    libraries = host.pip.get_packages(pip_path=pip_path)
     assert libraries.get(library)
 
 
@@ -209,7 +209,7 @@ def test_dags_pip_libraries(host, library):
     """
 
     pip_path = "/var/lib/airflow/venv3.9/bin/pip3.9"
-    libraries = host.pip_package.get_packages(pip_path=pip_path)
+    libraries = host.pip.get_packages(pip_path=pip_path)
     print(libraries)
     assert libraries.get(library)
 
