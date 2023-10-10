@@ -61,15 +61,11 @@
 
 
 # Manage database initialize if first deployment
-- name: 'CONFIG | Manage database initialize'
+- name: 'CONFIG | Manage database creation or upgrade'
   become_user: "{{ airflow_user_name }}"
   become: true
-  command: "{{ airflow_virtualenv }}/bin/airflow db init"
+  command: "{{ airflow_virtualenv }}/bin/airflow db migrate"
   run_once: true
-  when:
-    - "not airflow_config_stat.stat.exists"
-    - "airflow_do_init_db | bool"
-
 
 # Set Sqlite backend permissions
 - name: 'CONFIG | Ensure SQLite backend file has good permissions'
@@ -80,18 +76,6 @@
     state: 'file'
   when:
     - "airflow_database_engine == 'sqlite'"
-
-
-# Manage database upgrade if there are migrations to run
-- name: 'CONFIG | Manage database upgrade'
-  become_user: "{{ airflow_user_name }}"
-  become: true
-  shell: "{{ airflow_virtualenv }}/bin/airflow db check-migrations || {{ airflow_virtualenv }}/bin/airflow db upgrade || true"
-  run_once: true
-  when:
-    - "airflow_config_stat.stat.exists"
-    - "airflow_do_upgrade_db | bool"
-
 
 # If airflow_*_config.webserver.authentication: True
 # add airflow_admin users to airflow
