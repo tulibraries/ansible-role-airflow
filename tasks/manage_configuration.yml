@@ -94,7 +94,6 @@
             --password {{ item.airflow_dummy_password }} "
   when:
     - "airflow_webserver_authenticate | bool"
-    - "airflow_do_init_db | bool"
   with_items: "{{ airflow_webserver_admins }}"
   tags:
     - "add_users"
