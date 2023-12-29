@@ -10,7 +10,7 @@ flake8 = "*"
 pytest-testinfra = "*"
 
 [packages]
-ansible = "==2.9.27"
+ansible = "==8.5.0"
 ansible-lint = "==4.2.0"
 cryptography = "*"
 docker = "==4.4.4"
