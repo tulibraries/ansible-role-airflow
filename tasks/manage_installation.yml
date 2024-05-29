@@ -12,7 +12,6 @@
 - name: 'CONFIG | Configure python3 to latest installed version' 
   ansible.builtin.command:
     cmd: alternatives --auto python3
-    become_user: root
 
 - name: 'INSTALL | Add python symlink to python3'
   ansible.builtin.file:
