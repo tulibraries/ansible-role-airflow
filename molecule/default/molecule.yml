@@ -22,7 +22,7 @@ driver:
 platforms:
   - name: instance
     image: rockylinux:8
-    command: /usr/sbin/init
+    command: /sbin/init
     cgroupns: host
     legacyCgroupv1: true
     privileged: true
