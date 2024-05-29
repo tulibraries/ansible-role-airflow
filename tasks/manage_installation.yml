@@ -9,10 +9,11 @@
     state: "{{ item.state | default('present') }}"
   with_items: "{{ airflow_system_dependencies }}"
 
-- name: 'CONFIG | Configure python3 to latest installed version' 
-  ansible.builtin.command:
-    cmd: alternatives --auto python3
-    become_user: root
+- name: 'CONFIG | Use Python 3.11 as default selection'
+  community.general.alternatives:
+    name: python3
+    path: /usr/bin/python3.11
+    link: /usr/bin/python3
 
 - name: 'INSTALL | Add python symlink to python3'
   ansible.builtin.file:
@@ -86,7 +87,7 @@
     version: "{{ item.version | default(omit) }}"
     state: "{{ item.state | default('present') }}"
     virtualenv: "{{ airflow_virtualenv }}"
-    virtualenv_command: "/usr/local/bin/python3 -m venv"
+    virtualenv_command: "python3 -m venv"
     extra_args: "{{ airflow_python_constraint }}"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ airflow_packages }}"
@@ -105,7 +106,7 @@
     version: "{{ item.version | default(omit) }}"
     state: "{{ item.state | default('present') }}"
     virtualenv: "{{ airflow_virtualenv }}"
-    virtualenv_command: "/usr/local/bin/python3 -m venv"
+    virtualenv_command: "/usr/bin/python3 -m venv"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ dag_packages }}"
   environment:
@@ -135,7 +136,7 @@
     name: "{{ item.name }}"
     state: "{{ item.state | default('present') }}"
     virtualenv: "{{ airflow_virtualenv }}"
-    virtualenv_command: "/usr/local/bin/python3 -m venv"
+    virtualenv_command: "/usr/bin/python3 -m venv"
     extra_args: "{{ airflow_python_constraint }}"
   changed_when: "airflow_pip_changed_when"
   with_items: "{{ airflow_extra_packages }}"
