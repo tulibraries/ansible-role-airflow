@@ -7,7 +7,3 @@
 - src: https://github.com/tulibraries/ansible-role-server-bootstrap.git
   name: tulibraries.server-bootstrap
   version: main
-
-- src: diodonfrost.python
-  name: diodonfrost.python
-  version: 1.0.0

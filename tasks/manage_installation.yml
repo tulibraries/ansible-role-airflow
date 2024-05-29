@@ -9,32 +9,25 @@
     state: "{{ item.state | default('present') }}"
   with_items: "{{ airflow_system_dependencies }}"
 
-# Install Python
-- name: 'INSTALL | Base python'
-  include_role:
-    name: diodonfrost.python
-  tags:
-    - python
-
-- name: 'INSTALL | Add python3 symlink to python3.9'
+- name: 'INSTALL | Add python3 symlink to python3.10'
   ansible.builtin.file:
     force: true
     dest: "/usr/local/bin/python3"
-    src: "/usr/local/python3.9/bin/python3.9"
+    src: "/usr/local/python3.10/bin/python3.10"
     state: link
 
-- name: 'INSTALL | Add python symlink to python3.9'
+- name: 'INSTALL | Add python symlink to python3.10'
   ansible.builtin.file:
     force: true
     dest: "/usr/local/bin/python"
-    src: "/usr/local/python3.9/bin/python3.9"
+    src: "/usr/local/python3.10/bin/python3.10"
     state: link
 
-- name: 'INSTALL | Add pip symlink to pip3.9'
+- name: 'INSTALL | Add pip symlink to pip3.10'
   ansible.builtin.file:
     force: true
     dest: "/usr/local/bin/pip"
-    src: "/usr/local/python3.9/bin/pip3.9"
+    src: "/usr/local/python3.10/bin/pip3.10"
     state: link
 
 # Create user

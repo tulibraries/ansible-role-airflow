@@ -16,4 +16,4 @@
         - name: 'werkzeug'
   vars:
     airflow_fernet_key: '46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho='
-    python_version: '3.9.10'
+    python_version: '3.10.13'
