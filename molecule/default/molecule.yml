@@ -21,11 +21,11 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: centos:7
+    image: rockylinux:8
     command: /sbin/init
     cgroupns: host
-    privileged: true
     legacyCgroupv1: true
+    privileged: true
     capabilities:
       - SYS_ADMIN
     volumes:
