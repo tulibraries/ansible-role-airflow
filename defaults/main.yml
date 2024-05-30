@@ -33,13 +33,13 @@ airflow_pid_owner: "{{ airflow_user_name }}"
 airflow_pid_group: "{{ airflow_user_group }}"
 airflow_pid_mode: '0700'
 
-airflow_virtualenv: "{{ airflow_user_home_path }}/venv3.10"
+airflow_virtualenv: "{{ airflow_user_home_path }}/venv3.11"
 airflow_virtualenv_mode: "0755"
 
 airflow_python_version: "{{ _airflow_python_version }}"
-python_version: "3.10.13"
+python_version: "3.11.5"
 # Update if python version or apache airflow version changes.
-airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-2.8.3/constraints-3.10.txt"
+airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-2.8.3/constraints-3.11.txt"
 dags_repos_folder: "{{ airflow_user_home_path ~ '/airflow/dags_repos' }}"
 dags_folder: "{{ airflow_user_home_path ~ '/airflow/dags' }}"
 
