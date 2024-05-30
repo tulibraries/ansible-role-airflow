@@ -14,6 +14,7 @@ jobs:
           name: Install
           command: pipenv install --dev
       - run: sudo apt update; sudo apt install rsync
+      - run: pipenv run molecule destroy
       - run:
           name: Molecule
           command: pipenv run molecule test
