@@ -11,3 +11,4 @@ _airflow_system_dependencies:
  - name: 'gcc'
  - name: 'python3.11-devel'
  - name: 'python3.11-pip'
+ - name: 'sqlite'
