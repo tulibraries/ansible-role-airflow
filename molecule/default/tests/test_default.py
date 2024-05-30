@@ -123,7 +123,7 @@ def test_pip_libraries(host, library):
     Test pip libraries installed
     """
 
-    pip_path = "/var/lib/airflow/venv3.10/bin/pip3.10"
+    pip_path = "/var/lib/airflow/venv3.11/bin/pip3.11"
     libraries = host.pip.get_packages(pip_path=pip_path)
     assert libraries.get(library)
 
@@ -131,7 +131,7 @@ def test_pip_libraries(host, library):
 @pytest.mark.parametrize('path,path_type,user,group,mode', [
     ('/var/run/airflow', 'directory', 'airflow', 'airflow', 0o700),
     ('/var/lib/airflow/airflow', 'directory', 'airflow', 'airflow', 0o700),
-    ('/var/lib/airflow/venv3.10', 'directory', 'airflow', 'airflow', 0o755),
+    ('/var/lib/airflow/venv3.11', 'directory', 'airflow', 'airflow', 0o755),
     ('/var/lib/airflow/airflow/airflow.cfg', 'file', 'airflow', 'airflow',
      0o400)
     ])
@@ -208,7 +208,7 @@ def test_dags_pip_libraries(host, library):
     Test DAGs' required pip libraries installed
     """
 
-    pip_path = "/var/lib/airflow/venv3.10/bin/pip3.10"
+    pip_path = "/var/lib/airflow/venv3.11/bin/pip3.11"
     libraries = host.pip.get_packages(pip_path=pip_path)
     print(libraries)
     assert libraries.get(library)
