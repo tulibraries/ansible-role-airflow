@@ -22,14 +22,16 @@ driver:
 platforms:
   - name: instance
     image: rockylinux:8
-    command: /sbin/init
-    cgroupns: host
-    legacyCgroupv1: true
+    command: /lib/systemd/systemd
     privileged: true
+    cgroupns_mode: host
     capabilities:
       - SYS_ADMIN
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    tmpfs:
+      - /run
+      - /tmp
 provisioner:
   name: ansible
 verifier:
