@@ -2,12 +2,8 @@
 
 - src: geerlingguy.git
   name: geerlingguy.git
-  version: 2.0.4
+  version: 3.0.1
 
-- src: https://github.com/tulibraries/ansible-role-server-bootstrap.git
+- src: tulibraries.ansible_role_server_bootstrap
   name: tulibraries.server-bootstrap
-  version: main
-
-- src: diodonfrost.python
-  name: diodonfrost.python
-  version: 1.0.0
+  version: v1.0.0

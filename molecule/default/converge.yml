@@ -16,4 +16,5 @@
         - name: 'werkzeug'
   vars:
     airflow_fernet_key: '46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho='
-    python_version: '3.9.10'
+    python_version: '3.11.5'
+    is_systemd_managed_system: True

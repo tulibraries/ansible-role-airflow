@@ -5,18 +5,19 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
-yamllint = "*"
-flake8 = "*"
 pytest-testinfra = "*"
 
 [packages]
-ansible = "==2.9.27"
-ansible-lint = "==4.2.0"
+ansible = "==9.6.0"
+ansible-lint = "*"
 cryptography = "*"
-docker = "==4.4.4"
-molecule = "==3.0.8"
+docker = "*"
+molecule = "*"
+molecule-docker = "*"
 pylint = "*"
-requests = "==2.28.1"
+
+# Remove once this is fixed: https://github.com/ansible-collections/community.docker/issues/868#issuecomment-2124979976
+requests = "==2.31.0"
 
 [requires]
-python_version = "3.9"
+python_version = "3.12"

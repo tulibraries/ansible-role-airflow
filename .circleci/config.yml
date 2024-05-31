@@ -4,16 +4,16 @@ jobs:
   build:
     working_directory: ~/ansible-role-airflow
     docker:
-      - image: cimg/python:3.9.10
+      - image: cimg/python:3.12.3
         environment:
           PIPENV_VENV_IN_PROJECT: true
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Install
           command: pipenv install --dev
-      - setup_remote_docker:
-          version: 20.10.11
+      - run: sudo apt update; sudo apt install rsync
       - run:
           name: Molecule
           command: pipenv run molecule test
