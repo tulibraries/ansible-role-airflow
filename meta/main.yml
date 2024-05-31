@@ -20,6 +20,9 @@ galaxy_info:
     - name: 'Centos'
       versions:
         - '7'
+    - name: rockylinux
+      versions:
+        - 8
   galaxy_tags:
     - 'system'
 dependencies:

@@ -4,6 +4,6 @@
   name: geerlingguy.git
   version: 3.0.1
 
-- src: https://github.com/tulibraries/ansible-role-server-bootstrap.git
+- src: tulibraries.ansible_role_server_bootstrap
   name: tulibraries.server-bootstrap
-  version: DEVO-1052-make-rocky8-changes
+  version: v1.0.0
