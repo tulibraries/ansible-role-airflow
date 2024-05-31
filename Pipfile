@@ -17,7 +17,7 @@ molecule-docker = "*"
 pylint = "*"
 
 # Remove once this is fixed: https://github.com/ansible-collections/community.docker/issues/868#issuecomment-2124979976
-requests = "==2.31.0"
+requests = "==2.32.2"
 
 [requires]
 python_version = "3.12"
