@@ -3,7 +3,7 @@
 # RedHat CentOS 7 family specific vars
 
 _airflow_system_dependencies:
- - name: 'openssl-devel'
+ - name: 'openssl3-devel'
  - name: 'libffi-devel'
  - name: 'libxml2'
  - name: 'libxml2-devel'
