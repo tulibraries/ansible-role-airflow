@@ -9,10 +9,10 @@
     state: "{{ item.state | default('present') }}"
   with_items: "{{ airflow_system_dependencies }}"
 
-- name: 'CONFIG | Use Python 3.11 as default selection'
+- name: 'CONFIG | Use Python 3.12 as default selection'
   community.general.alternatives:
     name: python3
-    path: /usr/bin/python3.11
+    path: /usr/bin/python3.12
     link: /usr/bin/python3
 
 - name: 'INSTALL | Add python symlink to python3'
