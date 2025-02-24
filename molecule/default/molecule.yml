@@ -20,10 +20,11 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: instance
-    image: rockylinux:8
-    command: /lib/systemd/systemd
+  - name: rockylinux
+    image: geerlingguy/docker-rockylinux9-ansible:latest
+    command: /sbin/init
     privileged: true
+    pre_build_image: true
     cgroupns_mode: host
     capabilities:
       - SYS_ADMIN
