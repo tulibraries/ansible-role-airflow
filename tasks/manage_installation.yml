@@ -9,19 +9,6 @@
     state: "{{ item.state | default('present') }}"
   with_items: "{{ airflow_system_dependencies }}"
 
-- name: 'CONFIG | Use Python 3.12 as default selection'
-  community.general.alternatives:
-    name: python3
-    path: /usr/bin/python3.12
-    link: /usr/bin/python3
-
-- name: 'INSTALL | Add python symlink to python3'
-  ansible.builtin.file:
-    force: true
-    dest: "/usr/bin/python"
-    src: "/usr/bin/python3"
-    state: link
-
 - name: 'INSTALL | Add pip symlink to pip3'
   ansible.builtin.file:
     force: true

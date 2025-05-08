@@ -37,9 +37,8 @@ airflow_virtualenv: "{{ airflow_user_home_path }}/venv3.12"
 airflow_virtualenv_mode: "0755"
 
 airflow_python_version: "{{ _airflow_python_version }}"
-python_version: "3.12.8"
 # Update if python version or apache airflow version changes.
-airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-2.10.5/constraints-3.12.txt"
+airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-2.10.5/constraints-3.11.txt"
 dags_repos_folder: "{{ airflow_user_home_path ~ '/airflow/dags_repos' }}"
 dags_folder: "{{ airflow_user_home_path ~ '/airflow/dags' }}"
 
