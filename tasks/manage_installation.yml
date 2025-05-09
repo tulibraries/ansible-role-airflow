@@ -18,17 +18,15 @@
 - name: 'INSTALL | Add python symlink to python3'
   ansible.builtin.file:
     force: true
-    dest: "/usr/bin/python"
-    src: "/usr/bin/python3"
+    dest: "/usr/bin/python3"
+    src: "/usr/bin/python3.12"
     state: link
 
 - name: 'INSTALL | Add pip symlink to pip3'
   ansible.builtin.file:
     force: true
-    dest: "/usr/bin/pip"
-    src: "/usr/bin/pip3"
-    state: link
-
+    dest: "/usr/bin/pip3"
+    src: "/usr/bin/pip3.12"
 # Create user
 - name: 'INSTALL | Manage airflow user creation'
   user:
