@@ -10,5 +10,6 @@ _airflow_system_dependencies:
  - name: 'libxslt-devel'
  - name: 'gcc'
  - name: 'python3.12-devel'
+ - name: 'python3-gobject'
  - name: 'python3.12-pip'
  - name: 'sqlite'
