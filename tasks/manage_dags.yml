@@ -4,7 +4,7 @@
 - name: 'CONFIG | DAGS | Clone listed DAG git repositories'
   become_user: "{{ airflow_user_name }}"
   become: true
-  git:
+  ansible.builtin.git:
     repo: "{{ item.repo }}"
     dest: "{{ dags_repos_folder }}/{{ item.dest_folder }}"
     clone: true
@@ -19,7 +19,7 @@
 - name: 'CONFIG | DAGS | Link dag repository to dags folder'
   become_user: "{{ airflow_user_name }}"
   become: true
-  file:
+  ansible.builtin.file:
     state: link
     path: "{{ dags_folder }}/{{ item.dest_folder }}"
     src: "{{ dags_repos_folder }}/{{ item.dest_folder }}{% if item.dags_folder_name is defined %}/{{ item.dags_folder_name }}{% endif %}"
@@ -31,7 +31,7 @@
 - name: 'CONFIG | DAGS | Clone listed DAG-related git repositories'
   become_user: "{{ airflow_user_name }}"
   become: true
-  git:
+  ansible.builtin.git:
     repo: "{{ item.repo }}"
     dest: "{{ item.dest_folder }}"
     clone: true
@@ -43,7 +43,7 @@
 
 # Manage DAGs system dependencies
 - name: 'INSTALL | Manage DAG system dependencies'
-  package:
+  ansible.builtin.package:
     name: "{{ item.name }}"
     state: "{{ item.state | default('present') }}"
   with_items: "{{ airflow_dag_system_dependencies }}"

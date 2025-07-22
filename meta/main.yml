@@ -17,12 +17,10 @@ galaxy_info:
       versions:
         - 'xenial'
         - 'bionic'
-    - name: 'Centos'
+    - name: EL
       versions:
-        - '7'
-    - name: rockylinux
-      versions:
-        - 8
+        - "8"
+        - "9"
   galaxy_tags:
     - 'system'
 dependencies:

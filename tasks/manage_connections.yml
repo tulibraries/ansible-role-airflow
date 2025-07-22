@@ -5,7 +5,7 @@
 - name: 'CONFIG | CONNECTIONS | Get existing connections'
   become_user: "{{ airflow_user_name }}"
   become: true
-  shell: >
+  ansible.builtin.shell: >
     set -o pipefail && \
       {{ airflow_virtualenv }}/bin/airflow connections list -o yaml | grep conn_id | cut -d ':' -f2 | sed 's/^\s*//' | sed 's/\s*$//'
   changed_when: false
@@ -19,7 +19,7 @@
 
 # Only add and delete actions are managed, not update
 - name: 'CONFIG | CONNECTIONS | Remove listed connections'
-  command: >
+  ansible.builtin.command: >
     {{ airflow_virtualenv }}/bin/airflow connections delete {{ item.conn_id }}
   changed_when: false
   failed_when: false
@@ -30,7 +30,7 @@
     - connections
 
 - name: 'CONFIG | CONNECTIONS | Add connections using conn_uri'
-  command: >
+  ansible.builtin.command: >
     {{ airflow_virtualenv }}/bin/airflow connections add \
     {{ item.conn_id }} \
     --conn-uri {{ item.conn_uri | default("") | quote }} \
@@ -43,7 +43,7 @@
     - connections
 
 - name: 'CONFIG | CONNECTIONS | Add connections not using conn_uri without port'
-  command: >
+  ansible.builtin.command: >
     {{ airflow_virtualenv }}/bin/airflow connections add \
     {{ item.conn_id }} \
     --conn-type {{ item.conn_type | default("") | quote }} \
@@ -63,7 +63,7 @@
     - connections
 
 - name: 'CONFIG | CONNECTIONS | Add connections not using conn_uri with port'
-  command: >
+  ansible.builtin.command: >
     {{ airflow_virtualenv }}/bin/airflow connections add \
     {{ item.conn_id }} \
     --conn-type {{ item.conn_type | default("") | quote }} \

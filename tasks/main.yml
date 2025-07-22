@@ -3,7 +3,7 @@
 # Main tasks file for airflow role
 
 - name: 'INIT | Manage variables to use for our target'
-  import_tasks: "manage_variables.yml"
+  ansible.builtin.import_tasks: "manage_variables.yml"
   tags:
     - 'role::airflow'
     - 'role::airflow::init'
@@ -12,7 +12,7 @@
 
 # Installation tasks management
 - name: 'INSTALL | Include installation tasks'
-  import_tasks: "manage_installation.yml"
+  ansible.builtin.import_tasks: "manage_installation.yml"
   environment:
     AIRFLOW_HOME: "{{ airflow_application_home }}"
   become: true
@@ -22,7 +22,7 @@
 
 # Configuration tasks management
 - name: 'CONFIG | Include configuration tasks'
-  import_tasks: "manage_configuration.yml"
+  ansible.builtin.import_tasks: "manage_configuration.yml"
   environment:
     AIRFLOW_HOME: "{{ airflow_application_home }}"
     LD_LIBRARY_PATH: "/usr/local/lib:$LD_LIBRARY_PATH"
@@ -34,7 +34,7 @@
 
 # Services tasks management
 - name: 'SERVICE | Include services configuration tasks'
-  import_tasks: "manage_services.yml"
+  ansible.builtin.import_tasks: "manage_services.yml"
   become: true
   tags:
     - 'role::airflow'
@@ -44,7 +44,7 @@
 
 # Connections tasks management
 - name: 'CONFIG | Include connections tasks'
-  import_tasks: "manage_connections.yml"
+  ansible.builtin.import_tasks: "manage_connections.yml"
   environment:
     AIRFLOW_HOME: "{{ airflow_application_home }}"
     LD_LIBRARY_PATH: "/usr/local/lib:$LD_LIBRARY_PATH"
@@ -56,7 +56,7 @@
 
 # Airflow variables tasks management
 - name: 'CONFIG | Include variables tasks'
-  import_tasks: "manage_airflow_variables.yml"
+  ansible.builtin.import_tasks: "manage_airflow_variables.yml"
   environment:
     AIRFLOW_HOME: "{{ airflow_application_home }}"
     LD_LIBRARY_PATH: "/usr/local/lib:$LD_LIBRARY_PATH"
@@ -67,7 +67,7 @@
 
 # Airflow DAGs tasks management
 - name: 'CONFIG | Include DAG codebases'
-  import_tasks: "manage_dags.yml"
+  ansible.builtin.import_tasks: "manage_dags.yml"
   environment:
     AIRFLOW_HOME: "{{ airflow_application_home }}"
     LD_LIBRARY_PATH: "/usr/local/lib:$LD_LIBRARY_PATH"

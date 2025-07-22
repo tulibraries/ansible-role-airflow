@@ -6,7 +6,7 @@
 - name: 'CONFIG | Manage configuration templating'
   become_user: "{{ airflow_user_name }}"
   become: true
-  template:
+  ansible.builtin.template:
     src: "{{ airflow_config_template }}"
     dest: "{{ airflow_application_home }}/airflow.cfg"
     owner: "{{ airflow_user_name }}"
@@ -17,7 +17,7 @@
 
 # Manage logs folder
 - name: 'CONFIG | Manage log folder'
-  file:
+  ansible.builtin.file:
     path: "{{ airflow_log_path }}"
     owner: "{{ airflow_log_owner }}"
     group: "{{ airflow_log_group }}"
@@ -27,7 +27,7 @@
 
 # Manage pid folder
 - name: 'CONFIG | Manage pid folder'
-  file:
+  ansible.builtin.file:
     path: "{{ airflow_pid_path }}"
     owner: "{{ airflow_pid_owner }}"
     group: "{{ airflow_pid_group }}"
@@ -37,7 +37,7 @@
 
 # Manage logrotate configuration
 - name: 'CONFIG | Manage logrotate configuration'
-  template:
+  ansible.builtin.template:
     src: "{{ airflow_logrotate_template }}"
     dest: "{{ item.filename }}"
     owner: 'root'
@@ -49,7 +49,7 @@
 # If airflow_*_config.webserver.authentication: True
 # copy over updated webserver config (overlays existing)
 - name: 'CONFIG | Generate Webserver Config'
-  template:
+  ansible.builtin.template:
     src: "templates/webserver_config.py"
     dest: "{{ airflow_application_home ~ '/webserver_config.py' }}"
     owner: "{{ airflow_user_name }}"
@@ -64,12 +64,12 @@
 - name: 'CONFIG | Manage database creation or upgrade'
   become_user: "{{ airflow_user_name }}"
   become: true
-  command: "{{ airflow_virtualenv }}/bin/airflow db migrate"
+  ansible.builtin.command: "{{ airflow_virtualenv }}/bin/airflow db migrate"
   run_once: true
 
 # Set Sqlite backend permissions
 - name: 'CONFIG | Ensure SQLite backend file has good permissions'
-  file:
+  ansible.builtin.file:
     path: "{{ airflow_database_sqlite_file_path }}"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_group }}"
@@ -85,7 +85,7 @@
   no_log: true
   changed_when: false
   failed_when: false
-  command: "{{ airflow_virtualenv }}/bin/airflow users create \
+  ansible.builtin.command: "{{ airflow_virtualenv }}/bin/airflow users create \
             --role Admin \
             --username {{ item.google_username }} \
             --email {{ item.email }} \
