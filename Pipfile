@@ -5,15 +5,14 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
-pytest-testinfra = "*"
 docker = "*"
-molecule = "*"
-molecule-docker = "*"
-pylint = "*"
+pytest-testinfra = "*"
+ansible-lint = "*"
 
 [packages]
 ansible = "*"
-ansible-lint = "*"
+molecule = "*"
+molecule-docker = "*"
 cryptography = "*"
 requests = "*"
 
