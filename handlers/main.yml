@@ -4,7 +4,7 @@
 
 - name: 'Restart airflow'
   become: true
-  service:
+  ansible.builtin.service:
     name: "{{ item.name }}"
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
@@ -17,7 +17,7 @@
 
 - name: 'Restart airflow-webserver'
   become: true
-  service:
+  ansible.builtin.service:
     name: "{{ item.name }}"
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
@@ -32,7 +32,7 @@
 
 - name: 'Restart airflow-scheduler'
   become: true
-  service:
+  ansible.builtin.service:
     name: "{{ item.name }}"
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
@@ -47,7 +47,7 @@
 
 - name: 'Restart airflow-kerberos'
   become: true
-  service:
+  ansible.builtin.service:
     name: "{{ item.name }}"
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
@@ -61,7 +61,7 @@
 
 - name: 'Restart airflow-worker'
   become: true
-  service:
+  ansible.builtin.service:
     name: "{{ item.name }}"
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
@@ -75,7 +75,7 @@
 
 - name: 'Restart airflow-flower'
   become: true
-  service:
+  ansible.builtin.service:
     name: "{{ item.name }}"
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"

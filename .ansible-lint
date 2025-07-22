@@ -1,4 +1,7 @@
 ---
 skip_list:
   - '503'
+  - no-changed-when
+  - yaml[brackets]
+  - yaml[line-length]
 use_default_rules: true

@@ -5,7 +5,7 @@
 - name: 'CONFIG | VARIABLES | Get existing variables'
   become_user: "{{ airflow_user_name }}"
   become: true
-  shell: >
+  ansible.builtin.shell: >
     set -o pipefail && \
       {{ airflow_virtualenv }}/bin/airflow variables export /tmp/variables.json
   changed_when: false
@@ -17,7 +17,7 @@
 
 
 - name: 'CONFIG | VARIABLES | Display the JSON file content'
-  command:
+  ansible.builtin.command:
     cat /tmp/variables.json
   register: airflow_existing_variables
   run_once: true
@@ -26,25 +26,25 @@
 
 - name: 'CONFIG | VARIABLES | Save the Json data as a Fact'
   run_once: true
-  set_fact:
+  ansible.builtin.set_fact:
     airflow_existing_variables: "{{ airflow_existing_variables.stdout | from_json }}"
 
 
 - name: 'CONFIG | VARIABLES | Merge variables'
   run_once: true
-  set_fact:
+  ansible.builtin.set_fact:
     merged_variables: "{{ airflow_existing_variables | combine(airflow_variables | items2dict) }}"
 
 
 - name: 'CONFIG | VARIABLES | Save merged_variables to a file'
-  copy:
+  ansible.builtin.copy:
     content: "{{ merged_variables | to_json }}"
     dest: /tmp/merged_variables.json
-    mode: 0644
+    mode: "0644"
 
 
 - name: 'CONFIG | VARIABLES | Import variables from file'
-  shell: >
+  ansible.builtin.shell: >
     set -o pipefail && \
     {{ airflow_virtualenv }}/bin/airflow variables import /tmp/merged_variables.json
   no_log: true

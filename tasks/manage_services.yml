@@ -3,7 +3,7 @@
 # Airflow services management
 
 - name: 'SERVICE | Manage environment file'
-  template:
+  ansible.builtin.template:
     src: "{{ airflow_service_envfile_template }}"
     dest: "{{ airflow_service_envfile_path }}"
     owner: "{{ airflow_paths.files.environment.owner | default('root') }}"
@@ -16,7 +16,7 @@
 
 
 - name: 'SERVICE | Manage systemd services'
-  template:
+  ansible.builtin.template:
     src: "templates/systemd.service.j2"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner | default('root') }}"
@@ -28,14 +28,14 @@
   when: "is_systemd_managed_system | bool"
 
 - name: 'SERVICE | systemd daemon-reload'
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: true
   when: "(is_systemd_managed_system | bool) and (airflow_systemd_updated.changed | bool)"
 
 
 # Services states
 - name: 'SERVICE | Manage airflow services states'
-  service:
+  ansible.builtin.service:
     name: "{{ item.name }}"
     enabled: "{{ item.enabled | default(False) }}"
     state: "{{ item.state }}"
