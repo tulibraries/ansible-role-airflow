@@ -10,7 +10,7 @@ pytest-testinfra = "*"
 ansible-lint = "*"
 
 [packages]
-ansible = "*"
+ansible = "==12.1.0"
 molecule = "*"
 molecule-docker = "*"
 cryptography = "*"

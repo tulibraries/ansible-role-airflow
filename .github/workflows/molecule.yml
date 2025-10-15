@@ -4,14 +4,17 @@ name: Molecule Test
 
 on:
   push:
-  pull_request:
-    types: [ opened, synchronize, reopened ]
-    branches: [ main ]
+    branches-ignore:
+      - main
   workflow_dispatch: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
   cancel-in-progress: true
+
+# Temporary variable until molecule-docker officially supports ansible 2.19+
+env:
+  ANSIBLE_ALLOW_BROKEN_CONDITIONALS: "True"
 
 jobs:
   molecule:
