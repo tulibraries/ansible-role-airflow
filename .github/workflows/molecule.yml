@@ -21,7 +21,7 @@ env:
 
 jobs:
   molecule:
-    runs-on: [ self-hosted, systemd-runner ]
+    runs-on: [ self-hosted ]
     timeout-minutes: 30
     strategy:
       matrix:
