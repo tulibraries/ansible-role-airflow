@@ -6,4 +6,4 @@
 
 - src: tulibraries.ansible_role_server_bootstrap
   name: tulibraries.server-bootstrap
-  version: v1.0.0
+  version: v1.1.3
