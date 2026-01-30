@@ -3,6 +3,12 @@
 # Airflow installation tasks
 
 # Manage system dependencies
+- name: Update system packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_cache: true
+    
 - name: 'INSTALL | Manage system dependencies'
   ansible.builtin.package:
     name: "{{ item.name }}"
