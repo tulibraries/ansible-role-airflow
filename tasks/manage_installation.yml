@@ -3,6 +3,20 @@
 # Airflow installation tasks
 
 # Manage system dependencies
+- name: Refresh DNF metadata
+  ansible.builtin.dnf:
+    update_cache: true
+
+- name: Ensure openssl-libs is present
+  ansible.builtin.dnf:
+    name: openssl-libs
+    state: present
+
+- name: Install openssl-devel
+  ansible.builtin.dnf:
+    name: openssl-devel
+    state: present
+    
 - name: 'INSTALL | Manage system dependencies'
   ansible.builtin.package:
     name: "{{ item.name }}"
@@ -79,6 +93,17 @@
   when: airflow_provide_user_env
 
 # Install airflow packages
+- name: Normalize airflow_packages from PYTHON_DEPS
+  ansible.builtin.set_fact:
+    airflow_packages: >-
+      {{
+        PYTHON_DEPS.split(',')
+        | map('regex_replace', '^([^<>=!]+)(.*)$', '{"name":"\\1","version":"\\2"}')
+        | map('from_json')
+        | list
+      }}
+  when: airflow_packages is not defined and PYTHON_DEPS is defined
+
 - name: 'INSTALL | Manage airflow installation'
   become_user: "{{ airflow_user_name }}"
   become: true
@@ -98,6 +123,17 @@
       ( (not item.version is search('<') ) and (not item.version is search('>') ) )
 
 # Install dag dependency packages
+- name: Normalize dag_packages from DAG_DEPS
+  ansible.builtin.set_fact:
+    dag_packages: >-
+      {{
+        DAG_DEPS.split(',')
+        | map('regex_replace', '^(.*)$', '{"name":"\\1"}')
+        | map('from_json')
+        | list
+      }}
+  when: dag_packages is not defined and DAG_DEPS is defined
+  
 - name: 'INSTALL | Manage dag dependency installation'
   become_user: "{{ airflow_user_name }}"
   become: true
