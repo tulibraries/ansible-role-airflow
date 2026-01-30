@@ -47,13 +47,3 @@ jobs:
 
       - name: Molecule test
         run: pipenv run molecule test
-
-  notify_on_failure:
-    if: failure()
-    needs: [molecule]
-    uses: tulibraries/.github/.github/workflows/slack-notify.yml@main
-    with:
-      repo: ${{ github.repository }}
-      run_id: ${{ github.run_id }}
-      workflow: ${{ github.workflow }}
-    secrets: inherit
