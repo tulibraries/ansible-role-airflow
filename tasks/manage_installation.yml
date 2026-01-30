@@ -3,11 +3,19 @@
 # Airflow installation tasks
 
 # Manage system dependencies
-- name: Update system packages
+- name: Refresh DNF metadata
   ansible.builtin.dnf:
-    name: "*"
-    state: latest
     update_cache: true
+
+- name: Ensure openssl-libs is present
+  ansible.builtin.dnf:
+    name: openssl-libs
+    state: present
+
+- name: Install openssl-devel
+  ansible.builtin.dnf:
+    name: openssl-devel
+    state: present
     
 - name: 'INSTALL | Manage system dependencies'
   ansible.builtin.package:
