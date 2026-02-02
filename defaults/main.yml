@@ -289,5 +289,5 @@ airflow_dag_system_dependencies:
   - name: "@Development tools"
     state: "present"
 
-PYTHON_DEPS: ""
-DAG_DEPS: ""
+python_deps: ""
+dag_deps: ""
