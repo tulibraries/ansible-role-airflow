@@ -93,7 +93,15 @@
   when: airflow_provide_user_env
 
 # Install airflow packages
-- name: Normalize airflow_packages from PYTHON_DEPS
+- name: Import dependency lists from environment
+  ansible.builtin.set_fact:
+    python_deps: "{{ lookup('env', 'PYTHON_DEPS') }}"
+    dag_deps: "{{ lookup('env', 'DAG_DEPS') }}"
+  when:
+    - python_deps | length == 0
+    - dag_deps | length == 0
+
+- name: Normalize airflow_packages from python_deps
   ansible.builtin.set_fact:
     airflow_packages: >-
       {{
@@ -110,9 +118,9 @@
           }
         ]
       }}
-  loop: "{{ PYTHON_DEPS.split(',') }}"
+  loop: "{{ python_deps.split(',') }}"
   when:
-    - PYTHON_DEPS | length > 0
+    - python_deps | length > 0
 
 - name: 'INSTALL | Manage airflow installation'
   become_user: "{{ airflow_user_name }}"
@@ -133,7 +141,7 @@
       ( (not item.version is search('<') ) and (not item.version is search('>') ) )
 
 # Install dag dependency packages
-- name: Normalize airflow_packages from DAG_DEPS
+- name: Normalize airflow_packages from dag_deps
   ansible.builtin.set_fact:
     airflow_packages: >-
       {{
@@ -150,9 +158,9 @@
           }
         ]
       }}
-  loop: "{{ DAG_DEPS.split(',') }}"
+  loop: "{{ dag_deps.split(',') }}"
   when:
-    - DAG_DEPS | length > 0
+    - dag_deps | length > 0
   
 - name: 'INSTALL | Manage dag dependency installation'
   become_user: "{{ airflow_user_name }}"
