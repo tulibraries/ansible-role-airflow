@@ -97,13 +97,22 @@
   ansible.builtin.set_fact:
     airflow_packages: >-
       {{
-        PYTHON_DEPS.split(',')
-        | map('regex_replace', '^([^<>=!]+)(.*)$', '{"name":"\\1","version":"\\2"}')
-        | map('from_json')
-        | list
+        airflow_packages | default([]) +
+        [
+          {
+            "name": item | split('==') | first
+                           | split('>=') | first
+                           | split('<=') | first
+                           | split('!=') | first
+                           | split('>')  | first
+                           | split('<')  | first,
+            "version": item | regex_replace('^[^<>=!]+', '')
+          }
+        ]
       }}
-  when: 
-    - PYTHON_DEPS is defined
+  loop: "{{ PYTHON_DEPS.split(',') }}"
+  when:
+    - PYTHON_DEPS | length > 0
 
 - name: 'INSTALL | Manage airflow installation'
   become_user: "{{ airflow_user_name }}"
@@ -124,17 +133,26 @@
       ( (not item.version is search('<') ) and (not item.version is search('>') ) )
 
 # Install dag dependency packages
-- name: Normalize dag_packages from DAG_DEPS
+- name: Normalize airflow_packages from DAG_DEPS
   ansible.builtin.set_fact:
-    dag_packages: >-
+    airflow_packages: >-
       {{
-        DAG_DEPS.split(',')
-        | map('regex_replace', '^(.*)$', '{"name":"\\1"}')
-        | map('from_json')
-        | list
+        airflow_packages | default([]) +
+        [
+          {
+            "name": item | split('==') | first
+                           | split('>=') | first
+                           | split('<=') | first
+                           | split('!=') | first
+                           | split('>')  | first
+                           | split('<')  | first,
+            "version": item | regex_replace('^[^<>=!]+', '')
+          }
+        ]
       }}
-  when: 
-    - DAG_DEPS is defined
+  loop: "{{ DAG_DEPS.split(',') }}"
+  when:
+    - DAG_DEPS | length > 0
   
 - name: 'INSTALL | Manage dag dependency installation'
   become_user: "{{ airflow_user_name }}"
