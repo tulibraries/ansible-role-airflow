@@ -104,7 +104,6 @@
       }}
   when: 
     - PYTHON_DEPS is defined
-    - airflow_packages is not defined or airflow_packages is string
 
 - name: 'INSTALL | Manage airflow installation'
   become_user: "{{ airflow_user_name }}"
@@ -136,7 +135,6 @@
       }}
   when: 
     - DAG_DEPS is defined
-    - airflow_packages is not defined or airflow_packages is string
   
 - name: 'INSTALL | Manage dag dependency installation'
   become_user: "{{ airflow_user_name }}"
