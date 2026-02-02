@@ -102,7 +102,9 @@
         | map('from_json')
         | list
       }}
-  when: airflow_packages is not defined and PYTHON_DEPS is defined
+  when: 
+    - PYTHON_DEPS is defined
+    - airflow_packages is not defined or airflow_packages is string
 
 - name: 'INSTALL | Manage airflow installation'
   become_user: "{{ airflow_user_name }}"
@@ -132,7 +134,9 @@
         | map('from_json')
         | list
       }}
-  when: dag_packages is not defined and DAG_DEPS is defined
+  when: 
+    - DAG_DEPS is defined
+    - airflow_packages is not defined or airflow_packages is string
   
 - name: 'INSTALL | Manage dag dependency installation'
   become_user: "{{ airflow_user_name }}"
