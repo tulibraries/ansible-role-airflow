@@ -4,4 +4,5 @@ skip_list:
   - no-changed-when
   - yaml[brackets]
   - yaml[line-length]
+  - var-naming[pattern]
 use_default_rules: true

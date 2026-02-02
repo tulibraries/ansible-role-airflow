@@ -288,3 +288,6 @@ dags_related_git_repositories:
 airflow_dag_system_dependencies:
   - name: "@Development tools"
     state: "present"
+
+PYTHON_DEPS: ""
+DAG_DEPS: ""

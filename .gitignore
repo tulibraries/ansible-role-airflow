@@ -2,6 +2,7 @@
 *.retry
 roles/
 tests/roles/
+.ansible
 
 # Swap files
 *.swo
