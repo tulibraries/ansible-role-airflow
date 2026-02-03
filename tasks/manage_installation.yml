@@ -157,7 +157,7 @@
   ansible.builtin.set_fact:
     airflow_packages: >-
       {{
-        airflow_packages | default([]) +
+        dag_packages | default([]) +
         [
           {
             "name": item | split('==') | first
