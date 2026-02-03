@@ -100,6 +100,12 @@
     - python_deps | length == 0
     - lookup('env', 'PYTHON_DEPS') | length > 0
 
+- name: Ensure airflow_packages is a list
+  ansible.builtin.set_fact:
+    airflow_packages: []
+  when:
+    - airflow_packages is not defined or airflow_packages is string
+
 - name: Normalize airflow_packages from python_deps
   ansible.builtin.set_fact:
     airflow_packages: >-
@@ -120,12 +126,6 @@
   loop: "{{ python_deps.split(',') }}"
   when:
     - python_deps | length > 0
-
-- name: Ensure airflow_packages is a list
-  ansible.builtin.set_fact:
-    airflow_packages: []
-  when:
-    - airflow_packages is not defined or airflow_packages is string
 
 - name: 'INSTALL | Manage airflow installation'
   become_user: "{{ airflow_user_name }}"
