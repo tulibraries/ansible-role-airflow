@@ -152,6 +152,12 @@
   when:
     - dag_deps | length == 0
     - lookup('env', 'DAG_DEPS') | length > 0
+
+- name: Ensure dag_packages is a list
+  ansible.builtin.set_fact:
+    dag_packages: []
+  when:
+    - dag_packages is not defined or dag_packages is string
     
 - name: Normalize dag_packages from dag_deps
   ansible.builtin.set_fact:
