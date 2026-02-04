@@ -153,9 +153,9 @@
     - dag_deps | length == 0
     - lookup('env', 'DAG_DEPS') | length > 0
     
-- name: Normalize airflow_packages from dag_deps
+- name: Normalize dag_packages from dag_deps
   ansible.builtin.set_fact:
-    airflow_packages: >-
+    dag_packages: >-
       {{
         dag_packages | default([]) +
         [
