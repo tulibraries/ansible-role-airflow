@@ -36,7 +36,7 @@ platforms:
 provisioner:
   name: ansible
   env:
-    PYTHON_DEPS: "apache-airflow==2.10.5,Flask"
+    PYTHON_DEPS: "apache-airflow==2.11.2,Flask"
     DAG_DEPS: "awscli,pandas"
 verifier:
   name: testinfra
