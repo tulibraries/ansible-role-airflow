@@ -7,18 +7,35 @@
       {{
         airflow_connections_import | default({}) |
         combine({
-          item.conn_id: {
-            "conn_type": (item.conn_uri | urlsplit).scheme,
-            "host": (item.conn_uri | urlsplit).hostname,
-            "port": (item.conn_uri | urlsplit).port,
-            "extra": (item.conn_extra | default({}) | to_json)
-          }
+          item.conn_id:
+            (
+              (
+                {
+                  "conn_type": (item.conn_uri | urlsplit).scheme,
+                  "host": (item.conn_uri | urlsplit).hostname,
+                  "port": (item.conn_uri | urlsplit).port
+                }
+              )
+              if (item.conn_uri | default("") | length > 0)
+              else
+              (
+                {
+                  "conn_type": item.conn_type | default(""),
+                  "host": item.conn_host | default(""),
+                  "login": item.conn_login | default(""),
+                  "password": item.conn_password | default(""),
+                  "schema": item.conn_schema | default(""),
+                  "port": (item.conn_port | default(0)) | int
+                }
+              )
+            )
+            | combine({
+                "extra": (item.conn_extra | default({}) | to_json)
+              })
         })
       }}
   loop: "{{ airflow_connections }}"
-  when:
-    - airflow_connections | default([]) | length > 0
-    - (item.conn_uri | default("")) | length > 0
+  when: airflow_connections | default([]) | length > 0
   tags:
     - connections
 
@@ -29,9 +46,9 @@
   become: true
   ansible.builtin.copy:
     dest: /tmp/airflow_connections.json
-    content: "{{ airflow_connections_import | to_json }}"
+    content: "{{ airflow_connections_import | to_nice_json }}"
     mode: "0600"
-  when: airflow_connections | default([]) | length > 0
+  when: airflow_connections_import is defined
   tags:
     - connections
 
@@ -50,6 +67,6 @@
   changed_when: false
   environment:
     AIRFLOW__METRICS__STATSD_ON: "False"
-  when: airflow_connections | default([]) | length > 0
+  when: airflow_connections_import is defined
   tags:
     - connections
