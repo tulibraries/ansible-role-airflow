@@ -1,84 +1,55 @@
 ---
 
-# Manage connections using Airflow CLI
+# Build dictionary in Airflow import format
+- name: "CONFIG | CONNECTIONS | Build import structure"
+  ansible.builtin.set_fact:
+    airflow_connections_import: >-
+      {{
+        airflow_connections_import | default({}) |
+        combine({
+          item.conn_id: {
+            "conn_type": (item.conn_uri | urlsplit).scheme,
+            "host": (item.conn_uri | urlsplit).hostname,
+            "port": (item.conn_uri | urlsplit).port,
+            "extra": (item.conn_extra | default({}) | to_json)
+          }
+        })
+      }}
+  loop: "{{ airflow_connections }}"
+  when:
+    - airflow_connections | default([]) | length > 0
+    - (item.conn_uri | default("")) | length > 0
+  tags:
+    - connections
 
-- name: 'CONFIG | CONNECTIONS | Get existing connections'
+
+# Write JSON file used by airflow connections import
+- name: "CONFIG | CONNECTIONS | Write connections import file"
   become_user: "{{ airflow_user_name }}"
   become: true
-  ansible.builtin.shell: >
-    set -o pipefail && \
-      {{ airflow_virtualenv }}/bin/airflow connections list -o yaml | grep conn_id | cut -d ':' -f2 | sed 's/^\s*//' | sed 's/\s*$//'
-  changed_when: false
-  failed_when: false
-  no_log: true
-  register: 'airflow_existing_connections'
-  args:
-    executable: /bin/bash
+  ansible.builtin.copy:
+    dest: /tmp/airflow_connections.json
+    content: "{{ airflow_connections_import | to_json }}"
+    mode: "0600"
+  when: airflow_connections | default([]) | length > 0
   tags:
     - connections
 
-# Only add and delete actions are managed, not update
-- name: 'CONFIG | CONNECTIONS | Remove listed connections'
-  ansible.builtin.command: >
-    {{ airflow_virtualenv }}/bin/airflow connections delete {{ item.conn_id }}
-  changed_when: false
-  failed_when: false
-  no_log: true
-  with_items: "{{ airflow_connections }}"
-  when: 'item.conn_id in airflow_existing_connections.stdout_lines'
-  tags:
-    - connections
 
-- name: 'CONFIG | CONNECTIONS | Add connections using conn_uri'
-  ansible.builtin.command: >
-    {{ airflow_virtualenv }}/bin/airflow connections add \
-    {{ item.conn_id }} \
-    --conn-uri {{ item.conn_uri | default("") | quote }} \
-    --conn-extra '{{ item.conn_extra | default({}) | to_json }}'
+# Import connections (overwrite existing ones)
+- name: "CONFIG | CONNECTIONS | Import connections"
+  become_user: "{{ airflow_user_name }}"
+  become: true
+  ansible.builtin.command:
+    argv:
+      - "{{ airflow_virtualenv }}/bin/airflow"
+      - connections
+      - import
+      - "--overwrite"
+      - /tmp/airflow_connections.json
   changed_when: false
-  no_log: true
-  with_items: "{{ airflow_connections }}"
-  when: "(item.conn_uri | default('')) | length > 0"
-  tags:
-    - connections
-
-- name: 'CONFIG | CONNECTIONS | Add connections not using conn_uri without port'
-  ansible.builtin.command: >
-    {{ airflow_virtualenv }}/bin/airflow connections add \
-    {{ item.conn_id }} \
-    --conn-type {{ item.conn_type | default("") | quote }} \
-    --conn-host {{ item.conn_host | default("") | quote }} \
-    --conn-login {{ item.conn_login | default("") | quote }} \
-    --conn-password {{ item.conn_password | default("") | quote }} \
-    --conn-schema {{ item.conn_schema | default("") | quote }} \
-    --conn-extra '{{ item.conn_extra | default({}) | to_json }}'
-  changed_when: false
-  failed_when: false
-  no_log: true
-  with_items: "{{ airflow_connections }}"
-  when:
-    - "(item.conn_uri | default('')) | length == 0"
-    - "(item.conn_port | default(0)) | int == 0"
-  tags:
-    - connections
-
-- name: 'CONFIG | CONNECTIONS | Add connections not using conn_uri with port'
-  ansible.builtin.command: >
-    {{ airflow_virtualenv }}/bin/airflow connections add \
-    {{ item.conn_id }} \
-    --conn-type {{ item.conn_type | default("") | quote }} \
-    --conn-host {{ item.conn_host | default("") | quote }} \
-    --conn-login {{ item.conn_login | default("") | quote }} \
-    --conn-password {{ item.conn_password | default("") | quote }} \
-    --conn-schema {{ item.conn_schema | default("") | quote }} \
-    --conn-port {{ item.conn_port }} \
-    --conn-extra '{{ item.conn_extra | default({}) | to_json }}'
-  changed_when: false
-  failed_when: false
-  # no_log: true
-  with_items: "{{ airflow_connections }}"
-  when:
-    - "(item.conn_uri | default('')) | length == 0"
-    - "(item.conn_port | default(0)) | int > 0"
+  environment:
+    AIRFLOW__METRICS__STATSD_ON: "False"
+  when: airflow_connections | default([]) | length > 0
   tags:
     - connections

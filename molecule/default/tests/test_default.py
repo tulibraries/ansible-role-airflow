@@ -93,7 +93,10 @@ def test_airflow_processes(host):
     Test about airflow processes
     """
 
-    assert len(host.process.filter(user='airflow', comm='airflow')) >= 2
+    ps = host.check_output("ps -ef")
+
+    assert "airflow scheduler" in ps
+    assert "airflow-webserver" in ps
 
 
 @pytest.mark.parametrize('name', [
