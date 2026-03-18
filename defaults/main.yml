@@ -174,12 +174,6 @@ airflow_defaults_config:
   email:
     email_backend: 'airflow.utils.email.send_email_smtp'
 
-  google:
-    client_id: "your generated client id"
-    client_secret: "your generated client secret"
-    oauth_callback_route: "/oauth2callback"
-    domain: "your.airflow.domain.edu"
-
   smtp: {}
 
   ldap: {}
