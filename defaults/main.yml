@@ -40,9 +40,24 @@ airflow_google_client_id: "your-client-id"
 airflow_google_client_secret: "your-client-secret"
 
 airflow_celery:
-  broker_url: "redis://:{{ redis_requirepass }}@{{ redis_bind_interface }}:{{ redis_port }}/1"
-  result_backend: "db+postgresql+psycopg2://{{ postgres_airflow_user }}:{{ postgres_airflow_password }}@{{ postgres_hostname | default('localhost') }}/airflow"
+  broker_url: >-
+    {{
+      (
+        "redis://:{}@{}:{}/1".format(redis_requirepass, redis_bind_interface, redis_port)
+      )
+      if (redis_requirepass is defined and redis_requirepass)
+      else
+      (
+        "redis://{}:{}/1".format(redis_bind_interface, redis_port)
+      )
+    }}
+  result_backend: >-
+    db+postgresql+psycopg2://{{ postgres_airflow_user }}:{{ postgres_airflow_password }}@{{ postgres_hostname | default('localhost') }}/airflow
   worker_concurrency: 16
+
+redis_requirepass: ""
+redis_bind_interface: "localhost"
+redis_port: 6379
 
 airflow_python_version: "{{ _airflow_python_version }}"
 python_version: "3.12.13"
