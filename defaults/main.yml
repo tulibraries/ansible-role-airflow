@@ -63,7 +63,7 @@ airflow_celery:
       if (postgres_airflow_user is defined and postgres_airflow_password is defined)
       else ""
     }}  worker_concurrency: 16
-
+airflow_executor: "LocalExecutor"
 redis_requirepass: ""
 redis_bind_interface: "localhost"
 redis_port: 6379
