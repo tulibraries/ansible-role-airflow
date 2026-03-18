@@ -46,9 +46,9 @@
   with_items: "{{ airflow_logrotate_config }}"
 
 
-# If airflow_*_config.webserver.authentication: True
+# If airflow_auth_enabled: true:
 # copy over updated webserver config (overlays existing)
-- name: 'CONFIG | Generate Webserver Config'
+- name: 'CONFIG | Generate Api server Config'
   ansible.builtin.template:
     src: "templates/webserver_config.py"
     dest: "{{ airflow_application_home ~ '/webserver_config.py' }}"
@@ -57,7 +57,7 @@
     mode: '0400'
   notify: 'Restart airflow'
   when:
-    - "airflow_webserver_authenticate | bool"
+    - "airflow_auth_enabled | bool"
 
 
 # Manage database initialize if first deployment
@@ -77,9 +77,9 @@
   when:
     - "airflow_database_engine == 'sqlite'"
 
-# If airflow_*_config.webserver.authentication: True
+# If airflow_auth_enabled: true
 # add airflow_admin users to airflow
-- name: 'CONFIG | Generate Airflow Webserver Admin Users'
+- name: 'CONFIG | Generate Airflow Api server Admin Users'
   become_user: "{{ airflow_user_name }}"
   become: true
   no_log: true
@@ -93,7 +93,7 @@
             --lastname {{ item.lastname }} \
             --password {{ item.airflow_dummy_password }} "
   when:
-    - "airflow_webserver_authenticate | bool"
+    - "airflow_auth_enabled | bool"
   with_items: "{{ airflow_webserver_admins }}"
   tags:
     - "add_users"
