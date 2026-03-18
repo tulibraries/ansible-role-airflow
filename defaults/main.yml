@@ -39,6 +39,11 @@ airflow_virtualenv_mode: "0755"
 airflow_google_client_id: "your-client-id"
 airflow_google_client_secret: "your-client-secret"
 
+airflow_celery:
+  broker_url: "redis://:{{ redis_requirepass }}@{{ redis_bind_interface }}:{{ redis_port }}/1"
+  result_backend: "db+postgresql+psycopg2://{{ postgres_airflow_user }}:{{ postgres_airflow_password }}@{{ postgres_hostname | default('localhost') }}/airflow"
+  worker_concurrency: 16
+
 airflow_python_version: "{{ _airflow_python_version }}"
 python_version: "3.12.13"
 # Update if python version or apache airflow version changes.
@@ -157,11 +162,6 @@ airflow_defaults_config:
     secret_key: '96868ea5c214b0df1f26e8114e7abcee01ad76b299fa0fc51f6b4116e249'
     workers: 1
     worker_timeout: 30
-
-  celery:
-    worker_concurrency: 16
-    broker_url: 'sqla+mysql://airflow:airflow@localhost:3306/airflow'
-    celery_result_backend: 'db+mysql://airflow:airflow@localhost:3306/airflow'
 
   dag_processor:
     parsing_processes: 2
