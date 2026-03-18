@@ -36,10 +36,13 @@ airflow_pid_mode: '0700'
 airflow_virtualenv: "{{ airflow_user_home_path }}/venv3.12"
 airflow_virtualenv_mode: "0755"
 
+airflow_google_client_id: "your-client-id"
+airflow_google_client_secret: "your-client-secret"
+
 airflow_python_version: "{{ _airflow_python_version }}"
 python_version: "3.12.13"
 # Update if python version or apache airflow version changes.
-airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-2.11.2/constraints-3.12.txt"
+airflow_python_constraint: "--constraint=https://raw.githubusercontent.com/apache/airflow/constraints-3.1.8/constraints-3.12.txt"
 dags_repos_folder: "{{ airflow_user_home_path ~ '/airflow/dags_repos' }}"
 dags_folder: "{{ airflow_user_home_path ~ '/airflow/dags' }}"
 
@@ -47,11 +50,13 @@ airflow_packages:
   - name: 'GitPython'
   - name: 'Cython'
   - name: 'apache-airflow'
-    version: '2.11.2'
+    version: '3.1.8'
   - name: 'pipenv'
   - name: 'numpy'
-airflow_extra_packages:
-  - name: 'apache-airflow[amazon]'
+  - name: 'apache-airflow-providers-amazon'
+  - name: 'apache-airflow-providers-fab'
+  - name: 'authlib'
+
 
 dag_packages: []
 
@@ -60,21 +65,23 @@ dag_packages: []
 airflow_provide_user_env: true
 airflow_profiled_template: "templates/airflow.profile.j2"
 
+airflow_auth_enabled: true
+
 # SERVICES MANAGEMENT
 # -----------------------------------------------------------------------------
 
 # Airflow systemd services specific settings
 is_systemd_managed_system: "{{ _is_systemd_managed_system | default(false) }}"
 airflow_services_systemd:
-  - dest: '/etc/systemd/system/airflow-webserver.service'
-    handler: 'Restart airflow-webserver'
+  - dest: '/etc/systemd/system/airflow-api-server.service'
+    handler: 'Restart airflow-api-server' 
     options:
       Install:
         WantedBy: 'multi-user.target'
       Service:
         Environment: "PATH={{ airflow_virtualenv ~ '/bin' }}"
         EnvironmentFile: "{{ airflow_service_envfile_path }}"
-        ExecStart: "{{ airflow_virtualenv ~ '/bin' }}/airflow webserver -l {{ airflow_log_path }}/webserver-l.log -A {{ airflow_log_path }}/webserver-access.log -E {{ airflow_log_path }}/webserver-errors.log"
+        ExecStart: "{{ airflow_virtualenv ~ '/bin' }}/airflow api-server"
         Group: "{{ airflow_user_group }}"
         PrivateTmp: 'true'
         Restart: 'on-failure'
@@ -83,7 +90,7 @@ airflow_services_systemd:
         User: "{{ airflow_user_name }}"
       Unit:
         After: 'network.target postgresql.service mysql.service redis.service rabbitmq-server.service'
-        Description: 'Airflow webserver daemon'
+        Description: 'Airflow API server daemon'
         Wants: 'postgresql.service mysql.service redis.service rabbitmq-server.service'
   - dest: '/etc/systemd/system/airflow-scheduler.service'
     handler: 'Restart airflow-scheduler'
@@ -106,7 +113,7 @@ airflow_services_systemd:
         Wants: 'postgresql.service mysql.service redis.service rabbitmq-server.service'
 
 airflow_services_states:
-  - name: 'airflow-webserver'
+  - name: 'airflow-api-server'
     enabled: true
     state: 'started'
   - name: 'airflow-scheduler'
@@ -128,112 +135,44 @@ airflow_webserver_authenticate: false
 airflow_config_template: "templates/airflow.cfg.j2"
 airflow_defaults_config:
   core:
-    airflow_home_mode: "0700"
+    auth_manager: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager 
     dags_folder: "{{ airflow_user_home_path ~ '/airflow/dags' }}"
-    dags_folder_mode: "0755"
-    encrypt_s3_logs: false
     executor: 'SequentialExecutor'
     parallelism: 32
     dags_are_paused_at_creation: true
-    non_pooled_task_slot_count: 128
+    default_pool_task_slot_count: 128
     max_active_runs_per_dag: 16
     load_examples: false
     plugins_folder: "{{ airflow_user_home_path ~ '/airflow/plugins' }}"
-    airflow_fernet_key: 'cryptography_not_found_storing_passwords_in_plain_text'
-    donot_pickle: false
+    # This is not real, temporary secret for testing purposes
+    fernet_key: 'kV9w7m8Z0Z7l6dKX8f2Vg7sH3lQ0bW5cYyJt9eR2u1Q='
     dagbag_import_timeout: 30
+  
+  api:
+    base_url: 'http://localhost:8080'
+    expose_config: true
+    host: '0.0.0.0'
+    port: '8080'
+    # This is not real, temporary secret for testing purposes
+    secret_key: '96868ea5c214b0df1f26e8114e7abcee01ad76b299fa0fc51f6b4116e249'
+    workers: 1
+    worker_timeout: 30
 
-  logging:
-    base_log_folder: "{{ airflow_log_path }}"
+  celery:
+    worker_concurrency: 16
+    broker_url: 'sqla+mysql://airflow:airflow@localhost:3306/airflow'
+    celery_result_backend: 'db+mysql://airflow:airflow@localhost:3306/airflow'
 
-    remote_base_log_folder: ''
-    remote_log_conn_id: ''
+  dag_processor:
+    parsing_processes: 2
 
   database:
     sql_alchemy_conn: "sqlite:///{{ airflow_database_sqlite_file_path }}"
     sql_alchemy_pool_size: 5
     sql_alchemy_pool_recycle: 3600
 
-  operators:
-    default_queue: 'default'
-    default_owner: 'Airflow'
-
-  webserver:
-    auth_backends: ''
-    authenticate: false
-    base_url: 'http://localhost:8080'
-    debug: false
-    expose_config: true
-    filter_by_owner: false
-    hostname: "{{ ansible_default_ipv4.address }}"
-    log_file: "{{ airflow_log_path }}/airflow-webserver.log"
-    pid: "{{ airflow_pid_path }}/airflow-webserver.pid"
-    # This is not real, temporary secret for testing purposes
-    secret_key: '96868ea5c214b0df1f26e8114e7abcee01ad76b299fa0fc51f6b4116e249'
-    web_server_host: '0.0.0.0'
-    web_server_port: '8080'
-    web_server_worker_timeout: 120
-    workers: 1
-    worker_class: 'sync'
-    worker_timeout: 30
-
   email:
     email_backend: 'airflow.utils.email.send_email_smtp'
-
-  smtp:
-    smtp_host: 'localhost'
-    smtp_starttls: true
-    smtp_ssl: false
-    smtp_user: 'airflow'
-    smtp_port: 25
-    smtp_password: 'airflow'
-    smtp_mail_from: 'airflow@airflow.com'
-
-  celery:
-    celery_app_name: 'airflow.providers.celery.executors.celery_executor'
-    worker_concurrency: 16
-    worker_log_server_port: 8793
-    broker_url: 'sqla+mysql://airflow:airflow@localhost:3306/airflow'
-    celery_result_backend: 'db+mysql://airflow:airflow@localhost:3306/airflow'
-    flower_port: 5555
-
-  scheduler:
-    job_heartbeat_sec: 5
-    log_file: "{{ airflow_log_path }}/airflow-scheduler.log"
-    max_tis_per_query: 0
-    pid: "{{ airflow_pid_path }}/airflow-scheduler.pid"
-    scheduler_heartbeat_sec: 5
-    parsing_processes: 2
-
-  mesos:
-    master: 'localhost:5050'
-    framework_name: 'Airflow'
-    task_cpu: 1
-    task_memory: 256
-    checkpoint: false
-    failover_timeout: 604800
-    authenticate: false
-    default_principal: 'admin'
-    default_secret: 'admin'
-
-  metrics:
-    statsd_on: false
-    statsd_host: 'localhost'
-    statsd_port: 8125
-    statsd_prefix: 'airflow'
-    timer_unit_consistency: True
-
-  ldap:
-    uri: 'ldaps://<your.ldap.server>:<port>'
-    user_filter: 'objectClass=*'
-    user_name_attr: 'uid'
-    superuser_filter: ''
-    data_profiler_filter: ''
-    bind_user: ''
-    bind_password: ''
-    basedn: 'dc=example,dc=com'
-    cacert: ''
-    search_scope: 'LEVEL'
 
   google:
     client_id: "your generated client id"
@@ -241,10 +180,38 @@ airflow_defaults_config:
     oauth_callback_route: "/oauth2callback"
     domain: "your.airflow.domain.edu"
 
+  smtp: {}
+
+  ldap: {}
+
+  logging:
+    base_log_folder: "{{ airflow_log_path }}"
+    remote_base_log_folder: ''
+    remote_log_conn_id: ''
+
+  mesos: {}
+
+  metrics:
+    statsd_on: false
+    statsd_host: 'localhost'
+    statsd_port: 8125
+    statsd_prefix: 'airflow'
+
+  operators:
+    default_queue: 'default'
+    default_owner: 'Airflow'
+
+  scheduler:
+    catchup_by_default: True
+    job_heartbeat_sec: 5
+    max_tis_per_query: 0
+    pid: "{{ airflow_pid_path }}/airflow-scheduler.pid"
+    scheduler_heartbeat_sec: 5
+
 airflow_user_config: {}
 airflow_config: "{{ airflow_defaults_config | combine(airflow_user_config, recursive=true) }}"
 
-# Airflow Webserver Users management
+# Airflow Api Server Users management
 airflow_webserver_admins:
   - google_username: "google_113716629440137414774"
     email: "tuj27080@temple.edu"

@@ -96,11 +96,11 @@ def test_airflow_processes(host):
     ps = host.check_output("ps -ef")
 
     assert "airflow scheduler" in ps
-    assert "airflow-webserver" in ps
+    assert "airflow api_server" in ps
 
 
 @pytest.mark.parametrize('name', [
-    ('airflow-webserver'),
+    ('airflow-api-server'),
     ('airflow-scheduler'),
 ])
 def test_airflow_services(host, name):

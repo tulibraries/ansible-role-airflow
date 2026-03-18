@@ -65,7 +65,7 @@
     path: "{{ airflow_user_home_path }}"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_name }}"
-    mode: "{{ airflow_user_home_mode }}"
+    mode: "0700"
     state: directory
 
 - name: 'INSTALL | Manage permissions on airflow home directory'
@@ -73,7 +73,7 @@
     path: "{{ airflow_application_home }}"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_name }}"
-    mode: "{{ airflow_config.core.airflow_home_mode }}"
+    mode: "0700"
     state: directory
 
 - name: 'INSTALL | Manage permissions on airflow dags directory'
@@ -81,7 +81,7 @@
     path: "{{ airflow_config.core.dags_folder }}"
     owner: "{{ airflow_user_name }}"
     group: "{{ airflow_user_name }}"
-    mode: "{{ airflow_config.core.dags_folder_mode }}"
+    mode: "0755"
     state: directory
 
 # setup environment for all users, AIRFLOW_HOME, etc
@@ -209,19 +209,6 @@
   when: (airflow_pip_custom_version_install) and
         (item.version is defined) and
       ( (item.version is search('<') ) or (item.version is search('>') ) )
-
-# Install airflow extra packages
-- name: 'INSTALL | Manage airflow extra packages installation'
-  become_user: "{{ airflow_user_name }}"
-  become: true
-  ansible.builtin.pip:
-    name: "{{ item.name }}"
-    state: "{{ item.state | default('present') }}"
-    virtualenv: "{{ airflow_virtualenv }}"
-    virtualenv_command: "/usr/bin/python3 -m venv"
-    extra_args: "{{ airflow_python_constraint }}"
-  changed_when: "airflow_pip_changed_when"
-  with_items: "{{ airflow_extra_packages }}"
 
 # Set permissions after the venv is created
 - name: 'INSTALL | Manage permissions on airflow venv directory'

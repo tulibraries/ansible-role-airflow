@@ -10,7 +10,7 @@
     group: "{{ airflow_paths.files.environment.group | default('root') }}"
     mode: "{{ airflow_paths.files.environment.mode | default('0644') }}"
   notify:
-    - 'Restart airflow-webserver'
+    - 'Restart airflow-api-server'
     - 'Restart airflow-scheduler'
     - 'Restart airflow-worker'
 

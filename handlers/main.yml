@@ -15,14 +15,14 @@
     - 'role::airflow::install'
 
 
-- name: 'Restart airflow-webserver'
+- name: 'Restart airflow-api-server'
   become: true
   ansible.builtin.service:
     name: "{{ item.name }}"
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
   when:
-    - "item.name == 'airflow-webserver'"
+    - "item.name == 'airflow-api-server'"
     - "item.state == 'started'"
   tags:
     - 'role::airflow'

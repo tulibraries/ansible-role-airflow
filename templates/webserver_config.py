@@ -1,86 +1,60 @@
-# -*- coding: utf-8 -*-
-# Role Template
-# Licensed to the Apache Software Foundation (ASF) under one
-# or more contributor license agreements.  See the NOTICE file
-# distributed with this work for additional information
-# regarding copyright ownership.  The ASF licenses this file
-# to you under the Apache License, Version 2.0 (the
-# "License"); you may not use this file except in compliance
-# with the License.  You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing,
-# software distributed under the License is distributed on an
-# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-# KIND, either express or implied.  See the License for the
-# specific language governing permissions and limitations
-# under the License.
-
 import os
-from airflow import configuration as conf
-# from flask_appbuilder.security.manager import AUTH_DB
-# from flask_appbuilder.security.manager import AUTH_LDAP
 from flask_appbuilder.security.manager import AUTH_OAUTH
-# from flask_appbuilder.security.manager import AUTH_OID
-# from flask_appbuilder.security.manager import AUTH_REMOTE_USER
-basedir = os.path.abspath(os.path.dirname(__file__))
 
-# The SQLAlchemy connection string.
-SQLALCHEMY_DATABASE_URI = conf.get('database', 'SQL_ALCHEMY_CONN')
-
-# Flask-WTF flag for CSRF
+# ----------------------------------------------------
+# Basic Security
+# ----------------------------------------------------
 CSRF_ENABLED = True
 
 # ----------------------------------------------------
-# AUTHENTICATION CONFIG
+# Authentication
 # ----------------------------------------------------
-# For details on how to set up each of the following authentication, see
-# http://flask-appbuilder.readthedocs.io/en/latest/security.html# authentication-methods
-# for details.
-
-# The authentication type
-# AUTH_OID : Is for OpenID
-# AUTH_DB : Is for database
-# AUTH_LDAP : Is for LDAP
-# AUTH_REMOTE_USER : Is for using REMOTE_USER from web server
-# AUTH_OAUTH : Is for OAuth
 AUTH_TYPE = AUTH_OAUTH
 
-# Uncomment to setup Full admin role name
-# AUTH_ROLE_ADMIN = 'Admin'
-
-# Uncomment to setup Public role name, no authentication needed
-# AUTH_ROLE_PUBLIC = 'Public'
-
-# Will allow user self registration
 AUTH_USER_REGISTRATION = True
-
-# The default user self registration role
 AUTH_USER_REGISTRATION_ROLE = "Viewer"
 
-# When using OAuth Auth, uncomment to setup provider(s) info
-# https://flask-appbuilder.readthedocs.io/en/latest/security.html
-# Google OAuth example:
-OAUTH_PROVIDERS = [{'name': 'google', 'icon': 'fa-google', 'token_key': 'access_token', 'remote_app': {'api_base_url': 'https://www.googleapis.com/oauth2/v2/', 'client_kwargs': {'scope': 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'}, 'access_token_url': 'https://accounts.google.com/o/oauth2/token', 'authorize_url': 'https://accounts.google.com/o/oauth2/auth', 'request_token_url': None, 'client_id': conf.get('google', 'client_id'), 'client_secret': conf.get('google', 'client_secret'), }}]
+# ----------------------------------------------------
+# OAuth Providers
+# ----------------------------------------------------
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET")
 
-# When using LDAP Auth, setup the ldap server
-# AUTH_LDAP_SERVER = "ldap://ldapserver.new"
+if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
+    raise RuntimeError("Google OAuth credentials are not set")
 
-# When using OpenID Auth, uncomment to setup OpenID providers.
-# example for OpenID authentication
-# OPENID_PROVIDERS = [
-#    { 'name': 'Yahoo', 'url': 'https://me.yahoo.com' },
-#    { 'name': 'AOL', 'url': 'http://openid.aol.com/<username>' },
-#    { 'name': 'Flickr', 'url': 'http://www.flickr.com/<username>' },
-#    { 'name': 'MyOpenID', 'url': 'https://www.myopenid.com' }]
+OAUTH_PROVIDERS = [
+    {
+        "name": "google",
+        "icon": "fa-google",
+        "token_key": "access_token",
+        "remote_app": {
+            "client_id": GOOGLE_CLIENT_ID,
+            "client_secret": GOOGLE_CLIENT_SECRET,
+            "api_base_url": "https://www.googleapis.com/oauth2/v2/",
+            "client_kwargs": {
+                "scope": "openid email profile"
+            },
+            "access_token_url": "https://accounts.google.com/o/oauth2/token",
+            "authorize_url": "https://accounts.google.com/o/oauth2/auth",
+            "request_token_url": None,
+        },
+    }
+]
 
 # ----------------------------------------------------
-# Theme CONFIG
+# Optional: restrict allowed domains
 # ----------------------------------------------------
-# Flask App Builder comes up with a number of predefined themes
-# that you can use for Apache Airflow.
-# http://flask-appbuilder.readthedocs.io/en/latest/customizing.html#changing-themes
-# Please make sure to remove "navbar_color" configuration from airflow.cfg
-# in order to fully utilize the theme. (or use that property in conjunction with theme)
-# APP_THEME = "bootstrap-theme.css"  # default bootstrap
+def oauth_user_info(provider, response=None):
+    if provider == "google":
+        email = response.get("email")
+
+        if not email or not email.endswith("@temple.edu"):
+            return None
+
+        return {
+            "username": email,
+            "email": email,
+            "first_name": response.get("given_name", ""),
+            "last_name": response.get("family_name", ""),
+        }
