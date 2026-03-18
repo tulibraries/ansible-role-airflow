@@ -5,6 +5,7 @@ Role tests default variables installation.
 import os
 import pytest
 import testinfra.utils.ansible_runner
+import time
 
 TESTINFRA_HOSTS = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
@@ -93,7 +94,11 @@ def test_airflow_processes(host):
     Test about airflow processes
     """
 
-    ps = host.check_output("ps -ef")
+    for _ in range(10):
+        ps = host.check_output("ps -ef")
+        if "airflow api_server" in ps:
+            break
+        time.sleep(1)
 
     assert "airflow scheduler" in ps
     assert "airflow api_server" in ps
