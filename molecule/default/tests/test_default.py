@@ -96,17 +96,21 @@ def test_airflow_processes(host):
 
     for _ in range(10):
         ps = host.check_output("ps -ef")
-        if "airflow api_server" in ps:
+        if "airflow api_server" in ps or "airflow api-server" in ps:
             break
         time.sleep(1)
 
     assert "airflow scheduler" in ps
-    assert "airflow api_server" in ps
+    assert "airflow dag-processor" in ps
+    assert "airflow triggerer" in ps
+    assert "airflow api_server" in ps or "airflow api-server" in ps
 
 
 @pytest.mark.parametrize('name', [
     ('airflow-api-server'),
     ('airflow-scheduler'),
+    ('airflow-dag-processor'),
+    ('airflow-triggerer'),
 ])
 def test_airflow_services(host, name):
     """

@@ -8,7 +8,9 @@
     name: "{{ item.name }}"
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
-  when: "item.state == 'started'"
+  when:
+    - "item.managed | default(true) | bool"
+    - "item.state == 'started'"
   tags:
     - 'role::airflow'
     - 'role::airflow::config'
@@ -22,6 +24,7 @@
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
   when:
+    - "item.managed | default(true) | bool"
     - "item.name == 'airflow-api-server'"
     - "item.state == 'started'"
   tags:
@@ -37,6 +40,7 @@
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
   when:
+    - "item.managed | default(true) | bool"
     - "item.name == 'airflow-scheduler'"
     - "item.state == 'started'"
   tags:
@@ -52,6 +56,7 @@
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
   when:
+    - "item.managed | default(true) | bool"
     - "item.name == 'airflow-kerberos'"
     - "item.state == 'started'"
   tags:
@@ -66,6 +71,7 @@
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
   when:
+    - "item.managed | default(true) | bool"
     - "item.name == 'airflow-worker'"
     - "item.state == 'started'"
   tags:
@@ -80,7 +86,38 @@
     state: 'restarted'
   with_items: "{{ airflow_services_states }}"
   when:
+    - "item.managed | default(true) | bool"
     - "item.name == 'airflow-flower'"
+    - "item.state == 'started'"
+  tags:
+    - 'role::airflow'
+    - 'role::airflow::config'
+    - 'role::airflow::install'
+
+- name: 'Restart airflow-dag-processor'
+  become: true
+  ansible.builtin.service:
+    name: "{{ item.name }}"
+    state: 'restarted'
+  with_items: "{{ airflow_services_states }}"
+  when:
+    - "item.managed | default(true) | bool"
+    - "item.name == 'airflow-dag-processor'"
+    - "item.state == 'started'"
+  tags:
+    - 'role::airflow'
+    - 'role::airflow::config'
+    - 'role::airflow::install'
+
+- name: 'Restart airflow-triggerer'
+  become: true
+  ansible.builtin.service:
+    name: "{{ item.name }}"
+    state: 'restarted'
+  with_items: "{{ airflow_services_states }}"
+  when:
+    - "item.managed | default(true) | bool"
+    - "item.name == 'airflow-triggerer'"
     - "item.state == 'started'"
   tags:
     - 'role::airflow'

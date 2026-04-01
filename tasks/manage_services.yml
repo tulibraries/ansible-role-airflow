@@ -12,6 +12,8 @@
   notify:
     - 'Restart airflow-api-server'
     - 'Restart airflow-scheduler'
+    - 'Restart airflow-dag-processor'
+    - 'Restart airflow-triggerer'
     - 'Restart airflow-worker'
 
 
@@ -25,7 +27,9 @@
   notify: "{{ item.handler }}"
   register: airflow_systemd_updated
   with_items: "{{ airflow_services_systemd }}"
-  when: "is_systemd_managed_system | bool"
+  when:
+    - "is_systemd_managed_system | bool"
+    - "item.managed | default(true) | bool"
 
 - name: 'SERVICE | systemd daemon-reload'
   ansible.builtin.systemd:
@@ -40,3 +44,4 @@
     enabled: "{{ item.enabled | default(False) }}"
     state: "{{ item.state }}"
   with_items: "{{ airflow_services_states }}"
+  when: "item.managed | default(true) | bool"
