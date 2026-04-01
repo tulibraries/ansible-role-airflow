@@ -101,6 +101,8 @@ airflow_auth_enabled: true
 
 # Airflow systemd services specific settings
 is_systemd_managed_system: "{{ _is_systemd_managed_system | default(false) }}"
+airflow_enable_dag_processor: true
+airflow_enable_triggerer: true
 airflow_services_systemd:
   - dest: '/etc/systemd/system/airflow-api-server.service'
     handler: 'Restart airflow-api-server' 
@@ -140,6 +142,46 @@ airflow_services_systemd:
         After: 'network.target postgresql.service mysql.service redis.service rabbitmq-server.service'
         Description: 'Airflow scheduler daemon'
         Wants: 'postgresql.service mysql.service redis.service rabbitmq-server.service'
+  - dest: '/etc/systemd/system/airflow-dag-processor.service'
+    handler: 'Restart airflow-dag-processor'
+    managed: "{{ airflow_enable_dag_processor | bool }}"
+    options:
+      Install:
+        WantedBy: 'multi-user.target'
+      Service:
+        Environment: "PATH={{ airflow_virtualenv ~ '/bin' }}"
+        EnvironmentFile: "{{ airflow_service_envfile_path }}"
+        ExecStart: "{{ airflow_virtualenv ~ '/bin' }}/airflow dag-processor"
+        Group: "{{ airflow_user_group }}"
+        PrivateTmp: 'true'
+        Restart: 'always'
+        RestartSec: '5s'
+        Type: 'simple'
+        User: "{{ airflow_user_name }}"
+      Unit:
+        After: 'network.target postgresql.service mysql.service redis.service rabbitmq-server.service'
+        Description: 'Airflow DAG processor daemon'
+        Wants: 'postgresql.service mysql.service redis.service rabbitmq-server.service'
+  - dest: '/etc/systemd/system/airflow-triggerer.service'
+    handler: 'Restart airflow-triggerer'
+    managed: "{{ airflow_enable_triggerer | bool }}"
+    options:
+      Install:
+        WantedBy: 'multi-user.target'
+      Service:
+        Environment: "PATH={{ airflow_virtualenv ~ '/bin' }}"
+        EnvironmentFile: "{{ airflow_service_envfile_path }}"
+        ExecStart: "{{ airflow_virtualenv ~ '/bin' }}/airflow triggerer"
+        Group: "{{ airflow_user_group }}"
+        PrivateTmp: 'true'
+        Restart: 'always'
+        RestartSec: '5s'
+        Type: 'simple'
+        User: "{{ airflow_user_name }}"
+      Unit:
+        After: 'network.target postgresql.service mysql.service redis.service rabbitmq-server.service'
+        Description: 'Airflow triggerer daemon'
+        Wants: 'postgresql.service mysql.service redis.service rabbitmq-server.service'
 
 airflow_services_states:
   - name: 'airflow-api-server'
@@ -147,6 +189,14 @@ airflow_services_states:
     state: 'started'
   - name: 'airflow-scheduler'
     enabled: true
+    state: 'started'
+  - name: 'airflow-dag-processor'
+    enabled: true
+    managed: "{{ airflow_enable_dag_processor | bool }}"
+    state: 'started'
+  - name: 'airflow-triggerer'
+    enabled: true
+    managed: "{{ airflow_enable_triggerer | bool }}"
     state: 'started'
 
 # Environment variables file
